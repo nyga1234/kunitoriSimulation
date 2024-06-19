@@ -12,6 +12,7 @@ using Unity.VisualScripting;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
 using static UnityEditor.PlayerSettings;
+using UnityEngine.UI;
 //using UnityEngine.WSA;
 
 public class GameManager : MonoBehaviour
@@ -1046,22 +1047,32 @@ public class GameManager : MonoBehaviour
     public IEnumerator BlinkTerritory(float blinkTime, CharacterController attackerChara, CharacterController defenderChara, Territory territory)
     {
         float addTime = 0f;
-        SpriteRenderer territorySpriteRenderer = territory.GetComponent<SpriteRenderer>();
+        //SpriteRenderer territorySpriteRenderer = territory.GetComponent<SpriteRenderer>();
+        Image territoryImage = territory.GetComponent<Image>();
+
         while (addTime < blinkTime)
         {
             // —Ì“y‚ÉUŒ‚¨—Í‚Ì‰æ‘œ‚ðÝ’è
-            territorySpriteRenderer.sprite = attackerChara.influence.influenceImage;
+            territoryImage.sprite = attackerChara.influence.influenceImage;
             yield return new WaitForSeconds(0.1f);
             addTime += 0.1f;
 
+            //territorySpriteRenderer.sprite = attackerChara.influence.influenceImage;
+            //yield return new WaitForSeconds(0.1f);
+            //addTime += 0.1f;
+
             // —Ì“y‚É–hŒä¨—Í‚Ì‰æ‘œ‚ðÝ’è
-            territorySpriteRenderer.sprite = defenderChara.influence.influenceImage;
+            territoryImage.sprite = defenderChara.influence.influenceImage;
             yield return new WaitForSeconds(0.1f);
             addTime += 0.1f;
+
+            //territorySpriteRenderer.sprite = defenderChara.influence.influenceImage;
+            //yield return new WaitForSeconds(0.1f);
+            //addTime += 0.1f;
         }
 
         //ÅI“I‚ÉUŒ‚‘¤¨—Í‚Ì‰æ‘œ‚ðÝ’è
-        territorySpriteRenderer.sprite = attackerChara.influence.influenceImage;
+        territoryImage.sprite = attackerChara.influence.influenceImage;
         yield return new WaitForSeconds(0.5f);
     }
 

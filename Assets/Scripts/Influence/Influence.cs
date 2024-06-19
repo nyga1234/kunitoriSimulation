@@ -50,31 +50,37 @@ public class Influence : MonoBehaviour
 
     public List<Territory> FindAdjacentTerritory()
     {
+        int spaceTerritory = 100;
         List<Territory> attackableTerritoryList = new List<Territory>();
+        Vector2[] directions = {
+            new Vector2(spaceTerritory, 0),   // ‰E
+            new Vector2(-spaceTerritory, 0),  // ¶
+            new Vector2(0, -spaceTerritory),   // ‰º
+            new Vector2(0, spaceTerritory)   // ã
+        };
         foreach (Territory influenceTerritory in this.territoryList)
         {
-            Territory rightTerritory = GameManager.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + Vector2.right);
+            Territory rightTerritory = GameManager.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + directions[0]);
             if (rightTerritory != null)
             {
                 attackableTerritoryList.Add(rightTerritory);
             }
-            Territory leftTerritory = GameManager.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + Vector2.left);
+            Territory leftTerritory = GameManager.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + directions[1]);
             if (leftTerritory != null)
             {
                 attackableTerritoryList.Add(leftTerritory);
             }
-            Territory downTerritory = GameManager.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + Vector2.down);
+            Territory downTerritory = GameManager.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + directions[2]);
             if (downTerritory != null)
             {
                 attackableTerritoryList.Add(downTerritory);
             }
-            Territory upTerritory = GameManager.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + Vector2.up);
+            Territory upTerritory = GameManager.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + directions[3]);
             if (upTerritory != null)
             {
                 attackableTerritoryList.Add(upTerritory);
             }
         }
-
         return attackableTerritoryList;
     }
 

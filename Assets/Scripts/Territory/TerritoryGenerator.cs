@@ -8,7 +8,7 @@ using static Territory;
 public class TerritoryGenerator : MonoBehaviour
 {
     [SerializeField] Territory plainTerritorPrefab;
-    [SerializeField] Transform mapField;
+    [SerializeField] Transform parent;
 
     const int WIDTH = 7;
     const int HEIGHT = 3;
@@ -16,7 +16,7 @@ public class TerritoryGenerator : MonoBehaviour
     const int screenWidth = 1920;
     const int screenHeight = 1080;
 
-    const int space = 100;
+    public const int territorySpace = 100;
 
     public Territory greenTerritory;
     public Territory redTerritory;
@@ -31,17 +31,17 @@ public class TerritoryGenerator : MonoBehaviour
 
         //Vector2 offset = new Vector2((float)(WIDTH / 2), (float)(HEIGHT / 2 - 1));
         Vector2 screenOffset = new Vector2(screenWidth / 2, screenHeight / 2);
-        Vector2 spaceOffset = new Vector2(WIDTH / 2 * space, HEIGHT / 2 * space);
+        Vector2 spaceOffset = new Vector2(WIDTH / 2 * territorySpace, HEIGHT / 2 * territorySpace);
         Vector2 offset = new Vector2(0, 90);
         for (int x = 0; x < WIDTH; x++)
         {
             for (int y = 0; y < HEIGHT; y++)
             {
                 //Vector2 pos = new Vector2(x, y) - offset;
-                Vector2  pos = new Vector2(x * space, y * space) + screenOffset - spaceOffset + offset;
+                Vector2  pos = new Vector2(x * territorySpace, y * territorySpace) + screenOffset - spaceOffset + offset;
                 if (x <= 2 && y == 2 || x == 0 && y == 1)
                 {
-                    greenTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, mapField);
+                    greenTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, parent);
                     greenTerritory.gameObject.SetActive(true);
                     SetupTerritory(greenTerritory, pos, influenceList, "ヴィクター");
                     territoryList.Add(greenTerritory);
@@ -49,7 +49,7 @@ public class TerritoryGenerator : MonoBehaviour
                 }
                 else if (x <= 2 && y == 0 || x == 1 && y == 1)
                 {
-                    redTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, mapField);
+                    redTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, parent);
                     redTerritory.gameObject.SetActive(true);
                     SetupTerritory(redTerritory, pos, influenceList, "アリシア");
                     territoryList.Add(redTerritory);
@@ -57,7 +57,7 @@ public class TerritoryGenerator : MonoBehaviour
                 }
                 else if(x >= 4 && y == 2 || x == 5 && y == 1)
                 {
-                    blueTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, mapField);
+                    blueTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, parent);
                     blueTerritory.gameObject.SetActive(true);
                     SetupTerritory(blueTerritory, pos, influenceList, "セルギウス");
                     territoryList.Add(blueTerritory);
@@ -65,7 +65,7 @@ public class TerritoryGenerator : MonoBehaviour
                 }
                 else if (x == 2 && y == 1 || x == 3 && y == 0 || x == 3 && y == 2 || x == 4 && y == 1)
                 {
-                    yellowTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, mapField);
+                    yellowTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, parent);
                     yellowTerritory.gameObject.SetActive(true);
                     SetupTerritory(yellowTerritory, pos, influenceList, "ローレンティウス");
                     territoryList.Add(yellowTerritory);
@@ -73,7 +73,7 @@ public class TerritoryGenerator : MonoBehaviour
                 }
                 else if (x >= 4 && y == 0 || x == 6 && y == 1)
                 {
-                    blackTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, mapField);
+                    blackTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, parent);
                     blackTerritory.gameObject.SetActive(true);
                     SetupTerritory(blackTerritory, pos, influenceList, "フェオドーラ");
                     territoryList.Add(blackTerritory);
@@ -81,13 +81,13 @@ public class TerritoryGenerator : MonoBehaviour
                 }
                 else
                 {
-                    noneTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, mapField);
+                    noneTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, parent);
                     noneTerritory.gameObject.SetActive(true);
                     SetupTerritory(noneTerritory, pos, influenceList, "NoneInfluence");
                     territoryList.Add(noneTerritory);
                 }
             }
-            mapField.gameObject.SetActive(false);
+            //parent.gameObject.SetActive(false);
         }
         return territoryList;
     }
