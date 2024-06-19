@@ -41,6 +41,7 @@ public class BattleUI : MonoBehaviour
 
     public void ShowBattleUI(CharacterController attackerCharacter, CharacterController defenderCharacter, Territory territory)
     {
+        SoundManager.instance.SwitchBattleBGM();
         TitleFieldUI.instance.titleFieldText.text = "      攻撃ボタンクリックで戦闘";
         TitleFieldUI.instance.HideTitleSubText();
 
@@ -75,6 +76,7 @@ public class BattleUI : MonoBehaviour
 
     public void HideBattleUI()
     {
+        SoundManager.instance.SwitchMainBGM();
         gameObject.SetActive(false);   
     }
 

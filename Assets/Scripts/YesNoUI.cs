@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class YesNoUI : MonoBehaviour
 {
-    [SerializeField] InflueneceManager influeneceManager;
+    //[SerializeField] InflueneceManager influeneceManager;
+    [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] GameObject mapField;
 
     [SerializeField] InfluenceOnMapUI influenceOnMapUI;
@@ -18,6 +19,7 @@ public class YesNoUI : MonoBehaviour
 
     public void ShowEnterUI()
     {
+        SoundManager.instance.PlalyYesNoUISE();
         isYesNoVisible = true;
         Yes = false;
         this.gameObject.SetActive(true);
@@ -26,6 +28,7 @@ public class YesNoUI : MonoBehaviour
 
     public void ShowCharacterSelectUI()
     {
+        SoundManager.instance.PlalyYesNoUISE();
         isYesNoVisible = true;
         Yes = false;
         this.gameObject.SetActive(true);
@@ -34,6 +37,7 @@ public class YesNoUI : MonoBehaviour
 
     public void ShowSearchYesNoUI()
     {
+        SoundManager.instance.PlalyYesNoUISE();
         isYesNoVisible = true;
         Yes = false;
         this.gameObject.SetActive(true);
@@ -42,6 +46,7 @@ public class YesNoUI : MonoBehaviour
 
     public void ShowEmployedYesNoUI(CharacterController lordCharacter)
     {
+        SoundManager.instance.PlalyYesNoUISE();
         isYesNoVisible = true;
         Yes = false;
         this.gameObject.SetActive(true);
@@ -50,6 +55,7 @@ public class YesNoUI : MonoBehaviour
 
     public void ShowBanishmentYesNoUI()
     {
+        SoundManager.instance.PlalyYesNoUISE();
         isYesNoVisible = true;
         Yes = false;
         this.gameObject.SetActive(true);
@@ -58,6 +64,7 @@ public class YesNoUI : MonoBehaviour
 
     public void ShowVagabondYesNoUI()
     {
+        SoundManager.instance.PlalyYesNoUISE();
         isYesNoVisible = true;
         Yes = false;
         this.gameObject.SetActive(true);
@@ -66,6 +73,7 @@ public class YesNoUI : MonoBehaviour
 
     public void ShowAttackYesNoUI()
     {
+        SoundManager.instance.PlalyYesNoUISE();
         isYesNoVisible = true;
         Yes = false;
         this.gameObject.SetActive(true);
@@ -74,6 +82,7 @@ public class YesNoUI : MonoBehaviour
 
     public void ShowBattleCharacterSelectYesNoUI()
     {
+        SoundManager.instance.PlalyYesNoUISE();
         isYesNoVisible = true;
         Yes = false;
         this.gameObject.SetActive(true);
@@ -82,6 +91,7 @@ public class YesNoUI : MonoBehaviour
 
     public void ShowAbandonYesNoUI()
     {
+        SoundManager.instance.PlalyYesNoUISE();
         isYesNoVisible = true;
         Yes = false;
         this.gameObject.SetActive(true);
@@ -90,6 +100,7 @@ public class YesNoUI : MonoBehaviour
 
     public void ShowEndYesNoUI()
     {
+        SoundManager.instance.PlalyYesNoUISE();
         isYesNoVisible = true;
         Yes = false;
         this.gameObject.SetActive(true);
@@ -98,6 +109,7 @@ public class YesNoUI : MonoBehaviour
 
     public void YesButton()
     {
+        SoundManager.instance.PlayYesSE();
         isYesNoVisible = false;
         this.gameObject.SetActive(false);
         Yes = true;
@@ -105,6 +117,7 @@ public class YesNoUI : MonoBehaviour
 
     public void NoButtone()
     {
+        SoundManager.instance.PlayCancelSE();
         isYesNoVisible = false;
         this.gameObject.SetActive(false);
         Yes = false;

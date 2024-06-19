@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class BattleMenuUI : MonoBehaviour
 {
-    [SerializeField] InflueneceManager influeneceManager;
+    //[SerializeField] InflueneceManager influeneceManager;
+    [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
 
     [SerializeField] BattleMenuCommandUI battleMenuCommandUI;
 
@@ -72,7 +73,7 @@ public class BattleMenuUI : MonoBehaviour
         charaNameText.text = character.characterModel.name;
         rankText.text = character.characterModel.rank.ToString();
 
-        influeneceManager.InfluenceCalcSum(influence);
+        territoryUIOnMouse.InfluenceCalcSum(influence);
         territorySumText.text = "[óÃínêî] " + influence.territorySum.ToString();
         goldSumText.text = "[éëã‡åv]" + influence.goldSum.ToString();
         forceSumText.text = "[ëçêÌóÕ] " + influence.forceSum.ToString();

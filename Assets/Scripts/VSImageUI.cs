@@ -6,6 +6,7 @@ public class VSImageUI : MonoBehaviour
 {
     public void SetPosition(Transform target)
     {
+        //SoundManager.instance.PlayBattleSE();
         transform.position = target.position;
     }
 }

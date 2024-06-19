@@ -46,6 +46,7 @@ public class CommandOnClick : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
+            SoundManager.instance.PlayClickSE();
             GameManager.instance.step = Step.Information;
 
             characterMenuUI.HideCharacterMenuUI();
@@ -63,6 +64,7 @@ public class CommandOnClick : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
+            SoundManager.instance.PlayClickSE();
             GameManager.instance.step = Step.Information;
 
             personalMenuUI.HidePersonalMenuUI();
@@ -80,6 +82,7 @@ public class CommandOnClick : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
+            SoundManager.instance.PlayClickSE();
             GameManager.instance.step = Step.Information;
 
             battleMenuUI.HideBattleMenuUI();
@@ -97,6 +100,7 @@ public class CommandOnClick : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
+            SoundManager.instance.PlayClickSE();
             GameManager.instance.step = Step.Appointment;
 
             characterMenuUI.HideCharacterMenuUI();
@@ -202,6 +206,7 @@ public class CommandOnClick : MonoBehaviour
         {
             if (GameManager.instance.playerCharacter.influence.characterList.Count != 1)
             {
+                SoundManager.instance.PlayClickSE();
                 GameManager.instance.step = Step.Banishment;
 
                 characterMenuUI.HideCharacterMenuUI();
@@ -225,6 +230,7 @@ public class CommandOnClick : MonoBehaviour
         {
             if (gameManager.playerCharacter.soliderList.Count < 10 && gameManager.playerCharacter.characterModel.gold >= 2)
             {
+                SoundManager.instance.PlayRecruitSE();
                 SoliderController solider = Instantiate(soliderPrefab);
                 solider.Init(1);
                 solider.gameObject.SetActive(false);
@@ -252,6 +258,7 @@ public class CommandOnClick : MonoBehaviour
         {
             if (gameManager.playerCharacter.characterModel.gold >= 2)
             {
+                SoundManager.instance.PlayTrainingSE();
                 foreach (SoliderController solider in gameManager.playerCharacter.soliderList)
                 {
                     solider.soliderModel.Training(solider);
@@ -274,6 +281,7 @@ public class CommandOnClick : MonoBehaviour
         {
             if (Input.GetMouseButtonUp(0))
             {
+                SoundManager.instance.PlayClickSE();
                 GameManager.instance.step = Step.Enter;
 
                 personalMenuUI.HidePersonalMenuUI();
@@ -347,6 +355,7 @@ public class CommandOnClick : MonoBehaviour
 
             if (GameManager.instance.playerCharacter.characterModel.gold >= 3)
             {
+                SoundManager.instance.PlayClickSE();
                 GameManager.instance.step = Step.Attack;
 
                 battleMenuUI.HideBattleMenuUI();
@@ -484,6 +493,7 @@ public class CommandOnClick : MonoBehaviour
 
     public void CharacterSearch()
     {
+        SoundManager.instance.PlayClickSE();
         GameManager.instance.step = Step.Search;
 
         gameManager.playerCharacter.characterModel.gold -= 9;

@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class LandformInformationUI : MonoBehaviour
 {
-    [SerializeField] InflueneceManager influenceManager;
+    //[SerializeField] InflueneceManager influenceManager;
+    [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] Image attackTerritoryTypeImage;
     [SerializeField] Image defenceTerritoryTypeImage;
 
@@ -13,7 +14,7 @@ public class LandformInformationUI : MonoBehaviour
     {
         this.gameObject.SetActive(true);
 
-        SetBattleFieldUI(influenceManager.territory);
+        SetBattleFieldUI(territoryUIOnMouse.territory);
     }
 
     void SetBattleFieldUI(Territory territory)

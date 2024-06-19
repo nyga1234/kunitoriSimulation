@@ -11,7 +11,8 @@ public class BattleManager : MonoBehaviour
 {
     [SerializeField] Cursor cursor;
     [SerializeField] VSImageUI vsImageUI;
-    [SerializeField] InflueneceManager influeneceManager;
+    //[SerializeField] InflueneceManager influeneceManager;
+    [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] Transform AttackerSoliderField, DefenderSoliderField;
     [SerializeField] SoliderController solidefPrefab;
     [SerializeField] BattleDetailUI battleDetailUI;
@@ -102,6 +103,7 @@ public class BattleManager : MonoBehaviour
     {
         if (inputEnabled)
         {
+            SoundManager.instance.PlayTrainingSE();
             SoliderBattle(attackerCharacter, defenderCharacter);//UŒ‚w‚ªç”õw‚ğUŒ‚
             SoliderBattle(defenderCharacter, attackerCharacter);//ç”õw‚ªUŒ‚w‚ğUŒ‚
             IsAliveCheckSolider(attackerCharacter, defenderCharacter);
@@ -188,7 +190,7 @@ public class BattleManager : MonoBehaviour
             foreach (SoliderController attackerSolider in attackChara.soliderList)
             {
                 SoliderController defenderSolider = GetRandomSolider(defenceChara.soliderList);
-                attackerSolider.soliderModel.Attack(attackChara, defenceChara, defenderSolider, influeneceManager.territory);
+                attackerSolider.soliderModel.Attack(attackChara, defenceChara, defenderSolider, territoryUIOnMouse.territory);
                 //defenderSolider.soliderModel.CounterAttack(attackChara, defenceChara, attackerSolider, influeneceManager.territory);
             }
         }
@@ -263,7 +265,7 @@ public class BattleManager : MonoBehaviour
         {
             if (defenceCharacter != GameManager.instance.playerCharacter)
             {
-                switch (influeneceManager.territory.defenceTerritoryType)
+                switch (territoryUIOnMouse.territory.defenceTerritoryType)
                 {
                     //»”™‚Ìê‡A‚¢‚¸‚ê‚©•ºm‚ÌHP‚ª20–¢–‚É‚È‚Á‚½‚ç‘Ş‹p‚³‚¹‚é
                     case Territory.DefenceTerritoryType.desert:
@@ -319,7 +321,7 @@ public class BattleManager : MonoBehaviour
         {
             if (attackCharacter != GameManager.instance.playerCharacter)
             {
-                switch (influeneceManager.territory.attackTerritoryType)
+                switch (territoryUIOnMouse.territory.attackTerritoryType)
                 {
                     //»”™‚Ìê‡A‚¢‚¸‚ê‚©•ºm‚ÌHP‚ª20–¢–‚É‚È‚Á‚½‚ç‘Ş‹p‚³‚¹‚é
                     case Territory.AttackTerritoryType.desert:
@@ -409,7 +411,7 @@ public class BattleManager : MonoBehaviour
             Debug.Log(attackerCharacter.characterModel.name + "‚ÌŸ—˜‚Å‚·B");
             attackerCharacter.characterModel.isAttackable = false;
             attackerCharacter.characterModel.fame += 2;
-            influeneceManager.ChangeTerritoryByBattle(attackerCharacter.influence);
+            territoryUIOnMouse.ChangeTerritoryByBattle(attackerCharacter.influence);
             isBattleEnd = true;
         }
 
@@ -423,7 +425,7 @@ public class BattleManager : MonoBehaviour
         mapField.SetActive(true);
         vsImageUI.gameObject.SetActive(false);
         cursor.gameObject.SetActive(true);
-        cursor.transform.position = influeneceManager.territory.position;
+        cursor.transform.position = territoryUIOnMouse.territory.position;
         battleDetailUI.ShowBattleDetailUI(attackerCharacter, defenderCharacter);
         if (attackerRetreatFlag == true)
         {
@@ -432,7 +434,7 @@ public class BattleManager : MonoBehaviour
         else
         {
             TitleFieldUI.instance.titleFieldText.text = "      NU‘¤‚ÌŸ—˜‚Å‚·";
-            StartCoroutine(GameManager.instance.BlinkTerritory(0.5f, attackerCharacter, defenderCharacter, influeneceManager.territory));
+            StartCoroutine(GameManager.instance.BlinkTerritory(0.5f, attackerCharacter, defenderCharacter, territoryUIOnMouse.territory));
         }
         yield return new WaitForSeconds(battleAfterWaitTime);
 
@@ -545,13 +547,14 @@ public class BattleManager : MonoBehaviour
         TitleFieldUI.instance.titleFieldText.text = "      –¡•û VS “G@í“¬I";
         mapField.SetActive(true);
         cursor.gameObject.SetActive(true);
-        cursor.transform.position = influeneceManager.territory.position;
-        vsImageUI.transform.position = influeneceManager.territory.position;
+        cursor.transform.position = territoryUIOnMouse.territory.position;
+        vsImageUI.transform.position = territoryUIOnMouse.territory.position;
         battleDetailUI.ShowBattleDetailUI(attackerCharacter, defenderCharacter);
         StartCoroutine(GameManager.instance.BlinkCursor(1.0f));
         yield return new WaitForSeconds(1.0f);
 
         //í“¬À{
+        SoundManager.instance.PlayBattleSE();
         while (attackerRetreatFlag == false && defenderRetreatFlag == false)
         {
             SoliderBattle(attackerCharacter, defenderCharacter);
@@ -590,13 +593,14 @@ public class BattleManager : MonoBehaviour
         TitleFieldUI.instance.titleFieldText.text = "      “G VS –¡•û@í“¬I";
         mapField.SetActive(true);
         cursor.gameObject.SetActive(true);
-        cursor.transform.position = influeneceManager.territory.position;
-        vsImageUI.transform.position = influeneceManager.territory.position;
+        cursor.transform.position = territoryUIOnMouse.territory.position;
+        vsImageUI.transform.position = territoryUIOnMouse.territory.position;
         battleDetailUI.ShowBattleDetailUI(attackCharacter, defenceCharacter);
         StartCoroutine(GameManager.instance.BlinkCursor(1.0f));
         yield return new WaitForSeconds(1.0f);
 
         //í“¬À{@í“¬’†‰æ–Ê•\¦
+        SoundManager.instance.PlayBattleSE();
         while (attackerRetreatFlag == false && defenderRetreatFlag == false)
         {
             SoliderBattle(attackerCharacter, defenderCharacter);
@@ -627,12 +631,12 @@ public class BattleManager : MonoBehaviour
         mapField.SetActive(true);
 
         TitleFieldUI.instance.titleFieldText.text = "í“¬‚ğ•úŠü‚µ‚Ü‚µ‚½";
-        StartCoroutine(GameManager.instance.BlinkTerritory(0.5f, attackerCharacter, GameManager.instance.playerCharacter, influeneceManager.territory));
+        StartCoroutine(GameManager.instance.BlinkTerritory(0.5f, attackerCharacter, GameManager.instance.playerCharacter, territoryUIOnMouse.territory));
         yield return new WaitForSeconds(battleAfterWaitTime);
 
         attackerCharacter.characterModel.isAttackable = false;
         attackerCharacter.characterModel.isBattle = true;
-        influeneceManager.ChangeTerritoryByBattle(attackerCharacter.influence);
+        territoryUIOnMouse.ChangeTerritoryByBattle(attackerCharacter.influence);
         isBattleEnd = true;
 
         CheckExtinct(GameManager.instance.playerCharacter.influence);

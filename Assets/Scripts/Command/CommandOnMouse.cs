@@ -27,6 +27,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterInformation()
     {
+        SoundManager.instance.PlayCursorSE();
         titleFieldUI.ShowInformationText();
         consumptionMoneyUI.ShowConsumptionText(0);
         // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
@@ -35,6 +36,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterAppointment()
     {
+        SoundManager.instance.PlayCursorSE();
         titleFieldUI.ShowAppointmentText();
         consumptionMoneyUI.ShowConsumptionText(0);
         // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
@@ -43,6 +45,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterSearch()
     {
+        SoundManager.instance.PlayCursorSE();
         titleFieldUI.ShowSearchText();
         consumptionMoneyUI.ShowConsumptionText(9);
         // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
@@ -51,6 +54,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterBanishment()
     {
+        SoundManager.instance.PlayCursorSE();
         titleFieldUI.ShowBanishmentText();
         consumptionMoneyUI.ShowConsumptionText(0);
         // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
@@ -59,6 +63,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterAlliance()
     {
+        SoundManager.instance.PlayCursorSE();
         titleFieldUI.ShowAllianceText();
         consumptionMoneyUI.ShowConsumptionText(5);
         // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
@@ -67,6 +72,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterLaureate()
     {
+        SoundManager.instance.PlayCursorSE();
         titleFieldUI.ShowLaureateText();
         consumptionMoneyUI.ShowConsumptionText(0);
         // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
@@ -75,6 +81,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterRecruit()
     {
+        SoundManager.instance.PlayCursorSE();
         titleFieldUI.ShowRecruitText();
         consumptionMoneyUI.ShowConsumptionText(2);
         // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
@@ -83,6 +90,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterTraining()
     {
+        SoundManager.instance.PlayCursorSE();
         titleFieldUI.ShowTrainingText();
         consumptionMoneyUI.ShowConsumptionText(2);
         // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
@@ -93,6 +101,7 @@ public class CommandOnMouse : MonoBehaviour
     {
         if (GameManager.instance.playerCharacter.influence == GameManager.instance.noneInfluence)
         {
+            SoundManager.instance.PlayCursorSE();
             titleFieldUI.ShowEnterText();
             consumptionMoneyUI.ShowConsumptionText(0);
             // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
@@ -112,6 +121,7 @@ public class CommandOnMouse : MonoBehaviour
         }
         else
         {
+            SoundManager.instance.PlayCursorSE();
             titleFieldUI.ShowVagabondText();
             consumptionMoneyUI.ShowConsumptionText(0);
             // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
@@ -127,6 +137,7 @@ public class CommandOnMouse : MonoBehaviour
         }
         else 
         {
+            SoundManager.instance.PlayCursorSE();
             titleFieldUI.ShowRebellionText();
             consumptionMoneyUI.ShowConsumptionText(0);
             // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
@@ -144,14 +155,16 @@ public class CommandOnMouse : MonoBehaviour
         {
             TitleFieldUI.instance.titleFieldText.text = "      “Æ©”»’f‚ÅNU";
         }
-        
+
         //‹¤’Êˆ—
+        SoundManager.instance.PlayCursorSE();
         consumptionMoneyUI.ShowConsumptionText(3);
         ChangeBackgroundColor(Color.gray);
     }
 
     public void OnPointerEnterProvoke()
     {
+        SoundManager.instance.PlayCursorSE();
         titleFieldUI.ShowProvokeText();
         consumptionMoneyUI.ShowConsumptionText(9);
         // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
@@ -160,6 +173,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterSubdue()
     {
+        SoundManager.instance.PlayCursorSE();
         titleFieldUI.ShowSubdueText();
         consumptionMoneyUI.ShowConsumptionText(3);
         // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
@@ -168,6 +182,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterFunction()
     {
+        SoundManager.instance.PlayCursorSE();
         titleFieldUI.ShowFunctionText();
         consumptionMoneyUI.ShowConsumptionText(0);
         // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
@@ -176,6 +191,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterEnd()
     {
+        SoundManager.instance.PlayCursorSE();
         titleFieldUI.ShowEndText();
         consumptionMoneyUI.ShowConsumptionText(0);
         // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX

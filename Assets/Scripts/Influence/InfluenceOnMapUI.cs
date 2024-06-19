@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class InfluenceOnMapUI : MonoBehaviour
 {
-    public InflueneceManager influeneceManager;
+    //public InflueneceManager influeneceManager;
+    [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
 
     [SerializeField] Sprite charaUI;
 
@@ -33,7 +34,7 @@ public class InfluenceOnMapUI : MonoBehaviour
             lordImage.sprite = lordCharacter.characterModel.icon;
             lordNameText.text = "óÃéÂ " + lordCharacter.characterModel.name;
 
-            influeneceManager.InfluenceCalcSum(influence);
+            territoryUIOnMouse.InfluenceCalcSum(influence);
             territorySumText.text = "[óÃêî] " + influence.territorySum.ToString();
             goldSumText.text = "[ã‡åv]" + influence.goldSum.ToString();
             characterSumText.text = "[è´êî] " + influence.characterSum.ToString();

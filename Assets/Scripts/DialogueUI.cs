@@ -13,6 +13,7 @@ public class DialogueUI : MonoBehaviour
 
     public void ShowLeaveInfluenceUI(CharacterController character)
     {
+        SoundManager.instance.PlayDialogueSE();
         // ダイアログを表示する処理
         this.gameObject.SetActive(true);
         isDialogueVisible = true;
@@ -21,6 +22,7 @@ public class DialogueUI : MonoBehaviour
 
     public void ShowEnterInfluenceUI()
     {
+        SoundManager.instance.PlayDialogueSE();
         this.gameObject.SetActive(true);
         isDialogueVisible = true;
         dialogueText.text = "採用されました";
@@ -28,6 +30,7 @@ public class DialogueUI : MonoBehaviour
 
     public void ShowSuccessAppointmentUI()
     {
+        SoundManager.instance.PlayDialogueSE();
         this.gameObject.SetActive(true);
         isDialogueVisible = true;
         dialogueText.text = "登用に成功しました";
@@ -35,6 +38,7 @@ public class DialogueUI : MonoBehaviour
 
     public void ShowEmployedUI(CharacterController lordCharacter)
     {
+        SoundManager.instance.PlayDialogueSE();
         this.gameObject.SetActive(true);
         isDialogueVisible = true;
         dialogueText.text = lordCharacter.characterModel.name + "軍へ加入しました";
@@ -42,6 +46,7 @@ public class DialogueUI : MonoBehaviour
 
     public void ShowSuccessBanishmentUI()
     {
+        SoundManager.instance.PlayDialogueSE();
         this.gameObject.SetActive(true);
         isDialogueVisible = true;
         dialogueText.text = "追放に成功しました";
@@ -49,6 +54,7 @@ public class DialogueUI : MonoBehaviour
 
     public void ShowSuccessVagabondUI()
     {
+        SoundManager.instance.PlayDialogueSE();
         this.gameObject.SetActive(true);
         isDialogueVisible = true;
         dialogueText.text = "勢力を去りました";
@@ -56,6 +62,7 @@ public class DialogueUI : MonoBehaviour
 
     public void ShowElavationRankUI(CharacterController character)
     {
+        SoundManager.instance.PlayDialogueSE();
         this.gameObject.SetActive(true);
         isDialogueVisible = true;
         dialogueText.text = character.characterModel.rank + "に昇格しました";
@@ -63,6 +70,7 @@ public class DialogueUI : MonoBehaviour
 
     public void ShowDemotionRankUI(CharacterController character)
     {
+        SoundManager.instance.PlayDialogueSE();
         this.gameObject.SetActive(true);
         isDialogueVisible = true;
         dialogueText.text = character.characterModel.rank + "に降格しました";
@@ -70,6 +78,7 @@ public class DialogueUI : MonoBehaviour
 
     public void ShowAttackedUI()
     {
+        SoundManager.instance.PlayDialogueSE();
         this.gameObject.SetActive(true);
         isDialogueVisible = true;
         dialogueText.text = "防衛部隊を選択してください";
@@ -77,6 +86,7 @@ public class DialogueUI : MonoBehaviour
 
     public void ShowBattleOrderUI()
     {
+        SoundManager.instance.PlayDialogueSE();
         this.gameObject.SetActive(true);
         isDialogueVisible = true;
         dialogueText.text = "戦闘を開始します";
@@ -84,6 +94,7 @@ public class DialogueUI : MonoBehaviour
 
     public void HideDialogueUI()
     {
+        SoundManager.instance.PlayClickSE();
         // ダイアログを非表示にする処理
         this.gameObject.SetActive(false);
         isDialogueVisible = false;

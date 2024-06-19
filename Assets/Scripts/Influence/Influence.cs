@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.TextCore.Text;
 
 public class Influence : MonoBehaviour
@@ -125,12 +126,17 @@ public class Influence : MonoBehaviour
     {
         territoryList.Add(territory);
 
-        // 領土に勢力の画像を設定
-        SpriteRenderer territorySpriteRenderer = territory.GetComponent<SpriteRenderer>();
-        if (territorySpriteRenderer != null && influenceImage != null)
+        //領土に勢力の画像を設定
+        Image territoryImage = territory.GetComponent<Image>();
+        if (territoryImage != null && influenceImage != null)
         {
-            territorySpriteRenderer.sprite = influenceImage;
+            territoryImage.sprite = influenceImage;
         }
+        //SpriteRenderer territorySpriteRenderer = territory.GetComponent<SpriteRenderer>();
+        //if (territorySpriteRenderer != null && influenceImage != null)
+        //{
+        //    territorySpriteRenderer.sprite = influenceImage;
+        //}
     }
 
     // Territoryを勢力から除外するメソッド

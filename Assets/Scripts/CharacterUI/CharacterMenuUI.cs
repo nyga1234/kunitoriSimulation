@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 public class CharacterMenuUI : MonoBehaviour
 {
-    [SerializeField] InflueneceManager influeneceManager;
+    //[SerializeField] InflueneceManager influeneceManager;
+    [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
 
     [SerializeField] CharacterMenuCommandUI characterMenuCommandUI;
 
@@ -60,7 +61,7 @@ public class CharacterMenuUI : MonoBehaviour
             }
         }
 
-        influeneceManager.InfluenceCalcSum(influence);
+        territoryUIOnMouse.InfluenceCalcSum(influence);
         charaNameText.text = character.characterModel.name;
         territorySumText.text = "[óÃínêî] " + influence.territorySum.ToString();
         goldSumText.text = "[éëã‡åv]" + influence.goldSum.ToString();
