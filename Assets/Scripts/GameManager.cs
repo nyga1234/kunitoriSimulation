@@ -491,7 +491,6 @@ public class GameManager : MonoBehaviour
         titleFieldUI.ShowChangeLordTurnText();
 
         mapField.SetActive(true);
-        cursor.gameObject.SetActive(false);
         //他キャラクターの領主リストの取得
         List<CharacterController> lordCharacterList = characterList.FindAll(character => character.characterModel.isLord && !character.characterModel.isPlayerCharacter);
 
@@ -560,6 +559,7 @@ public class GameManager : MonoBehaviour
             characterTurnUI.HideCharacterTurnUI();
         }
         mapField.SetActive(false);
+        cursor.gameObject.SetActive(false);
         phase = Phase.PlayerPersonalPhase;
         PhaseCalc();
     }
@@ -578,7 +578,6 @@ public class GameManager : MonoBehaviour
         titleFieldUI.ShowChangePersonalTurnText();
 
         mapField.SetActive(true);
-        cursor.gameObject.SetActive(false);
         List<CharacterController> otherCharacterList = characterList.FindAll(x => !x.characterModel.isPlayerCharacter);
         
         foreach (CharacterController otherCharacter in otherCharacterList)
@@ -650,6 +649,7 @@ public class GameManager : MonoBehaviour
         }
 
         mapField.SetActive(false);
+        cursor.gameObject.SetActive(false);
         phase = Phase.BattlePhase;
         PhaseCalc();
     }
@@ -1220,6 +1220,7 @@ public class GameManager : MonoBehaviour
     public void HideFadeUI()
     {
         mapField.SetActive(false);
+        cursor.gameObject.SetActive(false);
         detailsUI.HideDetailUI();
     }
 
@@ -1272,6 +1273,7 @@ public class GameManager : MonoBehaviour
             {
                 SoundManager.instance.PlayCancelSE();
                 mapField.gameObject.SetActive(false);
+                cursor.gameObject.SetActive(false);
                 influenceOnMapUI.HideInfluenceOnMapUI();
                 ShowLordUI(playerCharacter);
             }
@@ -1299,6 +1301,7 @@ public class GameManager : MonoBehaviour
             {
                 SoundManager.instance.PlayCancelSE();
                 mapField.gameObject.SetActive(false);
+                cursor.gameObject.SetActive(false);
                 influenceOnMapUI.HideInfluenceOnMapUI();
                 ShowPersonalUI(playerCharacter);
             }
@@ -1319,6 +1322,7 @@ public class GameManager : MonoBehaviour
             {
                 SoundManager.instance.PlayCancelSE();
                 mapField.gameObject.SetActive(false);
+                cursor.gameObject.SetActive(false);
                 influenceOnMapUI.HideInfluenceOnMapUI();
                 ShowBattleUI(playerCharacter);
             }

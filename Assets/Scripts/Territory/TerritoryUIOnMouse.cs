@@ -52,6 +52,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
                 territoryManager.territory.influence.AddCharacter(GameManager.instance.playerCharacter);
 
                 mapField.gameObject.SetActive(false);
+                cursor.gameObject.SetActive(false);
                 influenceOnMapUI.HideInfluenceOnMapUI();
 
                 GameManager.instance.ShowPersonalUI(GameManager.instance.playerCharacter);
@@ -72,6 +73,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
             // 勢力情報非表示
             influenceOnMapUI.HideInfluenceOnMapUI();
             mapField.gameObject.SetActive(false);
+            cursor.gameObject.SetActive(false);
 
             int attackSoliderHPSum = 0;
             foreach (SoliderController solider in GameManager.instance.playerCharacter.soliderList)
@@ -102,14 +104,15 @@ public class TerritoryUIOnMouse : MonoBehaviour
                     cursor.gameObject.SetActive(true);
                 }
 
-                if (isSoundPlayed == false)
-                {
-                    if (beforeTerritory != null)
-                    {
-                        SoundManager.instance.PlayMapOnCursorSE();
-                        isSoundPlayed = true;
-                    }
-                }
+                SoundManager.instance.PlayMapOnCursorSE();
+                //if (isSoundPlayed == false)
+                //{
+                //    if (beforeTerritory != null)
+                //    {
+                //        SoundManager.instance.PlayMapOnCursorSE();
+                //        isSoundPlayed = true;
+                //    }
+                //}
                 cursor.SetPosition(transform);//カーソルをマウス位置へ移動
 
                 Territory influenceTerritory = this.GetComponent<Territory>();
@@ -126,26 +129,9 @@ public class TerritoryUIOnMouse : MonoBehaviour
 
                 influenceOnMapUI.ShowInfluenceOnMapUI(influenceTerritory.influence, influenceTerritory);
             }
-
-            if (onPointEnterTerritory == null)
-            {
-                Debug.Log("nullです。");
-            }
-            else
-            {
-                Debug.Log("onPointEnterTerritory前" + onPointEnterTerritory.influence.influenceName);
-            }
             
             onPointEnterTerritory = this.GetComponent<Territory>();
 
-            if (onPointEnterTerritory == null)
-            {
-                Debug.Log("nullです。");
-            }
-            else
-            {
-                Debug.Log("onPointEnterTerritory後" + onPointEnterTerritory.influence.influenceName);
-            }
         }
     }
 
@@ -228,6 +214,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
                                 // 勢力情報を非表示にする
                                 influenceOnMapUI.HideInfluenceOnMapUI();
                                 mapField.gameObject.SetActive(false);
+                                cursor.gameObject.SetActive(false);
 
                                 //侵攻キャラクター選択画面へ
                                 characterIndexMenu.SetActive(true);
@@ -244,31 +231,34 @@ public class TerritoryUIOnMouse : MonoBehaviour
                     }
                 }
             }
+        }
+    }
 
-            if (GameManager.instance.playerCharacter == null)
+    private void Update()
+    {
+        if (GameManager.instance.playerCharacter == null)
+        {
+            return;
+        }
+        else if (GameManager.instance.playerCharacter.influence != GameManager.instance.noneInfluence)
+        {
+            foreach (Territory roopTerritory in GameManager.instance.allTerritoryList)
             {
-                return;
-            }
-            else if (GameManager.instance.playerCharacter.influence != GameManager.instance.noneInfluence)
-            {
-                foreach (Territory roopTerritory in GameManager.instance.allTerritoryList)
+                if (roopTerritory.influence == GameManager.instance.playerCharacter.influence)
                 {
-                    if (roopTerritory.influence == GameManager.instance.playerCharacter.influence)
-                    {
-                        roopTerritory.ShowHomeTerritory(true);
-                    }
-                    else
-                    {
-                        roopTerritory.ShowHomeTerritory(false);
-                    }
+                    roopTerritory.ShowHomeTerritory(true);
                 }
-            }
-            else
-            {
-                foreach (Territory roopTerritory in GameManager.instance.allTerritoryList)
+                else
                 {
                     roopTerritory.ShowHomeTerritory(false);
                 }
+            }
+        }
+        else
+        {
+            foreach (Territory roopTerritory in GameManager.instance.allTerritoryList)
+            {
+                roopTerritory.ShowHomeTerritory(false);
             }
         }
     }
