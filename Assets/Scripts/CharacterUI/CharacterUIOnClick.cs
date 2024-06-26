@@ -11,6 +11,7 @@ public class CharacterUIOnClick : MonoBehaviour
     public BattleManager battleManager;
     //public InflueneceManager influenceManager;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
+    [SerializeField] TerritoryManager territoryManager;
 
     [SerializeField] YesNoUI yesNoUI;
     [SerializeField] DialogueUI dialogueUI;
@@ -48,7 +49,7 @@ public class CharacterUIOnClick : MonoBehaviour
         }
         else
         {
-            characterIndexUI.ShowCharacterIndexUI(territoryUIOnMouse.territory.influence.characterList);
+            characterIndexUI.ShowCharacterIndexUI(territoryManager.territory.influence.characterList);
         }
     }
 
@@ -118,7 +119,7 @@ public class CharacterUIOnClick : MonoBehaviour
             HideCharacterIndex();
             if (clickedCharacter == GameManager.instance.playerCharacter)
             {
-                battleUI.ShowBattleUI(battleManager.attackerCharacter, clickedCharacter, territoryUIOnMouse.territory);
+                battleUI.ShowBattleUI(battleManager.attackerCharacter, clickedCharacter, territoryManager.territory);
                 battleManager.StartBattle(battleManager.attackerCharacter, clickedCharacter);
             }
             else
@@ -128,7 +129,7 @@ public class CharacterUIOnClick : MonoBehaviour
         }
         else
         {
-            characterIndexUI.ShowCharacterIndexUI(territoryUIOnMouse.territory.influence.characterList);
+            characterIndexUI.ShowCharacterIndexUI(territoryManager.territory.influence.characterList);
         }
     }
 
@@ -146,7 +147,7 @@ public class CharacterUIOnClick : MonoBehaviour
 
             if (clickedCharacter == GameManager.instance.playerCharacter)
             {
-                battleUI.ShowBattleUI(clickedCharacter, defenceCharacter, territoryUIOnMouse.territory);
+                battleUI.ShowBattleUI(clickedCharacter, defenceCharacter, territoryManager.territory);
                 battleManager.StartBattle(clickedCharacter, defenceCharacter);
             }
             else
@@ -259,7 +260,7 @@ public class CharacterUIOnClick : MonoBehaviour
                         battleManager.isBattleEnd = false;
 
                         //守備側勢力から戦闘可能なキャラクターをランダムに取得
-                        List<CharacterController> defenceCharacterList = territoryUIOnMouse.influence.characterList.FindAll(c => c.characterModel.isAttackable);
+                        List<CharacterController> defenceCharacterList = territoryManager.influence.characterList.FindAll(c => c.characterModel.isAttackable);
                         System.Random random = new System.Random();
                         defenceCharacter = defenceCharacterList[random.Next(defenceCharacterList.Count)];
 

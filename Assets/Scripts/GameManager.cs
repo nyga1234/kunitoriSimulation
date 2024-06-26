@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] BattleManager battleManager;
     //[SerializeField] InflueneceManager influenceManager;
+    [SerializeField] TerritoryManager territoryManager;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
 
     [SerializeField] CharacterTurnUI characterTurnUI;
@@ -755,8 +756,8 @@ public class GameManager : MonoBehaviour
         {
             randomTerritory = GetRandomTerritory(adjacentTerritory);
         }
-        territoryUIOnMouse.territory = randomTerritory;
-        territoryUIOnMouse.influence = randomTerritory.influence;
+        territoryManager.territory = randomTerritory;
+        territoryManager.influence = randomTerritory.influence;
         Debug.Log("NU‚·‚é—Ì“y‚Í" + randomTerritory.position);
 
         //NUæ‚Ì•”‘à‚ğŠm”F‚·‚é
@@ -764,7 +765,7 @@ public class GameManager : MonoBehaviour
         int soliderHPMax = 0;
         int soliderHPSum = 0;
         
-        foreach (CharacterController chara in territoryUIOnMouse.territory.influence.characterList)
+        foreach (CharacterController chara in territoryManager.territory.influence.characterList)
         {
             soliderHPSum = 0;
             foreach (SoliderController solider in chara.soliderList)
@@ -839,7 +840,7 @@ public class GameManager : MonoBehaviour
         defenceFlag = false;
 
         //NU‚³‚ê‚½—Ì“y‚ªƒvƒŒƒCƒ„[¨—Í@‚©‚Â@ƒvƒŒƒCƒ„[‚ª—Ìå‚Ìê‡
-        if (territoryUIOnMouse.territory.influence == playerCharacter.influence && playerCharacter.characterModel.isLord == true)
+        if (territoryManager.territory.influence == playerCharacter.influence && playerCharacter.characterModel.isLord == true)
         {
             defenceFlag = true;
 
@@ -857,7 +858,7 @@ public class GameManager : MonoBehaviour
 
             TitleFieldUI.instance.titleFieldText.text = "      –h‰q•”‘à‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢";
             characterIndexMenu.SetActive(true);
-            characterIndexUI.ShowCharacterIndexUI(territoryUIOnMouse.territory.influence.characterList);
+            characterIndexUI.ShowCharacterIndexUI(territoryManager.territory.influence.characterList);
             attackedCharacterUI.ShowAttackedCharacterUI(battleManager.attackerCharacter);
             abandonUI.ShowAbandonUI();
             landformInformationUI.ShowLandformInformationUI();
@@ -866,7 +867,7 @@ public class GameManager : MonoBehaviour
         else
         {
             //–h‰q‘¤‚Åí“¬‰Â”\‚ÈƒLƒƒƒ‰ƒNƒ^[‚ª‚¢‚éê‡
-            bool canAttack = territoryUIOnMouse.territory.influence.characterList.Exists(c => c.characterModel.isAttackable);
+            bool canAttack = territoryManager.territory.influence.characterList.Exists(c => c.characterModel.isAttackable);
             if (canAttack)
             {
                 //NU‘¤‚æ‚è‚à‹­‚¢ƒLƒƒƒ‰‚ğ–hŒäƒLƒƒƒ‰‚É‘I‘ğ /@‹­‚¢ƒLƒƒƒ‰‚ª‚¢‚È‚¢ê‡‚Íˆê”Ô‹­‚¢ƒLƒƒƒ‰‚ğ–hŒäƒLƒƒƒ‰‚É‘I‘ğ
@@ -882,7 +883,7 @@ public class GameManager : MonoBehaviour
                     dialogueUI.ShowBattleOrderUI();
                     yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
 
-                    battleUI.ShowBattleUI(playerCharacter, defenderCharacter, territoryUIOnMouse.territory);
+                    battleUI.ShowBattleUI(playerCharacter, defenderCharacter, territoryManager.territory);
                     battleManager.StartBattle(playerCharacter, defenderCharacter);
                 }
                 else if (defenderCharacter == playerCharacter)
@@ -895,7 +896,7 @@ public class GameManager : MonoBehaviour
                     dialogueUI.ShowBattleOrderUI();
                     yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
 
-                    battleUI.ShowBattleUI(attackCharacter, playerCharacter, territoryUIOnMouse.territory);
+                    battleUI.ShowBattleUI(attackCharacter, playerCharacter, territoryManager.territory);
                     battleManager.StartBattle(attackCharacter, playerCharacter);                    
                 }
                 else
@@ -911,8 +912,8 @@ public class GameManager : MonoBehaviour
                     }
                     mapField.SetActive(true);
                     cursor.gameObject.SetActive(true);
-                    cursor.transform.position = territoryUIOnMouse.territory.position;
-                    vsImageUI.SetPosition(territoryUIOnMouse.territory.transform);
+                    cursor.transform.position = territoryManager.territory.position;
+                    vsImageUI.SetPosition(territoryManager.territory.transform);
                     //vsImageUI.transform.position = influenceManager.territory.position;
                     battleDetailUI.ShowBattleDetailUI(attackCharacter, defenderCharacter);
                     StartCoroutine(BlinkCursor(1.0f));
@@ -962,12 +963,12 @@ public class GameManager : MonoBehaviour
     public CharacterController SelectDefenceCharacter(int attackSoliderHPSum)
     {
         Debug.Log("SelectDefenceCharacter");
-        Debug.Log(territoryUIOnMouse.territory.influence.influenceName);
+        Debug.Log(territoryManager.territory.influence.influenceName);
         CharacterController defenderCharacter;
         //–hŒäƒLƒƒƒ‰‚ğæ“¾
         //NU‘¤‚æ‚è‚à‹­‚¢ƒLƒƒƒ‰‚ğæ“¾
-        List<CharacterController> attackableCharacterList = territoryUIOnMouse.territory.influence.characterList.FindAll(character => character.characterModel.isAttackable);
-        foreach (CharacterController chara in territoryUIOnMouse.territory.influence.characterList)
+        List<CharacterController> attackableCharacterList = territoryManager.territory.influence.characterList.FindAll(character => character.characterModel.isAttackable);
+        foreach (CharacterController chara in territoryManager.territory.influence.characterList)
         {
             int soliderHPSum = 0;
             foreach (SoliderController solider in chara.soliderList)
@@ -994,7 +995,7 @@ public class GameManager : MonoBehaviour
         //NU‘¤‚æ‚è‚à‹­‚¢ƒLƒƒƒ‰‚ª‚¢‚È‚¢ê‡‚Íˆê”Ô‹­‚¢ƒLƒƒƒ‰‚ğoŒ‚‚³‚¹‚é
         else
         {
-            attackableCharacterList = territoryUIOnMouse.territory.influence.characterList.FindAll(character => character.characterModel.isAttackable);
+            attackableCharacterList = territoryManager.territory.influence.characterList.FindAll(character => character.characterModel.isAttackable);
             //ˆê”Ô‹­‚¢ƒLƒƒƒ‰‚ğ‰Šú‰»
             System.Random random4 = new System.Random();
             CharacterController randomDefenceCharacter = attackableCharacterList[random4.Next(attackableCharacterList.Count)];
@@ -1026,7 +1027,7 @@ public class GameManager : MonoBehaviour
     {
         mapField.SetActive(true);
         cursor.gameObject.SetActive(true);
-        cursor.transform.position = territoryUIOnMouse.territory.position;
+        cursor.transform.position = territoryManager.territory.position;
         StartCoroutine(BlinkCursor(2));
         characterDetailUI.ShowCharacterDetailUI(attackCharacter);
         yield return new WaitForSeconds(2);

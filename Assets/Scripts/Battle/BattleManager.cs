@@ -12,6 +12,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] Cursor cursor;
     [SerializeField] VSImageUI vsImageUI;
     //[SerializeField] InflueneceManager influeneceManager;
+    [SerializeField] TerritoryManager territoryManager;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] Transform AttackerSoliderField, DefenderSoliderField;
     [SerializeField] SoliderController solidefPrefab;
@@ -190,7 +191,7 @@ public class BattleManager : MonoBehaviour
             foreach (SoliderController attackerSolider in attackChara.soliderList)
             {
                 SoliderController defenderSolider = GetRandomSolider(defenceChara.soliderList);
-                attackerSolider.soliderModel.Attack(attackChara, defenceChara, defenderSolider, territoryUIOnMouse.territory);
+                attackerSolider.soliderModel.Attack(attackChara, defenceChara, defenderSolider, territoryManager.territory);
                 //defenderSolider.soliderModel.CounterAttack(attackChara, defenceChara, attackerSolider, influeneceManager.territory);
             }
         }
@@ -265,7 +266,7 @@ public class BattleManager : MonoBehaviour
         {
             if (defenceCharacter != GameManager.instance.playerCharacter)
             {
-                switch (territoryUIOnMouse.territory.defenceTerritoryType)
+                switch (territoryManager.territory.defenceTerritoryType)
                 {
                     //»”™‚Ìê‡A‚¢‚¸‚ê‚©•ºm‚ÌHP‚ª20–¢–‚É‚È‚Á‚½‚ç‘Ş‹p‚³‚¹‚é
                     case Territory.DefenceTerritoryType.desert:
@@ -321,7 +322,7 @@ public class BattleManager : MonoBehaviour
         {
             if (attackCharacter != GameManager.instance.playerCharacter)
             {
-                switch (territoryUIOnMouse.territory.attackTerritoryType)
+                switch (territoryManager.territory.attackTerritoryType)
                 {
                     //»”™‚Ìê‡A‚¢‚¸‚ê‚©•ºm‚ÌHP‚ª20–¢–‚É‚È‚Á‚½‚ç‘Ş‹p‚³‚¹‚é
                     case Territory.AttackTerritoryType.desert:
@@ -425,7 +426,7 @@ public class BattleManager : MonoBehaviour
         mapField.SetActive(true);
         vsImageUI.gameObject.SetActive(false);
         cursor.gameObject.SetActive(true);
-        cursor.transform.position = territoryUIOnMouse.territory.position;
+        cursor.transform.position = territoryManager.territory.position;
         battleDetailUI.ShowBattleDetailUI(attackerCharacter, defenderCharacter);
         if (attackerRetreatFlag == true)
         {
@@ -434,7 +435,7 @@ public class BattleManager : MonoBehaviour
         else
         {
             TitleFieldUI.instance.titleFieldText.text = "      NU‘¤‚ÌŸ—˜‚Å‚·";
-            StartCoroutine(GameManager.instance.BlinkTerritory(0.5f, attackerCharacter, defenderCharacter, territoryUIOnMouse.territory));
+            StartCoroutine(GameManager.instance.BlinkTerritory(0.5f, attackerCharacter, defenderCharacter, territoryManager.territory));
         }
         yield return new WaitForSeconds(battleAfterWaitTime);
 
@@ -547,8 +548,8 @@ public class BattleManager : MonoBehaviour
         TitleFieldUI.instance.titleFieldText.text = "      –¡•û VS “G@í“¬I";
         mapField.SetActive(true);
         cursor.gameObject.SetActive(true);
-        cursor.transform.position = territoryUIOnMouse.territory.position;
-        vsImageUI.transform.position = territoryUIOnMouse.territory.position;
+        cursor.transform.position = territoryManager.territory.position;
+        vsImageUI.transform.position = territoryManager.territory.position;
         battleDetailUI.ShowBattleDetailUI(attackerCharacter, defenderCharacter);
         StartCoroutine(GameManager.instance.BlinkCursor(1.0f));
         yield return new WaitForSeconds(1.0f);
@@ -593,8 +594,8 @@ public class BattleManager : MonoBehaviour
         TitleFieldUI.instance.titleFieldText.text = "      “G VS –¡•û@í“¬I";
         mapField.SetActive(true);
         cursor.gameObject.SetActive(true);
-        cursor.transform.position = territoryUIOnMouse.territory.position;
-        vsImageUI.transform.position = territoryUIOnMouse.territory.position;
+        cursor.transform.position = territoryManager.territory.position;
+        vsImageUI.transform.position = territoryManager.territory.position;
         battleDetailUI.ShowBattleDetailUI(attackCharacter, defenceCharacter);
         StartCoroutine(GameManager.instance.BlinkCursor(1.0f));
         yield return new WaitForSeconds(1.0f);
@@ -631,7 +632,7 @@ public class BattleManager : MonoBehaviour
         mapField.SetActive(true);
 
         TitleFieldUI.instance.titleFieldText.text = "í“¬‚ğ•úŠü‚µ‚Ü‚µ‚½";
-        StartCoroutine(GameManager.instance.BlinkTerritory(0.5f, attackerCharacter, GameManager.instance.playerCharacter, territoryUIOnMouse.territory));
+        StartCoroutine(GameManager.instance.BlinkTerritory(0.5f, attackerCharacter, GameManager.instance.playerCharacter, territoryManager.territory));
         yield return new WaitForSeconds(battleAfterWaitTime);
 
         attackerCharacter.characterModel.isAttackable = false;
