@@ -29,62 +29,61 @@ public class TerritoryGenerator : MonoBehaviour
     {
         List<Territory> territoryList = new List<Territory>();
 
-        //Vector2 offset = new Vector2((float)(WIDTH / 2), (float)(HEIGHT / 2 - 1));
-        Vector2 screenOffset = new Vector2(screenWidth / 2, screenHeight / 2);
+        //Vector2 screenOffset = new Vector2(screenWidth / 2, screenHeight / 2);
         Vector2 spaceOffset = new Vector2(WIDTH / 2 * territorySpace, HEIGHT / 2 * territorySpace);
-        Vector2 offset = new Vector2(0, 90);
+        //Vector2 offset = new Vector2(0, 90);
+
         for (int x = 0; x < WIDTH; x++)
         {
             for (int y = 0; y < HEIGHT; y++)
             {
-                //Vector2 pos = new Vector2(x, y) - offset;
-                Vector2  pos = new Vector2(x * territorySpace, y * territorySpace) + screenOffset - spaceOffset + offset;
+                //Vector2  pos = new Vector2(x * territorySpace, y * territorySpace) + screenOffset - spaceOffset + offset;
+                Vector2 pos = new Vector2(x * territorySpace, y * territorySpace) - spaceOffset;
+                Territory newTerritory = Instantiate(plainTerritorPrefab, parent);
+                RectTransform rectTransform = newTerritory.GetComponent<RectTransform>();
+                rectTransform.anchoredPosition = pos;
+                newTerritory.gameObject.SetActive(true);
+
                 if (x <= 2 && y == 2 || x == 0 && y == 1)
                 {
-                    greenTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, parent);
-                    greenTerritory.gameObject.SetActive(true);
-                    SetupTerritory(greenTerritory, pos, influenceList, "ヴィクター");
-                    territoryList.Add(greenTerritory);
+                    SetupTerritory(newTerritory, pos, influenceList, "ヴィクター");
+                    territoryList.Add(newTerritory);
                     GameManager.instance.territoryCouont++;
+                    //greenTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, parent);
+                    //greenTerritory.gameObject.SetActive(true);
+                    //SetupTerritory(greenTerritory, pos, influenceList, "ヴィクター");
+                    //territoryList.Add(greenTerritory);
+                    //GameManager.instance.territoryCouont++;
                 }
                 else if (x <= 2 && y == 0 || x == 1 && y == 1)
                 {
-                    redTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, parent);
-                    redTerritory.gameObject.SetActive(true);
-                    SetupTerritory(redTerritory, pos, influenceList, "アリシア");
-                    territoryList.Add(redTerritory);
+                    SetupTerritory(newTerritory, pos, influenceList, "アリシア");
+                    territoryList.Add(newTerritory);
                     GameManager.instance.territoryCouont++;
+
                 }
                 else if(x >= 4 && y == 2 || x == 5 && y == 1)
                 {
-                    blueTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, parent);
-                    blueTerritory.gameObject.SetActive(true);
-                    SetupTerritory(blueTerritory, pos, influenceList, "セルギウス");
-                    territoryList.Add(blueTerritory);
+                    SetupTerritory(newTerritory, pos, influenceList, "セルギウス");
+                    territoryList.Add(newTerritory);
                     GameManager.instance.territoryCouont++;
                 }
                 else if (x == 2 && y == 1 || x == 3 && y == 0 || x == 3 && y == 2 || x == 4 && y == 1)
                 {
-                    yellowTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, parent);
-                    yellowTerritory.gameObject.SetActive(true);
-                    SetupTerritory(yellowTerritory, pos, influenceList, "ローレンティウス");
-                    territoryList.Add(yellowTerritory);
+                    SetupTerritory(newTerritory, pos, influenceList, "ローレンティウス");
+                    territoryList.Add(newTerritory);
                     GameManager.instance.territoryCouont++;
                 }
                 else if (x >= 4 && y == 0 || x == 6 && y == 1)
                 {
-                    blackTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, parent);
-                    blackTerritory.gameObject.SetActive(true);
-                    SetupTerritory(blackTerritory, pos, influenceList, "フェオドーラ");
-                    territoryList.Add(blackTerritory);
+                    SetupTerritory(newTerritory, pos, influenceList, "フェオドーラ");
+                    territoryList.Add(newTerritory);
                     GameManager.instance.territoryCouont++;
                 }
                 else
                 {
-                    noneTerritory = Instantiate(plainTerritorPrefab, pos, Quaternion.identity, parent);
-                    noneTerritory.gameObject.SetActive(true);
-                    SetupTerritory(noneTerritory, pos, influenceList, "NoneInfluence");
-                    territoryList.Add(noneTerritory);
+                    SetupTerritory(newTerritory, pos, influenceList, "NoneInfluence");
+                    territoryList.Add(newTerritory);
                 }
             }
             //parent.gameObject.SetActive(false);

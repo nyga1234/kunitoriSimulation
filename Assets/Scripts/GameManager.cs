@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 using Unity.VisualScripting;
 using System.Threading.Tasks;
 using UnityEngine.SceneManagement;
-using static UnityEditor.PlayerSettings;
+//using static UnityEditor.PlayerSettings;
 using UnityEngine.UI;
 //using UnityEngine.WSA;
 
@@ -913,7 +913,7 @@ public class GameManager : MonoBehaviour
                     mapField.SetActive(true);
                     cursor.gameObject.SetActive(true);
                     cursor.transform.position = territoryManager.territory.position;
-                    vsImageUI.SetPosition(territoryManager.territory.transform);
+                    vsImageUI.SetPosition(territoryManager.territory.transform as RectTransform);
                     //vsImageUI.transform.position = influenceManager.territory.position;
                     battleDetailUI.ShowBattleDetailUI(attackCharacter, defenderCharacter);
                     StartCoroutine(BlinkCursor(1.0f));

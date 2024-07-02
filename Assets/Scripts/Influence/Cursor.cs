@@ -9,5 +9,9 @@ public class Cursor : MonoBehaviour
     public void SetPosition(Transform target)
     {
         transform.position = target.position;
+        //// アンカーポジションを取得
+        //Vector2 anchoredPosition = target.anchoredPosition;
+        //// カーソルの位置をアンカーポジションに設定
+        //(transform as RectTransform).anchoredPosition = anchoredPosition;
     }
 }

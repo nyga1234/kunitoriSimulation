@@ -23,6 +23,7 @@ public class CommandOnClick : MonoBehaviour
     [SerializeField] GameObject mapField;
     [SerializeField] GameObject backToCharaMenuButton;
     [SerializeField] GameObject backToPersonalMenuButton;
+    [SerializeField] GameObject functionUI;
 
     public GameManager gameManager;
 
@@ -368,6 +369,14 @@ public class CommandOnClick : MonoBehaviour
                 TitleFieldUI.instance.titleFieldText.text = "      Ž‘‹à‚ª‘«‚è‚Ü‚¹‚ñ";
                 return;
             }
+        }
+    }
+
+    public void OnPointerClickFunction()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            //functionUI.SetActive(true);
         }
     }
 
