@@ -426,7 +426,12 @@ public class BattleManager : MonoBehaviour
         mapField.SetActive(true);
         vsImageUI.gameObject.SetActive(false);
         cursor.gameObject.SetActive(true);
-        cursor.transform.position = territoryManager.territory.position;
+
+        // カーソルの位置を設定
+        RectTransform territoryRectTransform = territoryManager.territory.GetComponent<RectTransform>();
+        cursor.SetPosition(territoryRectTransform);
+
+        //cursor.transform.position = territoryManager.territory.position;
         battleDetailUI.ShowBattleDetailUI(attackerCharacter, defenderCharacter);
         if (attackerRetreatFlag == true)
         {
@@ -548,8 +553,15 @@ public class BattleManager : MonoBehaviour
         TitleFieldUI.instance.titleFieldText.text = "      味方 VS 敵　戦闘！";
         mapField.SetActive(true);
         cursor.gameObject.SetActive(true);
-        cursor.transform.position = territoryManager.territory.position;
-        vsImageUI.transform.position = territoryManager.territory.position;
+
+        // カーソルの位置を設定
+        RectTransform territoryRectTransform = territoryManager.territory.GetComponent<RectTransform>();
+        cursor.SetPosition(territoryRectTransform);
+        //cursor.transform.position = territoryManager.territory.position;
+
+        vsImageUI.SetPosition(territoryRectTransform);
+        //vsImageUI.transform.position = territoryManager.territory.position;
+
         battleDetailUI.ShowBattleDetailUI(attackerCharacter, defenderCharacter);
         StartCoroutine(GameManager.instance.BlinkCursor(1.0f));
         yield return new WaitForSeconds(1.0f);
@@ -594,8 +606,15 @@ public class BattleManager : MonoBehaviour
         TitleFieldUI.instance.titleFieldText.text = "      敵 VS 味方　戦闘！";
         mapField.SetActive(true);
         cursor.gameObject.SetActive(true);
-        cursor.transform.position = territoryManager.territory.position;
-        vsImageUI.transform.position = territoryManager.territory.position;
+
+        // カーソルの位置を設定
+        RectTransform territoryRectTransform = territoryManager.territory.GetComponent<RectTransform>();
+        cursor.SetPosition(territoryRectTransform);
+        //cursor.transform.position = territoryManager.territory.position;
+
+        vsImageUI.SetPosition(territoryRectTransform);
+        //vsImageUI.transform.position = territoryManager.territory.position;
+
         battleDetailUI.ShowBattleDetailUI(attackCharacter, defenceCharacter);
         StartCoroutine(GameManager.instance.BlinkCursor(1.0f));
         yield return new WaitForSeconds(1.0f);

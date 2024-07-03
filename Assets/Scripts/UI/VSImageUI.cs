@@ -6,8 +6,6 @@ public class VSImageUI : MonoBehaviour
 {
     public void SetPosition(RectTransform target)
     {
-        //SoundManager.instance.PlayBattleSE();
-        
         //transform.position = target.position;
 
         // アンカーポジションを取得

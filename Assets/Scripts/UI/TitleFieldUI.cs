@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,8 +16,8 @@ public class TitleFieldUI : MonoBehaviour
         }
     }
 
-    public Text titleFieldText;
-    public Text titleFieldSubText;
+    public TextMeshProUGUI titleFieldText;
+    public TextMeshProUGUI titleFieldSubText;
 
     public void ShowCharacterChoiceText()
     {

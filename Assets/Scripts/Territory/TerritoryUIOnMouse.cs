@@ -113,8 +113,8 @@ public class TerritoryUIOnMouse : MonoBehaviour
                 //        isSoundPlayed = true;
                 //    }
                 //}
-                //cursor.SetPosition(transform as RectTransform); // カーソルをアンカーポジションに移動
-                cursor.SetPosition(transform);
+                cursor.SetPosition(transform as RectTransform); // カーソルをアンカーポジションに移動
+                //cursor.SetPosition(transform);
 
                 Territory influenceTerritory = this.GetComponent<Territory>();
 

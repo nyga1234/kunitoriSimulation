@@ -53,6 +53,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject characterIndexMenu;
     [SerializeField] GameObject characterSearchMenu;
 
+    [SerializeField] private Transform Character;
+    [SerializeField] private Transform Solider;
+    [SerializeField] private Transform Influence;
+
     public List<CharacterController> characterList;
     public CharacterController playerCharacter;
 
@@ -324,7 +328,7 @@ public class GameManager : MonoBehaviour
     public CharacterController CreateCharacter(int characterId)
     {
         // キャラクターの生成
-        CharacterController newCharacter = Instantiate(characterPrefab);
+        CharacterController newCharacter = Instantiate(characterPrefab, Character);
         newCharacter.gameObject.SetActive(false);
         newCharacter.Init(characterId);
         //newCharacter.characterModel.rank = rank;
@@ -338,6 +342,7 @@ public class GameManager : MonoBehaviour
         Influence newInfluence = new GameObject(character.characterModel.name).AddComponent<Influence>();
         newInfluence.Init(character.characterModel.name, influenceImage);
         influenceList.Add(newInfluence);
+        newInfluence.transform.SetParent(Influence, false);
         return newInfluence;
     }
 
@@ -349,7 +354,7 @@ public class GameManager : MonoBehaviour
         // 対応する兵士IDで兵士を初期化してリストに追加
         foreach (int soldierID in soldierIDList)
         {
-            SoliderController soldier = Instantiate(soliderPrefab);
+            SoliderController soldier = Instantiate(soliderPrefab, Solider);
             soldier.Init(soldierID);
             soldier.gameObject.SetActive(false);
             characterSoldierList.Add(soldier);
@@ -912,9 +917,15 @@ public class GameManager : MonoBehaviour
                     }
                     mapField.SetActive(true);
                     cursor.gameObject.SetActive(true);
-                    cursor.transform.position = territoryManager.territory.position;
-                    vsImageUI.SetPosition(territoryManager.territory.transform as RectTransform);
+
+                    // カーソルの位置を設定
+                    RectTransform territoryRectTransform = territoryManager.territory.GetComponent<RectTransform>();
+                    cursor.SetPosition(territoryRectTransform);
+                    //cursor.transform.position = territoryManager.territory.position;
+
+                    vsImageUI.SetPosition(territoryRectTransform);
                     //vsImageUI.transform.position = influenceManager.territory.position;
+
                     battleDetailUI.ShowBattleDetailUI(attackCharacter, defenderCharacter);
                     StartCoroutine(BlinkCursor(1.0f));
                     yield return new WaitForSeconds(1.0f);
@@ -1027,7 +1038,12 @@ public class GameManager : MonoBehaviour
     {
         mapField.SetActive(true);
         cursor.gameObject.SetActive(true);
-        cursor.transform.position = territoryManager.territory.position;
+
+        // カーソルの位置を設定
+        RectTransform territoryRectTransform = territoryManager.territory.GetComponent<RectTransform>();
+        cursor.SetPosition(territoryRectTransform);
+
+        //cursor.transform.position = territoryManager.territory.position;
         StartCoroutine(BlinkCursor(2));
         characterDetailUI.ShowCharacterDetailUI(attackCharacter);
         yield return new WaitForSeconds(2);
