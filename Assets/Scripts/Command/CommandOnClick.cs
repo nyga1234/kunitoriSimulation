@@ -376,7 +376,7 @@ public class CommandOnClick : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            //functionUI.SetActive(true);
+            functionUI.SetActive(true);
         }
     }
 

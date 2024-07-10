@@ -1,19 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-//using UnityEditor.UIElements;
 using UnityEngine;
-using System;
-using UnityEngine.TextCore.Text;
-//using UnityEditor.Build.Reporting;
-using System.Runtime.CompilerServices;
 using System.Linq;
 using Random = UnityEngine.Random;
-using Unity.VisualScripting;
-using System.Threading.Tasks;
-using UnityEngine.SceneManagement;
-//using static UnityEditor.PlayerSettings;
 using UnityEngine.UI;
-//using UnityEngine.WSA;
 
 public class GameManager : MonoBehaviour
 {
@@ -60,19 +50,10 @@ public class GameManager : MonoBehaviour
     public List<CharacterController> characterList;
     public CharacterController playerCharacter;
 
-    // キャラクターごとに異なる兵士リストを持つための辞書を作成
-    //private Dictionary<CharacterController, List<SoliderController>> characterSoliderDict = new Dictionary<CharacterController, List<SoliderController>>();
-
     public List<Influence> influenceList;
     public List<Territory> allTerritoryList;
 
-    //public Influence greenInfluence;
-    //public Influence blueInfluence;
-    //public Influence redInfluence;
-    //public Influence yellowInfluence;
     public Influence noneInfluence;
-
-    //private List<CharacterController> noneInfluenceCharacters;
 
     public CharacterController battleTurnCharacter;
     private CharacterController defenceChara;
@@ -126,11 +107,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         StartGame();
-        //Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2, 0f);
-        //Vector3 worldCenter = Camera.main.ScreenToWorldPoint(screenCenter);
-        //worldCenter.z = 0f;  // 2Dゲームの場合はZ軸を0にする
-
-        //Instantiate(plainTerritorPrefab);
     }
 
     private void Update()
@@ -1351,6 +1327,31 @@ public class GameManager : MonoBehaviour
 
                 mapField.gameObject.SetActive(true);
             }
+        }
+    }
+
+    public void SaveGame()
+    {
+        GameState gameState = new GameState
+        {
+            turnCount = this.turnCount,
+            phase = this.phase,
+            step = this.step
+        };
+        SaveLoadManager.SaveGame(gameState);
+    }
+
+    public void LoadGame()
+    {
+        GameState gameState = SaveLoadManager.LoadGame();
+        if (gameState != null)
+        {
+            this.turnCount = gameState.turnCount;
+            this.phase = gameState.phase;
+            this.step = gameState.step;
+
+            // ゲームの状態を更新
+            PhaseCalc();
         }
     }
 }
