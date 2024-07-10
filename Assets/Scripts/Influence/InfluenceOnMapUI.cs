@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,13 +14,13 @@ public class InfluenceOnMapUI : MonoBehaviour
     [SerializeField] Image lordImage;
     [SerializeField] Image attackTerritoryTypeImage;
     [SerializeField] Image defenceTerritoryTypeImage;
-    [SerializeField] Text lordNameText;
-    [SerializeField] Text territorySumText;
-    [SerializeField] Text goldSumText;
-    [SerializeField] Text characterSumText;
-    [SerializeField] Text soliderSumText;
-    [SerializeField] Text forceSumText;
-    [SerializeField] Text allianceText;
+    [SerializeField] TextMeshProUGUI lordNameText;
+    [SerializeField] TextMeshProUGUI territorySumText;
+    [SerializeField] TextMeshProUGUI goldSumText;
+    [SerializeField] TextMeshProUGUI characterSumText;
+    [SerializeField] TextMeshProUGUI soliderSumText;
+    [SerializeField] TextMeshProUGUI forceSumText;
+    [SerializeField] TextMeshProUGUI allianceText;
 
     public void ShowInfluenceOnMapUI(Influence influence, Territory territory)
     {

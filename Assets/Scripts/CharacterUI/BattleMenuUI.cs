@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,7 @@ public class BattleMenuUI : MonoBehaviour
 
     [SerializeField] BattleMenuCommandUI battleMenuCommandUI;
 
-    [SerializeField] Text moneyText;
+    [SerializeField] TextMeshProUGUI moneyText;
 
     [SerializeField] Image lordImage;
 
@@ -24,12 +25,12 @@ public class BattleMenuUI : MonoBehaviour
     [SerializeField] Image character5Image;
     [SerializeField] Image character6Image;
 
-    [SerializeField] Text rankText;
-    [SerializeField] Text charaNameText;
-    [SerializeField] Text territorySumText;
-    [SerializeField] Text goldSumText;
-    [SerializeField] Text forceSumText;
-    [SerializeField] Text soliderSumText;
+    [SerializeField] TextMeshProUGUI rankText;
+    [SerializeField] TextMeshProUGUI charaNameText;
+    [SerializeField] TextMeshProUGUI territorySumText;
+    [SerializeField] TextMeshProUGUI goldSumText;
+    [SerializeField] TextMeshProUGUI forceSumText;
+    [SerializeField] TextMeshProUGUI soliderSumText;
 
     public void ShowBattleMenuUI(CharacterController character, Influence influence)
     {

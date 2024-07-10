@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
@@ -8,7 +9,7 @@ public class SearchCommandUI : MonoBehaviour
 {
     private Color originalUIColor; // Œ³‚Ì”wŒiF‚ğ•Û‚·‚é•Ï”
 
-    [SerializeField] Text searchText;
+    [SerializeField] TextMeshProUGUI searchText;
     public GameManager gameManager;
 
     void Start()

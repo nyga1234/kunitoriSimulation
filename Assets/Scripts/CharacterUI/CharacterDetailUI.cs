@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CharacterDetailUI : MonoBehaviour
 {
     [SerializeField] Image characterIcon;
-    [SerializeField] Text CharacterNameText;
-    [SerializeField] Text CharacterForceText;
-    [SerializeField] Text CharacterInteliText;
-    [SerializeField] Text CharacterTactText;
-    [SerializeField] Text CharacterFameText;
-    [SerializeField] Text CharacterAmbitionText;
-    [SerializeField] Text CharacterLoyaltyText;
+    [SerializeField] TextMeshProUGUI CharacterNameText;
+    [SerializeField] TextMeshProUGUI CharacterForceText;
+    [SerializeField] TextMeshProUGUI CharacterInteliText;
+    [SerializeField] TextMeshProUGUI CharacterTactText;
+    [SerializeField] TextMeshProUGUI CharacterFameText;
+    [SerializeField] TextMeshProUGUI CharacterAmbitionText;
+    [SerializeField] TextMeshProUGUI CharacterLoyaltyText;
 
     [SerializeField] Transform SoliderListField;
     [SerializeField] SoliderController imageSolidefPrefab;

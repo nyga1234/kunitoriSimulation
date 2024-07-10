@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 public class BattleUI : MonoBehaviour
 {
-    [SerializeField] Text attackerMilitaryText;
-    [SerializeField] Text defenderMilitaryText;
+    [SerializeField] TextMeshProUGUI attackerMilitaryText;
+    [SerializeField] TextMeshProUGUI defenderMilitaryText;
 
     [SerializeField] Image attackerIcon;
     [SerializeField] Image defenderIcon;
@@ -17,15 +18,15 @@ public class BattleUI : MonoBehaviour
     [SerializeField] GameObject AttackButton;
     [SerializeField] GameObject RetreatButton;
 
-    [SerializeField] Text attackerRankText;
-    [SerializeField] Text attackerNameText;
-    [SerializeField] Text attackerForceText;
-    [SerializeField] Text attackerInteliText;
+    [SerializeField] TextMeshProUGUI attackerRankText;
+    [SerializeField] TextMeshProUGUI attackerNameText;
+    [SerializeField] TextMeshProUGUI attackerForceText;
+    [SerializeField] TextMeshProUGUI attackerInteliText;
 
-    [SerializeField] Text defenderRankText;
-    [SerializeField] Text defenderNameText;
-    [SerializeField] Text defenderForceText;
-    [SerializeField] Text defenderInteliText;
+    [SerializeField] TextMeshProUGUI defenderRankText;
+    [SerializeField] TextMeshProUGUI defenderNameText;
+    [SerializeField] TextMeshProUGUI defenderForceText;
+    [SerializeField] TextMeshProUGUI defenderInteliText;
 
     Vector3 attackButtonPosition;
     Vector3 retreatButtonPosition;

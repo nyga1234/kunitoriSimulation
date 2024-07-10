@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BanishmentCommandUI : MonoBehaviour
 {
     private Color originalUIColor; // Œ³‚Ì”wŒiF‚ğ•Û‚·‚é•Ï”
-    [SerializeField] Text banishmentText;
+    [SerializeField] TextMeshProUGUI banishmentText;
 
     public GameManager gameManager;
 

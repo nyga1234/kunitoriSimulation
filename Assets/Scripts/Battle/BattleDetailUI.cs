@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
@@ -12,10 +13,10 @@ public class BattleDetailUI : MonoBehaviour
 
     [SerializeField] Image attackerCharaIcon;
     [SerializeField] Image defenderCharaIcon;
-    [SerializeField] Text attackerCharaInfoText;
-    [SerializeField] Text defenderCharaInfoText;
-    [SerializeField] Text attackerForceText;
-    [SerializeField] Text defenderForceText;
+    [SerializeField] TextMeshProUGUI attackerCharaInfoText;
+    [SerializeField] TextMeshProUGUI defenderCharaInfoText;
+    [SerializeField] TextMeshProUGUI attackerForceText;
+    [SerializeField] TextMeshProUGUI defenderForceText;
 
     [SerializeField] Image attackTerritoryTypeImage;
     [SerializeField] Image defenceTerritoryTypeImage;

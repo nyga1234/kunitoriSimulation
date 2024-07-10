@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AttackedCharacterUI : MonoBehaviour
 {
-    [SerializeField] Text CharacterNameText;//–¼‘O
-    [SerializeField] Text CharacterForceText;//í“¬
-    [SerializeField] Text CharacterInteliText;//’q–d
-    [SerializeField] Text CharacterTactText;//è˜r
-    [SerializeField] Text CharacterRankText;//g•ª
-    [SerializeField] Text CharacterFameText;//–¼º
-    [SerializeField] Text CharacterAmbitionText;//–ìS
-    [SerializeField] Text CharacterLoyaltyText;//’‰½
-    [SerializeField] Text CharacterSalaryText;//‹‹—¿%
+    [SerializeField] TextMeshProUGUI CharacterNameText;//–¼‘O
+    [SerializeField] TextMeshProUGUI CharacterForceText;//í“¬
+    [SerializeField] TextMeshProUGUI CharacterInteliText;//’q–d
+    [SerializeField] TextMeshProUGUI CharacterTactText;//è˜r
+    [SerializeField] TextMeshProUGUI CharacterRankText;//g•ª
+    [SerializeField] TextMeshProUGUI CharacterFameText;//–¼º
+    [SerializeField] TextMeshProUGUI CharacterAmbitionText;//–ìS
+    [SerializeField] TextMeshProUGUI CharacterLoyaltyText;//’‰½
+    [SerializeField] TextMeshProUGUI CharacterSalaryText;//‹‹—¿%
 
     private Color originalColor; // Œ³‚Ì”wŒiF‚ğ•Û‚·‚é•Ï”
 

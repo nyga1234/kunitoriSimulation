@@ -1,13 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class DialogueUI : MonoBehaviour
 {
-    [SerializeField] Text dialogueText;
+    [SerializeField] TextMeshProUGUI dialogueText;
 
     private bool isDialogueVisible = false;
 

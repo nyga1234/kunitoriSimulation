@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class CharacterTurnUI : MonoBehaviour
 {
     [SerializeField] Image characterIcon;
-    [SerializeField] Text charaRankText;
-    [SerializeField] Text charaNameText;
+    [SerializeField] TextMeshProUGUI charaRankText;
+    [SerializeField] TextMeshProUGUI charaNameText;
 
     public void ShowCharacterTurnUI(CharacterController character)
     {

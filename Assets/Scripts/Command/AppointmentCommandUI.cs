@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class AppointmentCommandUI : MonoBehaviour
 {
     private Color originalColor; // Œ³‚Ì”wŒiF‚ğ•Û‚·‚é•Ï”
-    [SerializeField] Text appointmentText;
+    [SerializeField] TextMeshProUGUI appointmentText;
     public GameManager gameManager;
 
     void Start()

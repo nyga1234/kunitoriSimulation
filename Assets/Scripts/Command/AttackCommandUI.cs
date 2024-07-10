@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,7 @@ public class AttackCommandUI : MonoBehaviour
 {
     private Color originalUIColor; // Œ³‚Ì”wŒiF‚ğ•Û‚·‚é•Ï”
 
-    [SerializeField] Text attackText;
+    [SerializeField] TextMeshProUGUI attackText;
     public GameManager gameManager;
 
     void Start()

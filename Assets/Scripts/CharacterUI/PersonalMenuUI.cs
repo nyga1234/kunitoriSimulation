@@ -1,31 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class PersonalMenuUI : MonoBehaviour
 {
-    [SerializeField] Text moneyText;
+    [SerializeField] TextMeshProUGUI moneyText;
 
     [SerializeField] Image characterImage;
 
-    [SerializeField] Text rankText;
-    [SerializeField] Text characterNameText;
+    [SerializeField] TextMeshProUGUI rankText;
+    [SerializeField] TextMeshProUGUI characterNameText;
 
-    [SerializeField] Text goldText;
-    [SerializeField] Text forceText;
-    [SerializeField] Text inteliText;
-    [SerializeField] Text tactText;
-    [SerializeField] Text fameText;
-    [SerializeField] Text ambitionText;
-    [SerializeField] Text loyalityText;
+    [SerializeField] TextMeshProUGUI goldText;
+    [SerializeField] TextMeshProUGUI forceText;
+    [SerializeField] TextMeshProUGUI inteliText;
+    [SerializeField] TextMeshProUGUI tactText;
+    [SerializeField] TextMeshProUGUI fameText;
+    [SerializeField] TextMeshProUGUI ambitionText;
+    [SerializeField] TextMeshProUGUI loyalityText;
 
-    [SerializeField] Text recruitText;
-    [SerializeField] Text trainingText;
-    [SerializeField] Text enterText;
-    [SerializeField] Text vagabondText;
-    [SerializeField] Text rebellionText;
+    [SerializeField] TextMeshProUGUI recruitText;
+    [SerializeField] TextMeshProUGUI trainingText;
+    [SerializeField] TextMeshProUGUI enterText;
+    [SerializeField] TextMeshProUGUI vagabondText;
+    [SerializeField] TextMeshProUGUI rebellionText;
 
     [SerializeField] Transform SoliderListField;
     [SerializeField] SoliderController personalSolidefPrefab;

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,7 @@ public class YesNoUI : MonoBehaviour
     [SerializeField] InfluenceOnMapUI influenceOnMapUI;
     [SerializeField] DialogueUI dialogueUI;
 
-    [SerializeField] Text YesNoText;
+    [SerializeField] TextMeshProUGUI YesNoText;
 
     private bool Yes = false;
     private bool isYesNoVisible = false;

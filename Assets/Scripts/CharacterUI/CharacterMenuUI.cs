@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,9 +12,9 @@ public class CharacterMenuUI : MonoBehaviour
 
     [SerializeField] CharacterMenuCommandUI characterMenuCommandUI;
 
-    [SerializeField] Text moneyText;
+    [SerializeField] TextMeshProUGUI moneyText;
 
-    [SerializeField] Text rankText;
+    [SerializeField] TextMeshProUGUI rankText;
 
     [SerializeField] Image lordImage;
 
@@ -26,11 +27,11 @@ public class CharacterMenuUI : MonoBehaviour
     [SerializeField] Image character5Image;
     [SerializeField] Image character6Image;
 
-    [SerializeField] Text charaNameText;
-    [SerializeField] Text territorySumText;
-    [SerializeField] Text goldSumText;
-    [SerializeField] Text forceSumText;
-    [SerializeField] Text soliderSumText;
+    [SerializeField] TextMeshProUGUI charaNameText;
+    [SerializeField] TextMeshProUGUI territorySumText;
+    [SerializeField] TextMeshProUGUI goldSumText;
+    [SerializeField] TextMeshProUGUI forceSumText;
+    [SerializeField] TextMeshProUGUI soliderSumText;
 
     public void ShowCharacterMenuUI(CharacterController character, Influence influence)
     {
