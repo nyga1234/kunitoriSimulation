@@ -40,9 +40,9 @@ public class SoliderController : MonoBehaviour
         personalSoliderView.ShowPersonalSoliderUI(solider.soliderModel);
     }
 
-    public void ShowBattleSoliderUI(SoliderController solider)
+    public void ShowBattleDetailSoliderUI(SoliderController solider, bool Attack)
     {
-        battleSoliderView.ShowBattleSoliderUI(solider.soliderModel);
+        battleSoliderView.ShowBattleSoliderUI(solider.soliderModel, Attack);
     }
 
     //public void CheckAlive()

@@ -18,6 +18,9 @@ public class BattleUI : MonoBehaviour
     [SerializeField] GameObject AttackButton;
     [SerializeField] GameObject RetreatButton;
 
+    [SerializeField] Transform attackButtonTransform;
+    [SerializeField] Transform defenceButtonTransform;
+
     [SerializeField] TextMeshProUGUI attackerRankText;
     [SerializeField] TextMeshProUGUI attackerNameText;
     [SerializeField] TextMeshProUGUI attackerForceText;
@@ -46,13 +49,13 @@ public class BattleUI : MonoBehaviour
         TitleFieldUI.instance.titleFieldText.text = "      攻撃ボタンクリックで戦闘";
         TitleFieldUI.instance.HideTitleSubText();
 
-        AttackButton.transform.position = new Vector3(1065, 190, 0);
-        RetreatButton.transform.position = new Vector3(855, 190, 0);
+        AttackButton.transform.position = attackButtonTransform.position;
+        RetreatButton.transform.position = defenceButtonTransform.position;
 
         if (defenderCharacter == GameManager.instance.playerCharacter)
         {
-            AttackButton.transform.position = new Vector3(855, 190, 0);
-            RetreatButton.transform.position = new Vector3(1065, 190, 0);
+            AttackButton.transform.position = defenceButtonTransform.position;
+            RetreatButton.transform.position = attackButtonTransform.position;
         }
         this.gameObject.SetActive(true);
 

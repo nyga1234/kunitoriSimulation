@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PersonalSoliderView : MonoBehaviour
 {
-    [SerializeField] Text soliderHPText;
-    [SerializeField] Text soliderLvText;
+    [SerializeField] TextMeshProUGUI soliderLvText;
+    [SerializeField] TextMeshProUGUI soliderHPText;
     [SerializeField] Image soliderIcon;
 
     public void ShowPersonalSoliderUI(SoliderModel soliderModel)

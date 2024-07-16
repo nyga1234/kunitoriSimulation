@@ -23,7 +23,7 @@ public class BattleDetailUI : MonoBehaviour
 
     [SerializeField] Transform AttackerSoliderListField;
     [SerializeField] Transform DefenderSoliderListField;
-    [SerializeField] SoliderController personalSolidefPrefab;
+    [SerializeField] SoliderController battleSolidefPrefab;
 
     int attackerSoliderHPSum;
     int defenderSoliderHPSum;
@@ -59,11 +59,11 @@ public class BattleDetailUI : MonoBehaviour
 
         ShowLandformInformationUI();
 
-        ShowSoliderList(attackCharacter.soliderList, AttackerSoliderListField);
-        ShowSoliderList(defenceCharacter.soliderList, DefenderSoliderListField);
+        ShowSoliderList(attackCharacter.soliderList, AttackerSoliderListField, true);
+        ShowSoliderList(defenceCharacter.soliderList, DefenderSoliderListField, false);
     }
 
-    void ShowSoliderList(List<SoliderController> soliderList, Transform field)
+    void ShowSoliderList(List<SoliderController> soliderList, Transform field, bool Attack)
     {
         // 現在表示されている兵士を削除
         foreach (Transform child in field)
@@ -74,14 +74,14 @@ public class BattleDetailUI : MonoBehaviour
         // 新しい兵士リストを作成
         foreach (SoliderController solider in soliderList)
         {
-            ShowSolider(solider, field);
+            ShowSolider(solider, field, Attack);
         }
     }
 
-    void ShowSolider(SoliderController solider, Transform field)
+    void ShowSolider(SoliderController solider, Transform field, bool Attack)
     {
-        SoliderController battleSolider = Instantiate(personalSolidefPrefab, field, false);
-        battleSolider.ShowBattleSoliderUI(solider);
+        SoliderController battleSolider = Instantiate(battleSolidefPrefab, field, false);
+        battleSolider.ShowBattleDetailSoliderUI(solider, Attack);
     }
 
     public void ShowLandformInformationUI()

@@ -15,7 +15,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField] TerritoryManager territoryManager;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] Transform AttackerSoliderField, DefenderSoliderField;
-    [SerializeField] SoliderController solidefPrefab;
+    [SerializeField] SoliderController attackSoliderPrefab;
+    [SerializeField] SoliderController defenceSoliderPrefab;
     [SerializeField] BattleDetailUI battleDetailUI;
     [SerializeField] BattleUI battleUI;
     [SerializeField] GameObject mapField;
@@ -72,8 +73,16 @@ public class BattleManager : MonoBehaviour
 
     void CreateAttackrSolider(SoliderController solider, Transform field, bool Attack)
     {
-        SoliderController battleSolider = Instantiate(solidefPrefab, field, false);
-        battleSolider.ShowBattleSoliderUI(solider, Attack);
+        if (Attack)
+        {
+            SoliderController battleSolider = Instantiate(attackSoliderPrefab, field, false);
+            battleSolider.ShowBattleSoliderUI(solider, Attack);
+        }
+        else
+        {
+            SoliderController battleSolider = Instantiate(defenceSoliderPrefab, field, false);
+            battleSolider.ShowBattleSoliderUI(solider, Attack);
+        }
     }
 
     void ShowSoliderList(List<SoliderController> soliderList, Transform field, bool Attack)

@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SoliderView : MonoBehaviour
 {
-    [SerializeField] Text hpText;
+    [SerializeField] TextMeshProUGUI hpText;
     [SerializeField] Image iconImage;
     [SerializeField] Image hpSlider;
     [SerializeField] GameObject status;
@@ -28,14 +29,14 @@ public class SoliderView : MonoBehaviour
             hpSlider.color = Color.red;
         }
 
-        if(Attack != true)
-        {
-            // iconImageを水平方向に反転
-            iconImage.transform.localScale = new Vector3(-1, 1, 1);
-            // iconImageのx座標を-1倍にする
-            iconImage.transform.position = new Vector3(iconImage.transform.position.x - 120, iconImage.transform.position.y, iconImage.transform.position.z);
-            //ステータス画面のx座標を-1倍にする
-            status.transform.position = new Vector3(status.transform.position.x + 80, status.transform.position.y, status.transform.position.z);
-        }
+        //if(Attack != true)
+        //{
+        //    // iconImageを水平方向に反転
+        //    iconImage.transform.localScale = new Vector3(-1, 1, 1);
+        //    // iconImageのx座標を-1倍にする
+        //    iconImage.transform.position = new Vector3(iconImage.transform.position.x - 120, iconImage.transform.position.y, iconImage.transform.position.z);
+        //    //ステータス画面のx座標を-1倍にする
+        //    status.transform.position = new Vector3(status.transform.position.x + 80, status.transform.position.y, status.transform.position.z);
+        //}
     }
 }

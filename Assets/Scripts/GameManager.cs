@@ -1336,7 +1336,7 @@ public class GameManager : MonoBehaviour
         {
             turnCount = this.turnCount,
             phase = this.phase,
-            step = this.step
+            step = this.step,
         };
         SaveLoadManager.SaveGame(gameState);
     }
