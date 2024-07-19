@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CharacterModel
 {
+    public int characterId; // í«â¡
     public Sprite icon;
     public string name;
     public int force; //êÌì¨
@@ -25,6 +26,7 @@ public class CharacterModel
     public CharacterModel(int characterID)
     {
         CharacterEntity characterEntity = Resources.Load<CharacterEntity>("CharacterEntityList/Character" + characterID);
+        this.characterId = characterID;
         this.icon = characterEntity.icon;
         this.name = characterEntity.name;
         this.force = characterEntity.force;
