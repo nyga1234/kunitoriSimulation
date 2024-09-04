@@ -39,22 +39,6 @@ public class Territory : MonoBehaviour
         homeTerritory.SetActive(isActibe);
     }
 
-    public void ChangeColor(Color newColor)
-    {
-        // SpriteRendererを取得
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-
-        // SpriteRendererが存在する場合、色を変更
-        if (spriteRenderer != null)
-        {
-            spriteRenderer.color = newColor;
-        }
-        else
-        {
-            Debug.LogError("SpriteRendererが見つかりませんでした。");
-        }
-    }
-
     public void SetAttackTerritoryType(Territory territory)
     {
         // Enumの要素数を取得
@@ -78,4 +62,20 @@ public class Territory : MonoBehaviour
         // ランダムなタイプを設定
         territory.defenceTerritoryType = (DefenceTerritoryType)randomIndex;
     }
+
+    //public void ChangeColor(Color newColor)
+    //{
+    //    // SpriteRendererを取得
+    //    SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+
+    //    // SpriteRendererが存在する場合、色を変更
+    //    if (spriteRenderer != null)
+    //    {
+    //        spriteRenderer.color = newColor;
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("SpriteRendererが見つかりませんでした。");
+    //    }
+    //}
 }

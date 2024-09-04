@@ -9,8 +9,6 @@ public class CharacterController : MonoBehaviour
     public CharacterModel characterModel;
 
     public Influence influence;
-    
-    //public List<Influence> influenceList;
 
     public List<SoliderController> soliderList;
 

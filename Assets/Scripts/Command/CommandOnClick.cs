@@ -233,9 +233,10 @@ public class CommandOnClick : MonoBehaviour
             {
                 SoundManager.instance.PlayRecruitSE();
                 SoliderController solider = Instantiate(soliderPrefab);
-                solider.Init(1);
+                solider.Init(1, GameManager.instance.CreateSoliderUniqueID());
                 solider.gameObject.SetActive(false);
                 gameManager.playerCharacter.soliderList.Add(solider);
+                gameManager.allSoliderList.Add(solider);
                 gameManager.playerCharacter.characterModel.gold -= 2;
                 personalMenuUI.ShowPersonalMenuUI(gameManager.playerCharacter);
                 influenceUI.ShowInfluenceUI(gameManager.playerCharacter.influence);

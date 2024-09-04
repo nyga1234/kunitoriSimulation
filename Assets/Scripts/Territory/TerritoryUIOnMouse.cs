@@ -275,10 +275,11 @@ public class TerritoryUIOnMouse : MonoBehaviour
 
     public void ChangeTerritoryByBattle(Influence influence)
     {
-        //領土に勢力を設定
+        //領土に勝利した勢力を設定
         territoryManager.territory.influence = influence;
-        //勢力に領土を設定
+        //勝利した勢力に領土を設定
         influence.AddTerritory(territoryManager.territory);
+        //敗北した勢力から領土を除外
         territoryManager.influence.RemoveTerritory(territoryManager.territory);
         //influenceList.Find(x => x.InfluenceType == influence.InfluenceType)?.AddTerritory(this.territory);
 

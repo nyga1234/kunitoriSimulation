@@ -50,6 +50,7 @@ public class CharacterMenuUI : MonoBehaviour
             characterImage.sprite = charaUI;
         }
         List<CharacterController> noPlayerCharacterList = character.influence.characterList.FindAll(x => !x.characterModel.isPlayerCharacter);
+        
         for (int i = 0; i < noPlayerCharacterList.Count; i++)
         {
             if (noPlayerCharacterList[i] != null)

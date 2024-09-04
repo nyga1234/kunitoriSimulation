@@ -9,6 +9,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         string json = JsonUtility.ToJson(gameState, true);
         File.WriteAllText(savePath, json);
+
         Debug.Log("Game Saved: " + savePath);
     }
 
@@ -26,5 +27,10 @@ public class SaveLoadManager : MonoBehaviour
             Debug.LogWarning("Save file not found: " + savePath);
             return null;
         }
+    }
+
+    public static bool HasSaveData()
+    {
+        return File.Exists(savePath);
     }
 }

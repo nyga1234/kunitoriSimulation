@@ -27,6 +27,7 @@ public class SearchCommandUI : MonoBehaviour
         ChangeBackgroundColor(originalUIColor);
         searchText.color = Color.white; // 白色に変更
         this.gameObject.SetActive(true);
+
         //領地数に応じた探索文字の非表示設定
         switch (gameManager.playerCharacter.influence.territoryList.Count)
         {

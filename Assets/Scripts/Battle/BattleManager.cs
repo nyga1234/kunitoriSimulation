@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 using static GameManager;
 using UnityEngine.TextCore.Text;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class BattleManager : MonoBehaviour
 {
@@ -88,10 +89,11 @@ public class BattleManager : MonoBehaviour
     void ShowSoliderList(List<SoliderController> soliderList, Transform field, bool Attack)
     {
         // 現在表示されている兵士を削除
-        foreach (Transform child in field)
-        {
-            Destroy(child.gameObject);
-        }
+        //foreach (Transform child in field)
+        //{
+        //    Destroy(child.gameObject);
+        //}
+        HideSoliderList(soliderList, field);
 
         // 新しい兵士リストを作成
         foreach (SoliderController solider in soliderList)
@@ -229,14 +231,16 @@ public class BattleManager : MonoBehaviour
                 deadDefenders.Add(solider);
             }
         }
-        //HPが0になった兵士をリストから削除
+        //HPが0になった兵士をリストから削除かつDestroy
         foreach (SoliderController solider in deadAttackers)
         {
             attackChara.soliderList.Remove(solider);
+            Destroy(solider);
         }
         foreach (SoliderController solider in deadDefenders)
         {
             defenceChara.soliderList.Remove(solider);
+            Destroy(solider);
         }
     }
 

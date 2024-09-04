@@ -4,6 +4,9 @@ using UnityEngine;
 using System.Linq;
 using Random = UnityEngine.Random;
 using UnityEngine.UI;
+using UnityEngine.TextCore.Text;
+using static UnityEngine.ParticleSystem;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -36,19 +39,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject mapField;
     [SerializeField] GameObject characterIndexMenu;
     [SerializeField] GameObject characterSearchMenu;
+    public TerritoryGenerator territoryGenerator;
 
     [SerializeField] private Transform Character;
     [SerializeField] private Transform Solider;
     [SerializeField] private Transform Influence;
 
-    public TerritoryGenerator territoryGenerator;
-
     public List<CharacterController> characterList;
+    public List<SoliderController> allSoliderList;
     public CharacterController playerCharacter;
-
     public List<Influence> influenceList;
     public List<Territory> allTerritoryList;
-
     public Influence noneInfluence;
 
     public CharacterController battleTurnCharacter;
@@ -56,27 +57,12 @@ public class GameManager : MonoBehaviour
     public bool defenceFlag;
     public int turnCount;
     public int territoryCouont;
-    public Influence uniteInfluence;
+    public Influence uniteInfluence; //統一した勢力
     public bool uniteCountryFlag = false;
+    private int soliderUniqueId = 0;
 
-    //無所属勢力名
-    private string noneInfluenceName = "NoneInfluence";
-
-    // 勢力に対応する画像ファイル名
-    private string blackFlagPath = "Flags/BlackFlag";
-    private string blueFlagPath = "Flags/BlueFlag";
-    private string pinkFlagPath = "Flags/PinkFlag";
-    private string purpleFlagPath = "Flags/PurpleFlag";
-    private string yellowFlagPath = "Flags/YellowFlag";
-    private string greyFlagPath = "Flags/GreyFlag";
-
-    // Resources.Loadを使用してスプライトを読み込む
-    Sprite blackInfluenceSprite;
-    Sprite blueInfluenceSprite;
-    Sprite pinkInfluenceSprite;
-    Sprite purplenfluenceSprite;
-    Sprite yellowfluenceSprite;
-    Sprite noneInfluenceSprite;
+    [SerializeField] Territory plainTerritorPrefab;
+    [SerializeField] Transform parent;
 
     //フェーズの管理
     public enum Phase
@@ -107,6 +93,25 @@ public class GameManager : MonoBehaviour
     }
     public Step step;
 
+    //無所属勢力名
+    private string noneInfluenceName = "NoneInfluence";
+
+    // 勢力に対応する画像ファイル名
+    private string blackFlagPath = "Flags/BlackFlag";
+    private string blueFlagPath = "Flags/BlueFlag";
+    private string pinkFlagPath = "Flags/PinkFlag";
+    private string purpleFlagPath = "Flags/PurpleFlag";
+    private string yellowFlagPath = "Flags/YellowFlag";
+    private string greyFlagPath = "Flags/GreyFlag";
+
+    // Resources.Loadを使用してスプライトを読み込む
+    Sprite blackInfluenceSprite;
+    Sprite blueInfluenceSprite;
+    Sprite pinkInfluenceSprite;
+    Sprite purplenfluenceSprite;
+    Sprite yellowfluenceSprite;
+    Sprite noneInfluenceSprite;
+
     //シングルトン化（どこからでもアクセスできるようにする）
     public static GameManager instance;
     private void Awake()
@@ -120,7 +125,16 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Initialize();
-        StartGame();
+        if (!SaveLoadManager.HasSaveData())
+        {
+            Debug.Log("ゲームを最初から開始します");
+            StartGame();
+        }
+        else
+        {
+            Debug.Log("ゲームを途中から開始します");
+            LoadGame();
+        }
     }
 
     private void Update()
@@ -135,44 +149,45 @@ public class GameManager : MonoBehaviour
     {
         // キャラクターの生成
         //領主
-        CreateCharacter(1);
-        CreateCharacter(2);
-        CreateCharacter(3);
-        CreateCharacter(4);
-        CreateCharacter(25);
+        CharacterController serugius = CreateCharacter(1);
+        CharacterController victor = CreateCharacter(2);
+        CharacterController arisia = CreateCharacter(3);
+        CharacterController rourenthius = CreateCharacter(4);
+        CharacterController feodoora = CreateCharacter(25);
         //領主配下
-        CreateCharacter(5);
-        CreateCharacter(6);
-        CreateCharacter(7);
-        CreateCharacter(8);
-        CreateCharacter(9);
-        CreateCharacter(10);
-        CreateCharacter(11);
-        CreateCharacter(12);
-        CreateCharacter(26);
-        CreateCharacter(27);
+        CharacterController eresuthia = CreateCharacter(5);
+        CharacterController renius = CreateCharacter(6);
+        CharacterController peruseus = CreateCharacter(7);
+        CharacterController amerieru = CreateCharacter(8);
+        CharacterController karisutaana = CreateCharacter(9);
+        CharacterController mariseruda = CreateCharacter(10);
+        CharacterController venethia = CreateCharacter(11);
+        CharacterController siguma = CreateCharacter(12);
+        CharacterController jovannni = CreateCharacter(26);
+        CharacterController simon = CreateCharacter(27);
         //無所属
-         CreateCharacter(13);
-         CreateCharacter(14);
-         CreateCharacter(15);
-         CreateCharacter(16);
-         CreateCharacter(17);
-         CreateCharacter(18);
-         CreateCharacter(19);
-         CreateCharacter(20);
-         CreateCharacter(21);
-         CreateCharacter(22);
-         CreateCharacter(23);
-         CreateCharacter(24);
-         CreateCharacter(28);
-         CreateCharacter(29);
-         CreateCharacter(30);
-         CreateCharacter(31);
-         CreateCharacter(32);
-         CreateCharacter(33);
-         CreateCharacter(34);
-         CreateCharacter(35);
+        CharacterController sofuronia = CreateCharacter(13);
+        CharacterController ferisithi = CreateCharacter(14);
+        CharacterController rainnharuto = CreateCharacter(15);
+        CharacterController ferics = CreateCharacter(16);
+        CharacterController veronica = CreateCharacter(17);
+        CharacterController reo = CreateCharacter(18);
+        CharacterController marukus = CreateCharacter(19);
+        CharacterController reira = CreateCharacter(20);
+        CharacterController marissa = CreateCharacter(21);
+        CharacterController nataasya = CreateCharacter(22);
+        CharacterController iruma = CreateCharacter(23);
+        CharacterController riisya = CreateCharacter(24);
+        CharacterController akuserion = CreateCharacter(28);
+        CharacterController oriannna = CreateCharacter(29);
+        CharacterController garahaddo = CreateCharacter(30);
+        CharacterController aressandoro = CreateCharacter(31);
+        CharacterController dhionyusios = CreateCharacter(32);
+        CharacterController tadeus = CreateCharacter(33);
+        CharacterController siruvietto = CreateCharacter(34);
+        CharacterController ruben = CreateCharacter(35);
 
+        //勢力の生成
         // Resources.Loadを使用してスプライトを読み込む
         blackInfluenceSprite = Resources.Load<Sprite>(blackFlagPath);
         blueInfluenceSprite = Resources.Load<Sprite>(blueFlagPath);
@@ -185,50 +200,40 @@ public class GameManager : MonoBehaviour
         noneInfluence = new GameObject(noneInfluenceName).AddComponent<Influence>();
         noneInfluence.Init(noneInfluenceName, noneInfluenceSprite);
         influenceList.Add(noneInfluence);
+
+        //領主リストの取得
+        List<CharacterController> lordCharacterList = characterList.FindAll(character => character.characterModel.isLord);
+
+        //領主に応じた勢力を作成
+        foreach (CharacterController character in lordCharacterList)
+        {
+            if (character == victor)
+            {
+                CreateInfluence(character, blackInfluenceSprite);
+            }
+            else if (character == serugius)
+            {
+                CreateInfluence(character, blueInfluenceSprite);
+            }
+            else if (character == arisia)
+            {
+                CreateInfluence(character, pinkInfluenceSprite);
+            }
+            else if (character == rourenthius)
+            {
+                CreateInfluence(character, purplenfluenceSprite);
+            }
+            else if (character == feodoora)
+            {
+                CreateInfluence(character, yellowfluenceSprite);
+            }
+        }
+
+        allTerritoryList = territoryGenerator.Generate(influenceList);
     }
 
     private void StartGame()
     {
-        //// キャラクターの生成
-        ////領主
-        //CharacterController serugius = CreateCharacter(1);
-        //CharacterController victor = CreateCharacter(2);
-        //CharacterController arisia = CreateCharacter(3);
-        //CharacterController rourenthius = CreateCharacter(4);
-        //CharacterController feodoora = CreateCharacter(25);
-        ////領主配下
-        //CharacterController eresuthia = CreateCharacter(5);
-        //CharacterController renius = CreateCharacter(6);
-        //CharacterController peruseus = CreateCharacter(7);
-        //CharacterController amerieru = CreateCharacter(8);
-        //CharacterController karisutaana = CreateCharacter(9);
-        //CharacterController mariseruda = CreateCharacter(10);
-        //CharacterController venethia = CreateCharacter(11);
-        //CharacterController siguma = CreateCharacter(12);
-        //CharacterController jovannni = CreateCharacter(26);
-        //CharacterController simon = CreateCharacter(27);
-        ////無所属
-        //CharacterController sofuronia = CreateCharacter(13);
-        //CharacterController ferisithi = CreateCharacter(14);
-        //CharacterController rainnharuto = CreateCharacter(15);
-        //CharacterController ferics = CreateCharacter(16);
-        //CharacterController veronica = CreateCharacter(17);
-        //CharacterController reo = CreateCharacter(18);
-        //CharacterController marukus = CreateCharacter(19);
-        //CharacterController reira = CreateCharacter(20);
-        //CharacterController marissa = CreateCharacter(21);
-        //CharacterController nataasya = CreateCharacter(22);
-        //CharacterController iruma = CreateCharacter(23);
-        //CharacterController riisya = CreateCharacter(24);
-        //CharacterController akuserion = CreateCharacter(28);
-        //CharacterController oriannna = CreateCharacter(29);
-        //CharacterController garahaddo = CreateCharacter(30);
-        //CharacterController aressandoro = CreateCharacter(31);
-        //CharacterController dhionyusios = CreateCharacter(32);
-        //CharacterController tadeus = CreateCharacter(33);
-        //CharacterController siruvietto = CreateCharacter(34);
-        //CharacterController ruben = CreateCharacter(35);
-
         //領主
         CharacterController serugius = characterList.Find(c => c.characterModel.characterId == 1);
         CharacterController victor = characterList.Find(c => c.characterModel.characterId == 2);
@@ -268,34 +273,6 @@ public class GameManager : MonoBehaviour
         CharacterController siruvietto = characterList.Find(c => c.characterModel.characterId == 34);
         CharacterController ruben = characterList.Find(c => c.characterModel.characterId == 35);
 
-        //領主リストの取得
-        List<CharacterController> lordCharacterList = characterList.FindAll(character => character.characterModel.isLord);
-
-        //勢力の作成
-        foreach (CharacterController character in lordCharacterList)
-        {
-            if (character == victor)
-            {
-                CreateInfluence(character, blackInfluenceSprite);
-            }
-            else if (character == serugius)
-            {
-                CreateInfluence(character, blueInfluenceSprite);
-            }
-            else if (character == arisia)
-            {
-                CreateInfluence(character, pinkInfluenceSprite);
-            }
-            else if (character == rourenthius)
-            {
-                CreateInfluence(character, purplenfluenceSprite);
-            }
-            else if (character == feodoora)
-            {
-                CreateInfluence(character, yellowfluenceSprite);
-            }
-        }
-        
         //キャラクターを勢力へ所属させる
         foreach (Influence influence in influenceList)
         {
@@ -382,7 +359,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        allTerritoryList = territoryGenerator.Generate(influenceList);
+        //allTerritoryList = territoryGenerator.Generate(influenceList);
 
         phase = Phase.CharacterChoicePhase;
         PhaseCalc();
@@ -411,19 +388,32 @@ public class GameManager : MonoBehaviour
 
     public void AssignSoldierListToCharacter(CharacterController character, List<int> soldierIDList)
     {
-        // キャラクターに対応する兵士リストを作成
-        List<SoliderController> characterSoldierList = new List<SoliderController>();
-
         // 対応する兵士IDで兵士を初期化してリストに追加
         foreach (int soldierID in soldierIDList)
         {
             SoliderController soldier = Instantiate(soliderPrefab, Solider);
-            soldier.Init(soldierID);
+            soldier.Init(soldierID, CreateSoliderUniqueID());
             soldier.gameObject.SetActive(false);
-            characterSoldierList.Add(soldier);
+            character.soliderList.Add(soldier);
+            allSoliderList.Add(soldier);
         }
-        // 兵士リストをキャラクターに設定
-        character.soliderList = characterSoldierList;
+    }
+
+    //public void LordSoliderListToCharacter(CharacterController character, List<int> soldierIDList, int uniqueId)
+    //{
+    //    // 対応する兵士IDで兵士を初期化してリストに追加
+    //    foreach (int soldierID in soldierIDList)
+    //    {
+    //        SoliderController soldier = Instantiate(soliderPrefab, Solider);
+    //        soldier.Init(soldierID, uniqueId);
+    //        soldier.gameObject.SetActive(false);
+    //        character.soliderList.Add(soldier);
+    //    }
+    //}
+
+    public int CreateSoliderUniqueID()
+    {
+        return soliderUniqueId++;
     }
 
     public void PhaseCalc()
@@ -457,13 +447,13 @@ public class GameManager : MonoBehaviour
                 BattlePhase();
                 break;
 
-            //case Phase.PlayerBattlePhase:
-            //    PlayerBattlePhase();
-            //    break;
+            case Phase.PlayerBattlePhase:
+                PlayerBattlePhase();
+                break;
 
-            //case Phase.OtherBattlePhase:
-            //    OtherBattlePhase();
-            //    break;
+                //case Phase.OtherBattlePhase:
+                //    OtherBattlePhase();
+                //    break;
         }
     }
 
@@ -681,9 +671,10 @@ public class GameManager : MonoBehaviour
             while (otherCharacter.soliderList.Count < 10 && otherCharacter.characterModel.gold >= 2)
             {
                 SoliderController solider = Instantiate(soliderPrefab);
-                solider.Init(1);
+                solider.Init(1, CreateSoliderUniqueID());
                 solider.gameObject.SetActive(false);
                 otherCharacter.soliderList.Add(solider);
+                allSoliderList.Add(solider);
                 otherCharacter.characterModel.gold -= 2;
             }
             //兵士訓練
@@ -1424,34 +1415,72 @@ public class GameManager : MonoBehaviour
             turnCount = this.turnCount,
             phase = this.phase,
             step = this.step,
-            //characters = new List<GameState.CharacterData>(),
+            characters = new List<CharacterData>(),
+            playerCharacterId = playerCharacter.characterModel.characterId,
+            influences = new List<InfluenceData>(),
+            territories = new List<TerritoryData>(),
         };
 
-        //// キャラクターデータの収集
-        //foreach (var character in characterList)
-        //{
-        //    GameState.CharacterData charData = new GameState.CharacterData
-        //    {
-        //        characterId = character.characterModel.characterId,
-        //        position = character.transform.position,
-        //        influenceName = character.influence != null ? character.influence.influenceName : "None",
-        //        force = character.characterModel.force,
-        //        inteli = character.characterModel.inteli,
-        //        tact = character.characterModel.tact,
-        //        fame = character.characterModel.fame,
-        //        ambition = character.characterModel.ambition,
-        //        loyalty = character.characterModel.loyalty,
-        //        salary = character.characterModel.salary,
-        //        conflict = character.characterModel.conflict,
-        //        rank = character.characterModel.rank,
-        //        gold = character.characterModel.gold,
-        //        isLord = character.characterModel.isLord,
-        //        isPlayerCharacter = character.characterModel.isPlayerCharacter,
-        //        isAttackable = character.characterModel.isAttackable,
-        //        isBattle = character.characterModel.isBattle
-        //    };
-        //    gameState.characters.Add(charData);
-        //}
+        // キャラクターデータの収集
+        foreach (var character in characterList)
+        {
+            CharacterData charData = new CharacterData
+            {
+                characterId = character.characterModel.characterId,
+                force = character.characterModel.force,
+                inteli = character.characterModel.inteli,
+                tact = character.characterModel.tact,
+                fame = character.characterModel.fame,
+                ambition = character.characterModel.ambition,
+                loyalty = character.characterModel.loyalty,
+                salary = character.characterModel.salary,
+                conflict = character.characterModel.conflict,
+                rank = character.characterModel.rank,
+                gold = character.characterModel.gold,
+                isLord = character.characterModel.isLord,
+                isPlayerCharacter = character.characterModel.isPlayerCharacter,
+                isAttackable = character.characterModel.isAttackable,
+                isBattle = character.characterModel.isBattle,
+
+                influenceName = character.influence != null ? character.influence.influenceName : "None",
+            };
+            // 兵士データの収集
+            foreach (var solider in character.soliderList)
+            {
+                SoliderData soliderData = new SoliderData
+                {
+                    soliderID = solider.soliderModel.soliderID,
+                    hp = solider.soliderModel.hp,
+                    df = solider.soliderModel.df,
+                    maxHP = solider.soliderModel.maxHP,
+                    at = solider.soliderModel.at,
+                    force = solider.soliderModel.force,
+                    icon = solider.soliderModel.icon,
+                    lv = solider.soliderModel.lv,
+                    experience = solider.soliderModel.experience,
+                    isAlive = solider.soliderModel.isAlive,
+                    uniqueID = solider.soliderModel.uniqueID
+                };
+
+                // 兵士データをキャラクターデータに追加
+                charData.soliders.Add(soliderData);
+            }
+
+            gameState.characters.Add(charData); 
+        }
+
+
+
+        // 勢力データの収集
+        foreach (var influence in influenceList)
+        {
+            InfluenceData influenceData = new InfluenceData
+            {
+                influenceName = influence.influenceName,
+                characterIds = influence.characterList.Select(c => c.characterModel.characterId).ToList()
+            };
+            gameState.influences.Add(influenceData);
+        }
 
         SaveLoadManager.SaveGame(gameState);
     }
@@ -1465,30 +1494,65 @@ public class GameManager : MonoBehaviour
             this.phase = gameState.phase;
             this.step = gameState.step;
 
-            //// キャラクターの復元
-            //foreach (var charData in gameState.characters)
-            //{
-            //    CharacterController character = characterList.Find(c => c.characterModel.characterId == charData.characterId);
-            //    if (character != null)
-            //    {
-            //        character.transform.position = charData.position;
-            //        character.characterModel.force = charData.force;
-            //        character.characterModel.inteli = charData.inteli;
-            //        character.characterModel.tact = charData.tact;
-            //        character.characterModel.fame = charData.fame;
-            //        character.characterModel.ambition = charData.ambition;
-            //        character.characterModel.loyalty = charData.loyalty;
-            //        character.characterModel.salary = charData.salary;
-            //        character.characterModel.conflict = charData.conflict;
-            //        character.characterModel.rank = charData.rank;
-            //        character.characterModel.gold = charData.gold;
-            //        character.characterModel.isLord = charData.isLord;
-            //        character.characterModel.isPlayerCharacter = charData.isPlayerCharacter;
-            //        character.characterModel.isAttackable = charData.isAttackable;
-            //        character.characterModel.isBattle = charData.isBattle;
-            //        character.influence = influenceList.Find(i => i.influenceName == charData.influenceName);
-            //    }
-            //}
+            // キャラクターの復元
+            foreach (var charData in gameState.characters)
+            {
+                CharacterController character = characterList.Find(c => c.characterModel.characterId == charData.characterId);
+
+                character.characterModel.force = charData.force;
+                character.characterModel.inteli = charData.inteli;
+                character.characterModel.tact = charData.tact;
+                character.characterModel.fame = charData.fame;
+                character.characterModel.ambition = charData.ambition;
+                character.characterModel.loyalty = charData.loyalty;
+                character.characterModel.salary = charData.salary;
+                character.characterModel.conflict = charData.conflict;
+                character.characterModel.rank = charData.rank;
+                character.characterModel.gold = charData.gold;
+                character.characterModel.isLord = charData.isLord;
+                character.characterModel.isPlayerCharacter = charData.isPlayerCharacter;
+                character.characterModel.isAttackable = charData.isAttackable;
+                character.characterModel.isBattle = charData.isBattle;
+                character.influence = influenceList.Find(i => i.influenceName == charData.influenceName);
+
+                // 兵士の復元
+                foreach (var soliderData in charData.soliders)
+                {
+                    SoliderController solider = Instantiate(soliderPrefab, Solider);
+                    solider.Init(soliderData.soliderID, soliderData.uniqueID);
+                    solider.soliderModel.hp = soliderData.hp;
+                    solider.soliderModel.df = soliderData.df;
+                    solider.soliderModel.maxHP = soliderData.maxHP;
+                    solider.soliderModel.at = soliderData.at;
+                    solider.soliderModel.force = soliderData.force;
+                    solider.soliderModel.icon = soliderData.icon;
+                    solider.soliderModel.lv = soliderData.lv;
+                    solider.soliderModel.experience = soliderData.experience;
+                    solider.soliderModel.isAlive = soliderData.isAlive;
+
+                    character.soliderList.Add(solider);
+                    allSoliderList.Add(solider);
+                }
+
+            }
+            //プレイヤーキャラクターの復元
+            playerCharacter = characterList.Find(x => x.characterModel.characterId == gameState.playerCharacterId);
+
+            // 勢力の復元
+            foreach (var influenceData in gameState.influences)
+            {
+                Influence influence = influenceList.Find(i => i.influenceName == influenceData.influenceName);
+
+                foreach (int characterId in influenceData.characterIds)
+                {
+                    CharacterController character = characterList.Find(c => c.characterModel.characterId == characterId);
+                    if (character != null)
+                    {
+                        character.SetInfluence(influence);
+                        influence.AddCharacter(character);
+                    }
+                }
+            }
 
             // ゲームの状態を更新
             PhaseCalc();

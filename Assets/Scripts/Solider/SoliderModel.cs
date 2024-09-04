@@ -14,8 +14,9 @@ public class SoliderModel
     public int lv;
     public int experience;
     public bool isAlive;
+    public int uniqueID;
 
-    public SoliderModel(int soliderId)
+    public SoliderModel(int soliderId, int soliderUniqueId)
     {
         SoliderEntity soliderEntity = Resources.Load<SoliderEntity>("SoliderEntityList/Solider" + soliderId);
         this.soliderID = soliderId;
@@ -28,6 +29,7 @@ public class SoliderModel
         this.lv = soliderEntity.lv;
         this.experience = soliderEntity.experience;
         this.isAlive = true;
+        this.uniqueID = soliderUniqueId;
     }
 
     void Damage(int damage)

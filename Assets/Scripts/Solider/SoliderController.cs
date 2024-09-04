@@ -5,12 +5,12 @@ using UnityEngine;
 public class SoliderController : MonoBehaviour
 {
     public SoliderModel soliderModel;
+    public CharacterController character;
+
     SoliderView soliderView;
     ImageSoliderView imageSoliderView;
     PersonalSoliderView personalSoliderView;
     BattleSoliderView battleSoliderView;
-
-    //public CharacterController character;
 
     private void Awake()
     {
@@ -20,9 +20,9 @@ public class SoliderController : MonoBehaviour
         battleSoliderView = GetComponent<BattleSoliderView>();
     }
 
-    public void Init(int soliderId)
+    public void Init(int soliderId, int soliderUniqueId)
     {
-        soliderModel = new SoliderModel(soliderId);
+        soliderModel = new SoliderModel(soliderId, soliderUniqueId);
     }
 
     public void ShowBattleSoliderUI(SoliderController solider, bool Attack)

@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.U2D.Animation;
 using UnityEngine;
+using static Territory;
 
 [System.Serializable]
 public class GameState
@@ -10,14 +9,15 @@ public class GameState
     public GameManager.Phase phase;
     public GameManager.Step step;
     public List<CharacterData> characters;
+    public int playerCharacterId;
+    public List<InfluenceData> influences;
+    public List<TerritoryData> territories;
 }
 
 [System.Serializable]
 public class CharacterData
 {
     public int characterId;
-    public Vector3 position;
-    public string influenceName;
     public int force;
     public int inteli;
     public int tact;
@@ -32,4 +32,39 @@ public class CharacterData
     public bool isPlayerCharacter;
     public bool isAttackable;
     public bool isBattle;
+    public string influenceName;
+    public List<SoliderData> soliders = new List<SoliderData>();
+}
+
+[System.Serializable]
+public class InfluenceData
+{
+    public string influenceName;
+    public List<int> characterIds;
+    //public List<CharacterData> characters;
+}
+
+[System.Serializable]
+public class SoliderData
+{
+    public int soliderID;
+    public int hp;
+    public int df;
+    public int maxHP;
+    public int at;
+    public int force;
+    public Sprite icon;
+    public int lv;
+    public int experience;
+    public bool isAlive;
+    public int uniqueID;
+}
+
+[System.Serializable]
+public class TerritoryData
+{
+    public AttackTerritoryType attackTerritoryType;
+    public DefenceTerritoryType defenceTerritoryType;
+    public Vector2 position;
+    public Influence influence;
 }
