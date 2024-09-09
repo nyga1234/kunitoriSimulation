@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using UnityEngine.TextCore.Text;
 using static UnityEngine.ParticleSystem;
 using System;
+using static Territory;
 
 public class GameManager : MonoBehaviour
 {
@@ -63,6 +64,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] Territory plainTerritorPrefab;
     [SerializeField] Transform parent;
+    private List<Territory> initializeTerritoryList;
 
     //フェーズの管理
     public enum Phase
@@ -229,11 +231,15 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        allTerritoryList = territoryGenerator.Generate(influenceList);
+        initializeTerritoryList = territoryGenerator.InitializeTerritory();
+        //territoryGenerator.GenerateTerritory(territoryGenerator.InitializeTerritory(), influenceList);
+        //allTerritoryList = territoryGenerator.Generate(influenceList);
     }
 
     private void StartGame()
     {
+        allTerritoryList = territoryGenerator.GenerateTerritory(initializeTerritoryList, influenceList);
+
         //領主
         CharacterController serugius = characterList.Find(c => c.characterModel.characterId == 1);
         CharacterController victor = characterList.Find(c => c.characterModel.characterId == 2);
@@ -1418,7 +1424,6 @@ public class GameManager : MonoBehaviour
             characters = new List<CharacterData>(),
             playerCharacterId = playerCharacter.characterModel.characterId,
             influences = new List<InfluenceData>(),
-            territories = new List<TerritoryData>(),
         };
 
         // キャラクターデータの収集
@@ -1461,15 +1466,12 @@ public class GameManager : MonoBehaviour
                     isAlive = solider.soliderModel.isAlive,
                     uniqueID = solider.soliderModel.uniqueID
                 };
-
                 // 兵士データをキャラクターデータに追加
                 charData.soliders.Add(soliderData);
             }
 
             gameState.characters.Add(charData); 
         }
-
-
 
         // 勢力データの収集
         foreach (var influence in influenceList)
@@ -1479,6 +1481,20 @@ public class GameManager : MonoBehaviour
                 influenceName = influence.influenceName,
                 characterIds = influence.characterList.Select(c => c.characterModel.characterId).ToList()
             };
+            //領土データの収集
+            foreach (var territory in influence.territoryList)
+            {
+                TerritoryData territoryData = new TerritoryData
+                {
+                    attackTerritoryType = territory.attackTerritoryType,
+                    defenceTerritoryType = territory.defenceTerritoryType,
+                    position = territory.position,
+                    //influence = territory.influence,
+                    influenceName = territory.influence != null ? territory.influence.influenceName : null,
+                };
+                influenceData.territories.Add(territoryData);
+                Debug.Log(territoryData.influenceName);
+            }
             gameState.influences.Add(influenceData);
         }
 
@@ -1543,6 +1559,7 @@ public class GameManager : MonoBehaviour
             {
                 Influence influence = influenceList.Find(i => i.influenceName == influenceData.influenceName);
 
+                //勢力にキャラクターを所属させる&&キャラクターを勢力に所属させる
                 foreach (int characterId in influenceData.characterIds)
                 {
                     CharacterController character = characterList.Find(c => c.characterModel.characterId == characterId);
@@ -1550,6 +1567,18 @@ public class GameManager : MonoBehaviour
                     {
                         character.SetInfluence(influence);
                         influence.AddCharacter(character);
+                    }
+                }
+
+                //領土の復元
+                foreach (var territoryData in influenceData.territories)
+                {
+                    Territory territory = initializeTerritoryList.Find(t => t.position == territoryData.position);
+                    if (territory != null)
+                    {
+                        //Influence influ = influenceList.Find(i => i.influenceName == territoryData.influenceName);
+                        territoryGenerator.SetupTerritory(territory, territory.position, influenceList, territoryData.influenceName);
+                        allTerritoryList.Add(territory);
                     }
                 }
             }

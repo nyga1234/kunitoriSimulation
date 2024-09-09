@@ -11,7 +11,6 @@ public class GameState
     public List<CharacterData> characters;
     public int playerCharacterId;
     public List<InfluenceData> influences;
-    public List<TerritoryData> territories;
 }
 
 [System.Serializable]
@@ -41,7 +40,7 @@ public class InfluenceData
 {
     public string influenceName;
     public List<int> characterIds;
-    //public List<CharacterData> characters;
+    public List<TerritoryData> territories = new List<TerritoryData>();
 }
 
 [System.Serializable]
@@ -66,5 +65,6 @@ public class TerritoryData
     public AttackTerritoryType attackTerritoryType;
     public DefenceTerritoryType defenceTerritoryType;
     public Vector2 position;
-    public Influence influence;
+    //public Influence influence;
+    public string influenceName;
 }
