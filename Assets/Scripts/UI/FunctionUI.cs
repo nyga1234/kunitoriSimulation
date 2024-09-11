@@ -9,12 +9,32 @@ public class FunctionUI : MonoBehaviour
     [SerializeField] private Button closeButton;
     [SerializeField] private Button quitButton;
 
+    [SerializeField] private SaveLoadUI saveLoadUI;
+
     private void Start()
     {
+        //閉じる
         maskButton.onClick.AddListener(() => this.gameObject.SetActive(false));
-        saveButton.onClick.AddListener(() => GameManager.instance.SaveGame());
-        loadButton.onClick.AddListener(() => GameManager.instance.LoadGame());
+
+        // セーブボタンが押された場合
+        saveButton.onClick.AddListener(() =>
+        {
+            saveLoadUI.SetMode(true);  // セーブモードを設定
+            saveLoadUI.gameObject.SetActive(true);  // SaveLoadUIを表示
+            this.gameObject.SetActive(false);
+        });
+
+        // ロードボタンが押された場合
+        loadButton.onClick.AddListener(() =>
+        {
+            saveLoadUI.SetMode(false); // ロードモードを設定
+            saveLoadUI.gameObject.SetActive(true); // SaveLoadUIを表示
+            this.gameObject.SetActive(false);
+        });
+        //閉じる
         closeButton.onClick.AddListener(() => this.gameObject.SetActive(false));
+
+        //ゲーム終了
         quitButton.onClick.AddListener(QuitGame);
     }
 

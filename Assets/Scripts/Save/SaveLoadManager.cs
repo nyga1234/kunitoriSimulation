@@ -3,18 +3,21 @@ using UnityEngine;
 
 public class SaveLoadManager : MonoBehaviour
 {
-    private static string savePath = Application.persistentDataPath + "/gamestate.json";
+    //private static string savePath = Application.persistentDataPath + "/gamestate.json";
+    private static string GetSavePath(int slot) => Application.persistentDataPath + $"/gamestate_slot{slot}.json";
 
-    public static void SaveGame(GameState gameState)
+    public static void SaveGame(GameState gameState, int slot)
     {
+        string savePath = GetSavePath(slot);
         string json = JsonUtility.ToJson(gameState, true);
         File.WriteAllText(savePath, json);
 
         Debug.Log("Game Saved: " + savePath);
     }
 
-    public static GameState LoadGame()
+    public static GameState LoadGame(int slot)
     {
+        string savePath = GetSavePath(slot);
         if (File.Exists(savePath))
         {
             string json = File.ReadAllText(savePath);
@@ -29,8 +32,8 @@ public class SaveLoadManager : MonoBehaviour
         }
     }
 
-    public static bool HasSaveData()
+    public static bool HasSaveData(int slot)
     {
-        return File.Exists(savePath);
+        return File.Exists(GetSavePath(slot));
     }
 }

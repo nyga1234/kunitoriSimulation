@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Initialize();
-        if (!SaveLoadManager.HasSaveData())
+        if (!SaveLoadManager.HasSaveData(1))
         {
             Debug.Log("ゲームを最初から開始します");
             StartGame();
@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.Log("ゲームを途中から開始します");
-            LoadGame();
+            LoadGame(1);
         }
     }
 
@@ -1414,7 +1414,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void SaveGame()
+    public void SaveGame(int slot)
     {
         GameState gameState = new GameState
         {
@@ -1498,12 +1498,12 @@ public class GameManager : MonoBehaviour
             gameState.influences.Add(influenceData);
         }
 
-        SaveLoadManager.SaveGame(gameState);
+        SaveLoadManager.SaveGame(gameState, slot);
     }
 
-    public void LoadGame()
+    public void LoadGame(int slot)
     {
-        GameState gameState = SaveLoadManager.LoadGame();
+        GameState gameState = SaveLoadManager.LoadGame(slot);
         if (gameState != null)
         {
             this.turnCount = gameState.turnCount;
