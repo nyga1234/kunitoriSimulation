@@ -19,16 +19,16 @@ public class FunctionUI : MonoBehaviour
         // セーブボタンが押された場合
         saveButton.onClick.AddListener(() =>
         {
-            saveLoadUI.SetMode(true);  // セーブモードを設定
             saveLoadUI.gameObject.SetActive(true);  // SaveLoadUIを表示
+            saveLoadUI.SetMode(true);  // セーブモードを設定
             this.gameObject.SetActive(false);
         });
 
         // ロードボタンが押された場合
         loadButton.onClick.AddListener(() =>
         {
-            saveLoadUI.SetMode(false); // ロードモードを設定
             saveLoadUI.gameObject.SetActive(true); // SaveLoadUIを表示
+            saveLoadUI.SetMode(false); // ロードモードを設定
             this.gameObject.SetActive(false);
         });
         //閉じる

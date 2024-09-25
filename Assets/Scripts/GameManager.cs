@@ -11,7 +11,6 @@ using static Territory;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] LoadingUI loadingUI;
     [SerializeField] Cursor cursor;
     [SerializeField] VSImageUI vsImageUI;
     [SerializeField] CharacterController characterPrefab;
@@ -121,6 +120,11 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);//シーン遷移時にGameManagerを破棄しない
+        }
+        else
+        {
+            Destroy(gameObject);//既にインスタンスが存在する場合は新しいものを破棄
         }
     }
 
@@ -404,18 +408,6 @@ public class GameManager : MonoBehaviour
             allSoliderList.Add(soldier);
         }
     }
-
-    //public void LordSoliderListToCharacter(CharacterController character, List<int> soldierIDList, int uniqueId)
-    //{
-    //    // 対応する兵士IDで兵士を初期化してリストに追加
-    //    foreach (int soldierID in soldierIDList)
-    //    {
-    //        SoliderController soldier = Instantiate(soliderPrefab, Solider);
-    //        soldier.Init(soldierID, uniqueId);
-    //        soldier.gameObject.SetActive(false);
-    //        character.soliderList.Add(soldier);
-    //    }
-    //}
 
     public int CreateSoliderUniqueID()
     {

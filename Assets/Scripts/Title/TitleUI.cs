@@ -17,8 +17,8 @@ public class TitleUI : MonoBehaviour
     {
         //NewGame
         newGameButton.onClick.AddListener(() => SceneManager.LoadScene("Main"));
-        ////ロードスロットUI表示
-        //loadGameButton.onClick.AddListener(() => loadslotUI.gameObject.SetActive(true));
+        //ロードスロットUI表示
+        loadGameButton.onClick.AddListener(() => SceneManager.LoadScene("UISaveLoad"));
         //ゲーム終了
         exitButton.onClick.AddListener(QuitGame);
     }

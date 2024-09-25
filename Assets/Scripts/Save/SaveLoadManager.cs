@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class SaveLoadManager : MonoBehaviour
 {
-    //private static string savePath = Application.persistentDataPath + "/gamestate.json";
     private static string GetSavePath(int slot) => Application.persistentDataPath + $"/gamestate_slot{slot}.json";
 
     public static void SaveGame(GameState gameState, int slot)
