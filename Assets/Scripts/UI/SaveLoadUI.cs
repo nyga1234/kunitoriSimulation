@@ -18,7 +18,7 @@ public class SaveLoadUI : MonoBehaviour
     [SerializeField] Image playerImage1;
     [SerializeField] Image playerImage2;
     [SerializeField] Image playerImage3;
-    [SerializeField] SoliderController imageSolidefPrefab;
+    [SerializeField] SoliderController imageSoliderPrefab;
     [SerializeField] Transform SoliderListField1;
     [SerializeField] Transform SoliderListField2;
     [SerializeField] Transform SoliderListField3;
@@ -139,7 +139,7 @@ public class SaveLoadUI : MonoBehaviour
 
     void ShowSolider(SoliderController solider, Transform field, bool Attack)
     {
-        SoliderController battleSolider = Instantiate(imageSolidefPrefab, field, Attack);
+        SoliderController battleSolider = Instantiate(imageSoliderPrefab, field);
         battleSolider.ShowBattleDetailSoliderUI(solider, Attack);
     }
 }

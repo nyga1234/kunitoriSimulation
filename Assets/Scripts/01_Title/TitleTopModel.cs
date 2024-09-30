@@ -6,7 +6,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class TitleTopModel : MonoBehaviour
 {
-    [SerializeField]
+    //[SerializeField]
     //private UtilityParamObject _param;
 
     public void GameStart()

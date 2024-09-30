@@ -10,8 +10,8 @@ public class SaveSelectModel : MonoBehaviour
         await SceneController.UnloadAsync(nameof(SaveLoadUI));
     }
 
-    public void OnPressSaveSelect(int slot)
-    {
-        GameManager.instance.ChangeScene("Title", "GameMain");
-    }
+    //public void OnPressSaveSelect(int slot)
+    //{
+    //    GameManager.instance.ChangeScene("Title", "GameMain");
+    //}
 }

@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SoliderEntity", menuName = "Create SoliderEntity")]
-public class SoliderEntity : ScriptableObject
+[CreateAssetMenu(fileName = "SoldierEntity", menuName = "Create SoldierEntity")]
+public class SoldierEntity : ScriptableObject
 {
-    //public int soliderID;
+    //public int soldierID;
     public int hp;
     public int maxHP;
     public int at;
