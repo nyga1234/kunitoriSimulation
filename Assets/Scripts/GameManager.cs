@@ -9,8 +9,14 @@ using static UnityEngine.ParticleSystem;
 using System;
 using static Territory;
 
-public class GameManager : MonoBehaviour
+public class GameManager : SingletonMonoBehaviour<GameManager>
 {
+    [Header("Loading Canvas")]
+    [SerializeField]
+    private LoadingOverlay _loading;
+
+    private SceneController _sceneController;
+
     [SerializeField] Cursor cursor;
     [SerializeField] VSImageUI vsImageUI;
     [SerializeField] CharacterController characterPrefab;
@@ -114,19 +120,19 @@ public class GameManager : MonoBehaviour
     Sprite noneInfluenceSprite;
 
     //シングルトン化（どこからでもアクセスできるようにする）
-    public static GameManager instance;
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);//シーン遷移時にGameManagerを破棄しない
-        }
-        else
-        {
-            Destroy(gameObject);//既にインスタンスが存在する場合は新しいものを破棄
-        }
-    }
+    //public static GameManager instance;
+    //private void Awake()
+    //{
+    //    if (instance == null)
+    //    {
+    //        instance = this;
+    //        DontDestroyOnLoad(gameObject);//シーン遷移時にGameManagerを破棄しない
+    //    }
+    //    else
+    //    {
+    //        Destroy(gameObject);//既にインスタンスが存在する場合は新しいものを破棄
+    //    }
+    //}
 
     private void Start()
     {
@@ -533,7 +539,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            GameManager.instance.step = Step.End;
+            step = Step.End;
 
             phase = Phase.OtherLordPhase;
             PhaseCalc();
@@ -809,7 +815,7 @@ public class GameManager : MonoBehaviour
                 //characterの勢力に隣接するランダムな領土を侵攻対象とする
         List<Territory> adjacentTerritory = character.influence.FindAdjacentTerritory();
         Territory randomTerritory = GetRandomTerritory(adjacentTerritory);
-        while (randomTerritory.influence == character.influence || randomTerritory.influence == GameManager.instance.noneInfluence)
+        while (randomTerritory.influence == character.influence || randomTerritory.influence == noneInfluence)
         {
             randomTerritory = GetRandomTerritory(adjacentTerritory);
         }
@@ -1263,7 +1269,7 @@ public class GameManager : MonoBehaviour
         }
             
         //追放したキャラクターを無所属に加入
-        GameManager.instance.noneInfluence.AddCharacter(leaveCharacter);
+        noneInfluence.AddCharacter(leaveCharacter);
     }
 
     private void ShuffleCharacterList()
@@ -1578,5 +1584,11 @@ public class GameManager : MonoBehaviour
             // ゲームの状態を更新
             PhaseCalc();
         }
+    }
+
+    public async void ChangeScene(string before, string next)
+    {
+        await _loading.Display();
+        await _sceneController.SwitchPrimaryScene(before, next);
     }
 }

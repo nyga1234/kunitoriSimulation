@@ -9,9 +9,10 @@ public class TitleTopModel : MonoBehaviour
     [SerializeField]
     //private UtilityParamObject _param;
 
-    public async void GameStart()
+    public void GameStart()
     {
-        await SceneController.LoadAsync(nameof(SaveLoadUI));
+        //await SceneController.LoadAsync(nameof(SaveLoadUI));
+        GameManager.instance.ChangeScene("Title", "GameMain");
     }
 
     public void GameEnd()

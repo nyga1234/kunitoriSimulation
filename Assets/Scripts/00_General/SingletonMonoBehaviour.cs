@@ -2,23 +2,23 @@ using UnityEngine;
 
 public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T instance;
+    private static T Instance;
 
-    public static T Instance
+    public static T instance
     {
         get
         {
-            if (instance == null)
+            if (Instance == null)
             {
-                instance = (T)FindObjectOfType(typeof(T));
+                Instance = (T)FindObjectOfType(typeof(T));
 
-                if (instance == null)
+                if (Instance == null)
                 {
                     Debug.LogError($"[{typeof(T)}] does not exist in the scene.");
                 }
             }
 
-            return instance;
+            return Instance;
         }
     }
 }
