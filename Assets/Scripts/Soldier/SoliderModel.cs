@@ -18,7 +18,7 @@ public class SoliderModel
 
     public SoliderModel(int soliderId, int soliderUniqueId)
     {
-        SoldierEntity soldierEntity = Resources.Load<SoldierEntity>("SoldierEntityList/Solider" + soliderId);
+        SoldierEntity soldierEntity = Resources.Load<SoldierEntity>("SoldierEntityList/Soldier" + soliderId);
         this.soliderID = soliderId;
         this.hp = soldierEntity.hp;
         this.maxHP = soldierEntity.maxHP;
@@ -171,7 +171,7 @@ public class SoliderModel
     private void UpdateSoliderOnLevelUp(SoliderController solider)
     {
         // SoliderEntityList/Solider フォルダから新しいアイコンを読み込む
-        SoldierEntity soliderEntity = Resources.Load<SoldierEntity>("SoldierEntityList/Solider" + solider.soliderModel.lv);
+        SoldierEntity soliderEntity = Resources.Load<SoldierEntity>("SoldierEntityList/Soldier" + solider.soliderModel.lv);
 
         // 新しいアイコンを設定
         solider.soliderModel.icon = soliderEntity.icon;
