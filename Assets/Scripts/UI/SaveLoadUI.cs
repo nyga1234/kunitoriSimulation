@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -28,13 +29,6 @@ public class SaveLoadUI : MonoBehaviour
 
     private void Start()
     {
-        // GameManagerが存在しない場合はエラーログを出す
-        if (GameManager.instance == null)
-        {
-            Debug.LogError("GameManager is not initialized.");
-            return;
-        }
-
         // UIの初期化
         UpdateSlotUI();
 
@@ -133,13 +127,8 @@ public class SaveLoadUI : MonoBehaviour
         // 新しい兵士リストを作成
         foreach (SoliderController solider in soliderList)
         {
-            ShowSolider(solider, field, true);
+            SoliderController battleSolider = Instantiate(imageSoliderPrefab, field);
+            battleSolider.ShowBattleDetailSoliderUI(solider, true);
         }
-    }
-
-    void ShowSolider(SoliderController solider, Transform field, bool Attack)
-    {
-        SoliderController battleSolider = Instantiate(imageSoliderPrefab, field);
-        battleSolider.ShowBattleDetailSoliderUI(solider, Attack);
     }
 }

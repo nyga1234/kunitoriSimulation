@@ -165,20 +165,20 @@ public class SoliderModel
         solider.soliderModel.lv += 1;
 
         // レベルアップ時にアイコンを変更
-        UpdateSoliderOnLevelUp(solider);
+        UpdateSoldierOnLevelUp(solider);
     }
 
-    private void UpdateSoliderOnLevelUp(SoliderController solider)
+    private void UpdateSoldierOnLevelUp(SoliderController solider)
     {
         // SoliderEntityList/Solider フォルダから新しいアイコンを読み込む
-        SoldierEntity soliderEntity = Resources.Load<SoldierEntity>("SoldierEntityList/Soldier" + solider.soliderModel.lv);
+        SoldierEntity soldierEntity = Resources.Load<SoldierEntity>("SoldierEntityList/Soldier" + solider.soliderModel.lv);
 
         // 新しいアイコンを設定
-        solider.soliderModel.icon = soliderEntity.icon;
+        solider.soliderModel.icon = soldierEntity.icon;
 
         //ステータスをレベルアップ
-        solider.soliderModel.maxHP = soliderEntity.maxHP;
-        solider.soliderModel.at = soliderEntity.at;
-        solider.soliderModel.force = soliderEntity.force;
+        solider.soliderModel.maxHP = soldierEntity.maxHP;
+        solider.soliderModel.at = soldierEntity.at;
+        solider.soliderModel.force = soldierEntity.force;
     }
 }
