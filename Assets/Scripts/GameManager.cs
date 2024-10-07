@@ -11,11 +11,17 @@ using static Territory;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
-    [Header("Loading Canvas")]
-    [SerializeField]
-    private LoadingOverlay _loading;
+    //[Header("Initialize Scene Setting")]
+    //[SerializeField]
+    //private string _initializeLoadScene;
 
-    private SceneController _sceneController;
+    //[Header("Loading Canvas")]
+    //[SerializeField]
+    //private LoadingOverlay _loading;
+
+    //public LoadingOverlay Loading => _loading;
+
+    //private SceneController _sceneController;
 
     [SerializeField] Cursor cursor;
     [SerializeField] VSImageUI vsImageUI;
@@ -119,19 +125,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     Sprite yellowfluenceSprite;
     Sprite noneInfluenceSprite;
 
-    //シングルトン化（どこからでもアクセスできるようにする）
-    //public static GameManager instance;
-    //private void Awake()
+    //public void Awake()
     //{
-    //    if (instance == null)
-    //    {
-    //        instance = this;
-    //        DontDestroyOnLoad(gameObject);//シーン遷移時にGameManagerを破棄しない
-    //    }
-    //    else
-    //    {
-    //        Destroy(gameObject);//既にインスタンスが存在する場合は新しいものを破棄
-    //    }
+    //    _sceneController = SceneController.instance;
     //}
 
     private void Start()
@@ -147,6 +143,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             Debug.Log("ゲームを途中から開始します");
             LoadGame(1);
         }
+
+        //Load First Scene
+        //if (_initializeLoadScene != string.Empty && SceneController.LoadedSceneCount <= 1)
+        //{
+        //    _sceneController.Open(_initializeLoadScene);
+        //}
     }
 
     private void Update()
@@ -1586,9 +1588,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         }
     }
 
-    public async void ChangeScene(string before, string next)
-    {
-        await _loading.Display();
-        await _sceneController.SwitchPrimaryScene(before, next);
-    }
+    //public async void ChangeScene(string before, string next)
+    //{
+    //    await _loading.Display();
+    //    await _sceneController.SwitchPrimaryScene(before, next);
+    //}
 }

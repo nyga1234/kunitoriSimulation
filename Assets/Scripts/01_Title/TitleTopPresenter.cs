@@ -7,9 +7,9 @@ using UniRx;
 
 public class TitleTopPresenter : MonoBehaviour
 {
-    [Header("Model")]
-    [SerializeField]
-    private TitleTopModel _model;
+    //[Header("Model")]
+    //[SerializeField]
+    //private TitleTopModel _model;
 
     #region View
     [Header("View")]
@@ -25,10 +25,21 @@ public class TitleTopPresenter : MonoBehaviour
     void Start()
     {
         #region View to Model
-        newGameButton.onClick.AsObservable().Subscribe(_ => _model.GameStart());
+        newGameButton.onClick.AsObservable().Subscribe(_ => GameStart());
         loadGameButton.onClick.AddListener(() => SceneManager.LoadScene("UISaveLoad"));
-        endGameButton.onClick.AsObservable().Subscribe(_ => _model.GameEnd());
+        endGameButton.onClick.AsObservable().Subscribe(_ => GameEnd());
         #endregion  
+    }
+
+    public void GameStart()
+    {
+        //await SceneController.LoadAsync(nameof(SaveLoadUI));
+        //GameManager.instance.ChangeScene("Title", "GameMain");
+    }
+
+    public void GameEnd()
+    {
+        Application.Quit();
     }
 
     //    [SerializeField] private Button newGameButton;
