@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager2 : MonoBehaviour
+public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     [Header("Initialize Scene Setting")]
     [SerializeField]

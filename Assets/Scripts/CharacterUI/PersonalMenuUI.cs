@@ -48,15 +48,15 @@ public class PersonalMenuUI : MonoBehaviour
         {
             trainingText.color = new Color32(122, 122, 122, 255);
         }
-        if (character.influence != GameManager.instance.noneInfluence)
+        if (character.influence != GameMain.instance.noneInfluence)
         {
             enterText.color = new Color32(255, 255, 255, 0);
         }
-        if (character.characterModel.isLord == true || character.influence == GameManager.instance.noneInfluence)
+        if (character.characterModel.isLord == true || character.influence == GameMain.instance.noneInfluence)
         {
             vagabondText.color = new Color32(255, 255, 255, 0);
         }
-        if (character.characterModel.isLord == true || character.influence == GameManager.instance.noneInfluence)
+        if (character.characterModel.isLord == true || character.influence == GameMain.instance.noneInfluence)
         {
             rebellionText.color = new Color32(255, 255, 255, 0);
         }
@@ -74,7 +74,7 @@ public class PersonalMenuUI : MonoBehaviour
         tactText.text = "[éËòr] " + character.characterModel.tact.ToString();
         fameText.text = "[ñºê∫] " + character.characterModel.fame.ToString();
         ambitionText.text = "[ñÏêS] " + character.characterModel.ambition.ToString();
-        if (character.characterModel.isLord == true || character.influence.influenceName == "NoneInfluence" || character == GameManager.instance.playerCharacter)
+        if (character.characterModel.isLord == true || character.influence.influenceName == "NoneInfluence" || character == GameMain.instance.playerCharacter)
         {
             loyalityText.text = "[íâêΩ] --";
         }

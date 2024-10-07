@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-using static GameManager;
+using static GameMain;
 using UnityEngine.EventSystems;
 
 public class CommandOnClick : MonoBehaviour
@@ -25,7 +25,7 @@ public class CommandOnClick : MonoBehaviour
     [SerializeField] GameObject backToPersonalMenuButton;
     [SerializeField] GameObject functionUI;
 
-    public GameManager gameManager;
+    public GameMain gameManager;
 
     [SerializeField] SoliderController soliderPrefab;
 
@@ -48,7 +48,7 @@ public class CommandOnClick : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             SoundManager.instance.PlayClickSE();
-            GameManager.instance.step = Step.Information;
+            GameMain.instance.step = Step.Information;
 
             characterMenuUI.HideCharacterMenuUI();
             characterDetailUI.HideCharacterDetailUI();
@@ -66,7 +66,7 @@ public class CommandOnClick : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             SoundManager.instance.PlayClickSE();
-            GameManager.instance.step = Step.Information;
+            GameMain.instance.step = Step.Information;
 
             personalMenuUI.HidePersonalMenuUI();
             influenceUI.HideInfluenceUI();
@@ -84,7 +84,7 @@ public class CommandOnClick : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             SoundManager.instance.PlayClickSE();
-            GameManager.instance.step = Step.Information;
+            GameMain.instance.step = Step.Information;
 
             battleMenuUI.HideBattleMenuUI();
             characterDetailUI.HideCharacterDetailUI();
@@ -102,14 +102,14 @@ public class CommandOnClick : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             SoundManager.instance.PlayClickSE();
-            GameManager.instance.step = Step.Appointment;
+            GameMain.instance.step = Step.Appointment;
 
             characterMenuUI.HideCharacterMenuUI();
             characterDetailUI.HideCharacterDetailUI();
 
             TitleFieldUI.instance.titleFieldText.text = "      昇格したいキャラクターをクリック";
             characterIndexMenu.SetActive(true);
-            characterIndexUI.ShowCharacterIndexUI(GameManager.instance.playerCharacter.influence.characterList);
+            characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
         }
     }
 
@@ -205,17 +205,17 @@ public class CommandOnClick : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            if (GameManager.instance.playerCharacter.influence.characterList.Count != 1)
+            if (GameMain.instance.playerCharacter.influence.characterList.Count != 1)
             {
                 SoundManager.instance.PlayClickSE();
-                GameManager.instance.step = Step.Banishment;
+                GameMain.instance.step = Step.Banishment;
 
                 characterMenuUI.HideCharacterMenuUI();
                 characterDetailUI.HideCharacterDetailUI();
 
                 TitleFieldUI.instance.titleFieldText.text = "      クリックで追放";
                 characterIndexMenu.SetActive(true);
-                characterIndexUI.ShowCharacterIndexUI(GameManager.instance.playerCharacter.influence.characterList);
+                characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
             }
             else
             {
@@ -233,7 +233,7 @@ public class CommandOnClick : MonoBehaviour
             {
                 SoundManager.instance.PlayRecruitSE();
                 SoliderController solider = Instantiate(soliderPrefab);
-                solider.Init(1, GameManager.instance.CreateSoliderUniqueID());
+                solider.Init(1, GameMain.instance.CreateSoliderUniqueID());
                 solider.gameObject.SetActive(false);
                 gameManager.playerCharacter.soliderList.Add(solider);
                 gameManager.allSoliderList.Add(solider);
@@ -279,12 +279,12 @@ public class CommandOnClick : MonoBehaviour
 
     public void OnPointerClickEnter()
     {
-        if (GameManager.instance.playerCharacter.influence == GameManager.instance.noneInfluence)
+        if (GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
         {
             if (Input.GetMouseButtonUp(0))
             {
                 SoundManager.instance.PlayClickSE();
-                GameManager.instance.step = Step.Enter;
+                GameMain.instance.step = Step.Enter;
 
                 personalMenuUI.HidePersonalMenuUI();
                 influenceUI.HideInfluenceUI();
@@ -304,7 +304,7 @@ public class CommandOnClick : MonoBehaviour
 
     public void OnPointerClickVagabond()
     {
-        if(gameManager.playerCharacter.characterModel.isLord == true || GameManager.instance.playerCharacter.influence == GameManager.instance.noneInfluence)
+        if(gameManager.playerCharacter.characterModel.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
         {
             return;
         }
@@ -328,9 +328,9 @@ public class CommandOnClick : MonoBehaviour
         if (yesNoUI.IsYes())
         {
             //所属勢力を去る
-            GameManager.instance.LeaveInfluence(GameManager.instance.playerCharacter);
+            GameMain.instance.LeaveInfluence(GameMain.instance.playerCharacter);
 
-            GameManager.instance.ShowPersonalUI(GameManager.instance.playerCharacter);
+            GameMain.instance.ShowPersonalUI(GameMain.instance.playerCharacter);
 
             dialogueUI.ShowSuccessVagabondUI();
         }
@@ -338,7 +338,7 @@ public class CommandOnClick : MonoBehaviour
 
     public void OnPointerClickRebellion()
     {
-        if (gameManager.playerCharacter.characterModel.isLord == true || GameManager.instance.playerCharacter.influence == GameManager.instance.noneInfluence)
+        if (gameManager.playerCharacter.characterModel.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
         {
             return;
         }
@@ -348,17 +348,17 @@ public class CommandOnClick : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            if (GameManager.instance.playerCharacter.characterModel.isLord == false && GameManager.instance.playerCharacter.characterModel.isAttackable == false)
+            if (GameMain.instance.playerCharacter.characterModel.isLord == false && GameMain.instance.playerCharacter.characterModel.isAttackable == false)
             {
                 TitleFieldUI.instance.titleFieldText.text = "      侵攻済みです";
                 return;
             }
 
 
-            if (GameManager.instance.playerCharacter.characterModel.gold >= 3)
+            if (GameMain.instance.playerCharacter.characterModel.gold >= 3)
             {
                 SoundManager.instance.PlayClickSE();
-                GameManager.instance.step = Step.Attack;
+                GameMain.instance.step = Step.Attack;
 
                 battleMenuUI.HideBattleMenuUI();
                 characterDetailUI.HideCharacterDetailUI();
@@ -402,12 +402,12 @@ public class CommandOnClick : MonoBehaviour
 
         if (yesNoUI.IsYes())
         {
-            GameManager.instance.step = Step.End;
+            GameMain.instance.step = Step.End;
 
             characterMenuUI.HideCharacterMenuUI();
             characterDetailUI.HideCharacterDetailUI();
 
-            //GameManagerのフェーズを進める
+            //GameMainのフェーズを進める
             gameManager.phase = Phase.OtherLordPhase;
             gameManager.PhaseCalc();
         }
@@ -434,12 +434,12 @@ public class CommandOnClick : MonoBehaviour
 
         if (yesNoUI.IsYes())
         {
-            GameManager.instance.step = Step.End;
+            GameMain.instance.step = Step.End;
 
             personalMenuUI.HidePersonalMenuUI();
             influenceUI.HideInfluenceUI();
 
-            //GameManagerのフェーズを進める
+            //GameMainのフェーズを進める
             gameManager.phase = Phase.OtherPersonalPhase;
             gameManager.PhaseCalc();
         }
@@ -466,7 +466,7 @@ public class CommandOnClick : MonoBehaviour
 
         if (yesNoUI.IsYes())
         {
-            GameManager.instance.step = Step.End;
+            GameMain.instance.step = Step.End;
 
             battleMenuUI.HideBattleMenuUI();
             characterDetailUI.HideCharacterDetailUI();
@@ -474,7 +474,7 @@ public class CommandOnClick : MonoBehaviour
             // クリックされたら背景色を元に戻す
             ChangeBackgroundColor(originalColor);
 
-            bool isPlayerLast = GameManager.instance.characterList.LastOrDefault() == GameManager.instance.playerCharacter;
+            bool isPlayerLast = GameMain.instance.characterList.LastOrDefault() == GameMain.instance.playerCharacter;
             if (isPlayerLast)
             {
                 Debug.Log("プレイヤーは最後です。");
@@ -485,8 +485,8 @@ public class CommandOnClick : MonoBehaviour
             else
             {
                 Debug.Log("プレイヤーは最後ではありません。");
-                CharacterController playerNextCharacter = GameManager.instance.GetNextCharacter(GameManager.instance.playerCharacter);
-                GameManager.instance.OtherBattlePhase(playerNextCharacter);
+                CharacterController playerNextCharacter = GameMain.instance.GetNextCharacter(GameMain.instance.playerCharacter);
+                GameMain.instance.OtherBattlePhase(playerNextCharacter);
             }
         }
     }
@@ -504,14 +504,14 @@ public class CommandOnClick : MonoBehaviour
     public void CharacterSearch()
     {
         SoundManager.instance.PlayClickSE();
-        GameManager.instance.step = Step.Search;
+        GameMain.instance.step = Step.Search;
 
         gameManager.playerCharacter.characterModel.gold -= 9;
         characterMenuUI.HideCharacterMenuUI();
         characterDetailUI.HideCharacterDetailUI();
 
         //Noneに所属するキャラクターリストからランダムに6名取得
-        List<CharacterController> noneInfluenceCharacters = GameManager.instance.noneInfluence.characterList;
+        List<CharacterController> noneInfluenceCharacters = GameMain.instance.noneInfluence.characterList;
         System.Random random = new System.Random();
         List<CharacterController> shuffledList = noneInfluenceCharacters.OrderBy(x => random.Next()).ToList();
         // 先頭から6つの要素を取得

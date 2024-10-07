@@ -1,12 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
-using UnityEngine.Rendering;
-using static GameManager;
-using UnityEngine.TextCore.Text;
 using System.Linq;
-using Unity.VisualScripting;
+using static GameMain;
 
 public class BattleManager : MonoBehaviour
 {
@@ -147,12 +143,12 @@ public class BattleManager : MonoBehaviour
     {
         if (inputEnabled)
         {
-            if (attackerCharacter == GameManager.instance.playerCharacter)
+            if (attackerCharacter == GameMain.instance.playerCharacter)
             {
                 HideSoliderList(attackerCharacter.soliderList, AttackerSoliderField);
                 attackerRetreatFlag = true;
             }
-            else if (defenderCharacter == GameManager.instance.playerCharacter)
+            else if (defenderCharacter == GameMain.instance.playerCharacter)
             {
                 HideSoliderList(defenderCharacter.soliderList, DefenderSoliderField);
                 defenderRetreatFlag = true;
@@ -177,11 +173,11 @@ public class BattleManager : MonoBehaviour
         CheckExtinct(defenderCharacter.influence);
 
         //プレイヤーが攻撃側の場合
-        if (attackerCharacter == GameManager.instance.playerCharacter)
+        if (attackerCharacter == GameMain.instance.playerCharacter)
         {
-            if (GameManager.instance.battleTurnCharacter == GameManager.instance.playerCharacter)
+            if (GameMain.instance.battleTurnCharacter == GameMain.instance.playerCharacter)
             {
-                GameManager.instance.PlayerBattlePhase();
+                GameMain.instance.PlayerBattlePhase();
             }
             else
             {
@@ -246,7 +242,7 @@ public class BattleManager : MonoBehaviour
 
     public void RetreatCheck(CharacterController attackCharacter, CharacterController defenceCharacter)
     {
-        if (attackCharacter == GameManager.instance.playerCharacter)
+        if (attackCharacter == GameMain.instance.playerCharacter)
         {
             if (attackCharacter.soliderList.Count == 0)
             {
@@ -254,7 +250,7 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        if (defenceCharacter == GameManager.instance.playerCharacter)
+        if (defenceCharacter == GameMain.instance.playerCharacter)
         {
             if (defenceCharacter.soliderList.Count == 0)
             {
@@ -277,7 +273,7 @@ public class BattleManager : MonoBehaviour
         //防衛側が負けている場合
         if (attackerSoliderHpSum > defenderSoliderHpSum)
         {
-            if (defenceCharacter != GameManager.instance.playerCharacter)
+            if (defenceCharacter != GameMain.instance.playerCharacter)
             {
                 switch (territoryManager.territory.defenceTerritoryType)
                 {
@@ -333,7 +329,7 @@ public class BattleManager : MonoBehaviour
         //侵攻側が負けている場合
         else if (attackerSoliderHpSum < defenderSoliderHpSum)
         {
-            if (attackCharacter != GameManager.instance.playerCharacter)
+            if (attackCharacter != GameMain.instance.playerCharacter)
             {
                 switch (territoryManager.territory.attackTerritoryType)
                 {
@@ -400,7 +396,7 @@ public class BattleManager : MonoBehaviour
     {
         if (attackerRetreatFlag == true)
         {
-            if (attackerCharacter == GameManager.instance.playerCharacter)
+            if (attackerCharacter == GameMain.instance.playerCharacter)
             {
                 TitleFieldUI.instance.titleFieldText.text = "      プレイヤーは退却しました";
             }
@@ -414,7 +410,7 @@ public class BattleManager : MonoBehaviour
         }
         else if (defenderRetreatFlag == true)
         {
-            if (defenderCharacter == GameManager.instance.playerCharacter)
+            if (defenderCharacter == GameMain.instance.playerCharacter)
             {
                 TitleFieldUI.instance.titleFieldText.text = "      プレイヤーは退却しました";
             }
@@ -453,7 +449,7 @@ public class BattleManager : MonoBehaviour
         else
         {
             TitleFieldUI.instance.titleFieldText.text = "      侵攻側の勝利です";
-            StartCoroutine(GameManager.instance.BlinkTerritory(0.5f, attackerCharacter, defenderCharacter, territoryManager.territory));
+            StartCoroutine(GameMain.instance.BlinkTerritory(0.5f, attackerCharacter, defenderCharacter, territoryManager.territory));
         }
         yield return new WaitForSeconds(battleAfterWaitTime);
 
@@ -461,7 +457,7 @@ public class BattleManager : MonoBehaviour
         mapField.SetActive(false);
         cursor.gameObject.SetActive(false);
 
-        GameManager.instance.step = Step.Attack;
+        GameMain.instance.step = Step.Attack;
     }
 
     public void CheckExtinct(Influence influence)
@@ -482,7 +478,7 @@ public class BattleManager : MonoBehaviour
                 // キャラクターを勢力から除外する
                 chara.influence.RemoveCharacter(chara);
                 // 無所属に所属させる
-                GameManager.instance.noneInfluence.AddCharacter(chara);
+                GameMain.instance.noneInfluence.AddCharacter(chara);
                 if (chara.characterModel.isLord == true)
                 {
                     chara.characterModel.isLord = false;
@@ -495,11 +491,11 @@ public class BattleManager : MonoBehaviour
     {
         Debug.Log("CheckAttackableCharacterInInfluence");
         //攻撃可能なキャラ数を取得
-        if (GameManager.instance.battleTurnCharacter.influence != GameManager.instance.noneInfluence)
+        if (GameMain.instance.battleTurnCharacter.influence != GameMain.instance.noneInfluence)
         {
-            int attackableCharacterCount = GameManager.instance.battleTurnCharacter.influence.characterList.Count(c => c.characterModel.isAttackable);
+            int attackableCharacterCount = GameMain.instance.battleTurnCharacter.influence.characterList.Count(c => c.characterModel.isAttackable);
             //勢力に所属するキャラ数に応じて処理を分ける
-            switch (GameManager.instance.battleTurnCharacter.influence.characterList.Count)
+            switch (GameMain.instance.battleTurnCharacter.influence.characterList.Count)
             {
                 case 0:
                 case 1:
@@ -508,26 +504,26 @@ public class BattleManager : MonoBehaviour
                 case 4:
                     if (attackableCharacterCount > 2)
                     {
-                        Debug.Log("再度" + GameManager.instance.battleTurnCharacter.characterModel.name + "のターンです");
-                        GameManager.instance.OtherBattlePhase(GameManager.instance.battleTurnCharacter);
+                        Debug.Log("再度" + GameMain.instance.battleTurnCharacter.characterModel.name + "のターンです");
+                        GameMain.instance.OtherBattlePhase(GameMain.instance.battleTurnCharacter);
                     }
-                    else// if (defenderCharacter.influence == GameManager.instance.playerCharacter.influence)
+                    else// if (defenderCharacter.influence == GameMain.instance.playerCharacter.influence)
                     {
                         Debug.Log("次のキャラクターのターンです。");
-                        GameManager.instance.NextCharacterBattlePhase(GameManager.instance.battleTurnCharacter);
+                        GameMain.instance.NextCharacterBattlePhase(GameMain.instance.battleTurnCharacter);
                     }
                     break;
                 case 5:
                 case 6:
                     if (attackableCharacterCount > 3)
                     {
-                        Debug.Log("再度" + GameManager.instance.battleTurnCharacter.characterModel.name + "のターンです");
-                        GameManager.instance.OtherBattlePhase(GameManager.instance.battleTurnCharacter);
+                        Debug.Log("再度" + GameMain.instance.battleTurnCharacter.characterModel.name + "のターンです");
+                        GameMain.instance.OtherBattlePhase(GameMain.instance.battleTurnCharacter);
                     }
-                    else// if (defenderCharacter.influence == GameManager.instance.playerCharacter.influence)
+                    else// if (defenderCharacter.influence == GameMain.instance.playerCharacter.influence)
                     {
                         Debug.Log("次のキャラクターのターンです。");
-                        GameManager.instance.NextCharacterBattlePhase(GameManager.instance.battleTurnCharacter);
+                        GameMain.instance.NextCharacterBattlePhase(GameMain.instance.battleTurnCharacter);
                     }
                     break;
             }
@@ -576,7 +572,7 @@ public class BattleManager : MonoBehaviour
         //vsImageUI.transform.position = territoryManager.territory.position;
 
         battleDetailUI.ShowBattleDetailUI(attackerCharacter, defenderCharacter);
-        StartCoroutine(GameManager.instance.BlinkCursor(1.0f));
+        StartCoroutine(GameMain.instance.BlinkCursor(1.0f));
         yield return new WaitForSeconds(1.0f);
 
         //戦闘実施
@@ -598,7 +594,7 @@ public class BattleManager : MonoBehaviour
 
         CheckExtinct(defenderCharacter.influence);
 
-        GameManager.instance.PlayerBattlePhase();
+        GameMain.instance.PlayerBattlePhase();
     }
 
     public void DefenceBattle(CharacterController attackCharacter, CharacterController defenceCharacter)
@@ -629,7 +625,7 @@ public class BattleManager : MonoBehaviour
         //vsImageUI.transform.position = territoryManager.territory.position;
 
         battleDetailUI.ShowBattleDetailUI(attackCharacter, defenceCharacter);
-        StartCoroutine(GameManager.instance.BlinkCursor(1.0f));
+        StartCoroutine(GameMain.instance.BlinkCursor(1.0f));
         yield return new WaitForSeconds(1.0f);
 
         //戦闘実施　戦闘中画面表示
@@ -664,7 +660,7 @@ public class BattleManager : MonoBehaviour
         mapField.SetActive(true);
 
         TitleFieldUI.instance.titleFieldText.text = "戦闘を放棄しました";
-        StartCoroutine(GameManager.instance.BlinkTerritory(0.5f, attackerCharacter, GameManager.instance.playerCharacter, territoryManager.territory));
+        StartCoroutine(GameMain.instance.BlinkTerritory(0.5f, attackerCharacter, GameMain.instance.playerCharacter, territoryManager.territory));
         yield return new WaitForSeconds(battleAfterWaitTime);
 
         attackerCharacter.characterModel.isAttackable = false;
@@ -672,7 +668,7 @@ public class BattleManager : MonoBehaviour
         territoryUIOnMouse.ChangeTerritoryByBattle(attackerCharacter.influence);
         isBattleEnd = true;
 
-        CheckExtinct(GameManager.instance.playerCharacter.influence);
+        CheckExtinct(GameMain.instance.playerCharacter.influence);
 
         mapField.SetActive(false);
 

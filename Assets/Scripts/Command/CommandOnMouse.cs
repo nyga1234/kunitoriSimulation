@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class CommandOnMouse : MonoBehaviour
 {
-    public GameManager gameManager;
+    public GameMain gameManager;
 
     [SerializeField] CommandOnClick commandOnClick;
     [SerializeField] TitleFieldUI titleFieldUI;
@@ -99,7 +99,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterEnter()
     {
-        if (GameManager.instance.playerCharacter.influence == GameManager.instance.noneInfluence)
+        if (GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
         {
             SoundManager.instance.PlayCursorSE();
             titleFieldUI.ShowEnterText();
@@ -115,7 +115,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterVagabond()
     {
-        if (gameManager.playerCharacter.characterModel.isLord == true || GameManager.instance.playerCharacter.influence == GameManager.instance.noneInfluence)
+        if (gameManager.playerCharacter.characterModel.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
         {
             return;
         }
@@ -131,7 +131,7 @@ public class CommandOnMouse : MonoBehaviour
     
     public void OnPointerEnterRebellion()
     {
-        if (gameManager.playerCharacter.characterModel.isLord == true || GameManager.instance.playerCharacter.influence == GameManager.instance.noneInfluence)
+        if (gameManager.playerCharacter.characterModel.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
         {
             return;
         }
@@ -147,7 +147,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterAttack()
     {
-        if (GameManager.instance.playerCharacter.characterModel.isLord == true)
+        if (GameMain.instance.playerCharacter.characterModel.isLord == true)
         {
             titleFieldUI.ShowAttackText();
         }

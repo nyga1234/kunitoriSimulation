@@ -6,8 +6,8 @@ using static Territory;
 public class GameState
 {
     public int turnCount;
-    public GameManager.Phase phase;
-    public GameManager.Step step;
+    public GameMain.Phase phase;
+    public GameMain.Step step;
     public List<CharacterData> characters;
     public int playerCharacterId;
     public List<InfluenceData> influences;

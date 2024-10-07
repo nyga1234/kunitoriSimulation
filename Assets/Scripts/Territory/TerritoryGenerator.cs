@@ -60,31 +60,31 @@ public class TerritoryGenerator : MonoBehaviour
                 {
                     SetupTerritory(territory, pos, influenceList, "ヴィクター");
                     generateTerritoryList.Add(territory);
-                    //GameManager.instance.territoryCouont++;
+                    //GameMain.instance.territoryCouont++;
                 }
                 else if (x <= 2 && y == 0 || x == 1 && y == 1)
                 {
                     SetupTerritory(territory, pos, influenceList, "アリシア");
                     generateTerritoryList.Add(territory);
-                    //GameManager.instance.territoryCouont++;
+                    //GameMain.instance.territoryCouont++;
                 }
                 else if (x >= 4 && y == 2 || x == 5 && y == 1)
                 {
                     SetupTerritory(territory, pos, influenceList, "セルギウス");
                     generateTerritoryList.Add(territory);
-                    //GameManager.instance.territoryCouont++;
+                    //GameMain.instance.territoryCouont++;
                 }
                 else if (x == 2 && y == 1 || x == 3 && y == 0 || x == 3 && y == 2 || x == 4 && y == 1)
                 {
                     SetupTerritory(territory, pos, influenceList, "ローレンティウス");
                     generateTerritoryList.Add(territory);
-                    //GameManager.instance.territoryCouont++;
+                    //GameMain.instance.territoryCouont++;
                 }
                 else if (x >= 4 && y == 0 || x == 6 && y == 1)
                 {
                     SetupTerritory(territory, pos, influenceList, "フェオドーラ");
                     generateTerritoryList.Add(territory);
-                    //GameManager.instance.territoryCouont++;
+                    //GameMain.instance.territoryCouont++;
                 }
                 else
                 {
@@ -115,32 +115,32 @@ public class TerritoryGenerator : MonoBehaviour
     //            {
     //                SetupTerritory(newTerritory, pos, influenceList, "ヴィクター");
     //                territoryList.Add(newTerritory);
-    //                GameManager.instance.territoryCouont++;
+    //                GameMain.instance.territoryCouont++;
     //            }
     //            else if (x <= 2 && y == 0 || x == 1 && y == 1)
     //            {
     //                SetupTerritory(newTerritory, pos, influenceList, "アリシア");
     //                territoryList.Add(newTerritory);
-    //                GameManager.instance.territoryCouont++;
+    //                GameMain.instance.territoryCouont++;
 
     //            }
     //            else if(x >= 4 && y == 2 || x == 5 && y == 1)
     //            {
     //                SetupTerritory(newTerritory, pos, influenceList, "セルギウス");
     //                territoryList.Add(newTerritory);
-    //                GameManager.instance.territoryCouont++;
+    //                GameMain.instance.territoryCouont++;
     //            }
     //            else if (x == 2 && y == 1 || x == 3 && y == 0 || x == 3 && y == 2 || x == 4 && y == 1)
     //            {
     //                SetupTerritory(newTerritory, pos, influenceList, "ローレンティウス");
     //                territoryList.Add(newTerritory);
-    //                GameManager.instance.territoryCouont++;
+    //                GameMain.instance.territoryCouont++;
     //            }
     //            else if (x >= 4 && y == 0 || x == 6 && y == 1)
     //            {
     //                SetupTerritory(newTerritory, pos, influenceList, "フェオドーラ");
     //                territoryList.Add(newTerritory);
-    //                GameManager.instance.territoryCouont++;
+    //                GameMain.instance.territoryCouont++;
     //            }
     //            else
     //            {
@@ -155,7 +155,7 @@ public class TerritoryGenerator : MonoBehaviour
     public void SetupTerritory(Territory territory, Vector2 position, List<Influence> influenceList, string influenceName)
     {
         //領土数をカウント
-        GameManager.instance.territoryCouont++;
+        GameMain.instance.territoryCouont++;
 
         //領土に座標を設定
         territory.position = new Vector2(position.x, position.y);

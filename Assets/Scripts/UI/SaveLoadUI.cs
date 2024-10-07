@@ -53,19 +53,19 @@ public class SaveLoadUI : MonoBehaviour
                 // 上書き確認UIを表示
                 confirmOverwriteUI.Show(() =>
                 {
-                    GameManager.instance.SaveGame(slot); //Show()の引数に上書きセーブ処理を渡す
+                    GameMain.instance.SaveGame(slot); //Show()の引数に上書きセーブ処理を渡す
                 });
             }
             else
             {
                 // セーブ処理
-                GameManager.instance.SaveGame(slot);
+                GameMain.instance.SaveGame(slot);
             }
         }
         else
         {
             // ロード処理
-            GameManager.instance.LoadGame(slot);
+            GameMain.instance.LoadGame(slot);
         }
 
         // UIを更新して表示する
@@ -75,25 +75,25 @@ public class SaveLoadUI : MonoBehaviour
     private void UpdateSlotUI()
     {
         playerImage1.sprite = SaveLoadManager.HasSaveData(1) ?
-            GameManager.instance.playerCharacter.characterModel.icon : charaUI;
+            GameMain.instance.playerCharacter.characterModel.icon : charaUI;
 
         playerImage2.sprite = SaveLoadManager.HasSaveData(2) ?
-            GameManager.instance.playerCharacter.characterModel.icon : charaUI;
+            GameMain.instance.playerCharacter.characterModel.icon : charaUI;
 
         playerImage3.sprite = SaveLoadManager.HasSaveData(3) ?
-            GameManager.instance.playerCharacter.characterModel.icon : charaUI;
+            GameMain.instance.playerCharacter.characterModel.icon : charaUI;
 
         if (SaveLoadManager.HasSaveData(1))
         {
-            ShowSoliderList(GameManager.instance.playerCharacter.soliderList, SoliderListField1);
+            ShowSoliderList(GameMain.instance.playerCharacter.soliderList, SoliderListField1);
         }
         if (SaveLoadManager.HasSaveData(2))
         {
-            ShowSoliderList(GameManager.instance.playerCharacter.soliderList, SoliderListField2);
+            ShowSoliderList(GameMain.instance.playerCharacter.soliderList, SoliderListField2);
         }
         if (SaveLoadManager.HasSaveData(3))
         {
-            ShowSoliderList(GameManager.instance.playerCharacter.soliderList, SoliderListField3);
+            ShowSoliderList(GameMain.instance.playerCharacter.soliderList, SoliderListField3);
         }
         // 各スロットにセーブデータがあるか確認して表示を更新
         slotText1.text = SaveLoadManager.HasSaveData(1) ? GetSaveText() : "空きスロット";
@@ -103,9 +103,9 @@ public class SaveLoadUI : MonoBehaviour
 
     private string GetSaveText()
     {
-        string turnCount = GameManager.instance.turnCount.ToString() + "期";
-        string rank = GameManager.instance.playerCharacter.characterModel.rank.ToString();
-        string name = GameManager.instance.playerCharacter.characterModel.name;
+        string turnCount = GameMain.instance.turnCount.ToString() + "期";
+        string rank = GameMain.instance.playerCharacter.characterModel.rank.ToString();
+        string name = GameMain.instance.playerCharacter.characterModel.name;
         return turnCount + " : " + rank + " " + name; 
     }
 

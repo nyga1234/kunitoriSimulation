@@ -39,7 +39,7 @@ public class BattleMenuUI : MonoBehaviour
 
         moneyText.text = "Ž‘‹à " + character.characterModel.gold.ToString();
 
-        if (influence != GameManager.instance.noneInfluence)
+        if (influence != GameMain.instance.noneInfluence)
         {
             //—ÌŽå‰æ‘œ‚ÌÝ’è
             CharacterController LordCharacter = character.influence.characterList.Find(chara => chara.characterModel.isLord);

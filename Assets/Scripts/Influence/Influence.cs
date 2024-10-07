@@ -60,22 +60,22 @@ public class Influence : MonoBehaviour
         };
         foreach (Territory influenceTerritory in this.territoryList)
         {
-            Territory rightTerritory = GameManager.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + directions[0]);
+            Territory rightTerritory = GameMain.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + directions[0]);
             if (rightTerritory != null)
             {
                 attackableTerritoryList.Add(rightTerritory);
             }
-            Territory leftTerritory = GameManager.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + directions[1]);
+            Territory leftTerritory = GameMain.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + directions[1]);
             if (leftTerritory != null)
             {
                 attackableTerritoryList.Add(leftTerritory);
             }
-            Territory downTerritory = GameManager.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + directions[2]);
+            Territory downTerritory = GameMain.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + directions[2]);
             if (downTerritory != null)
             {
                 attackableTerritoryList.Add(downTerritory);
             }
-            Territory upTerritory = GameManager.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + directions[3]);
+            Territory upTerritory = GameMain.instance.allTerritoryList.Find(x => x.position == influenceTerritory.position + directions[3]);
             if (upTerritory != null)
             {
                 attackableTerritoryList.Add(upTerritory);

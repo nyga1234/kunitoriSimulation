@@ -9,7 +9,7 @@ public class AttackCommandUI : MonoBehaviour
     private Color originalUIColor; // Œ³‚Ì”wŒiF‚ğ•Û‚·‚é•Ï”
 
     [SerializeField] TextMeshProUGUI attackText;
-    public GameManager gameManager;
+    public GameMain gameManager;
 
     void Start()
     {
@@ -27,12 +27,12 @@ public class AttackCommandUI : MonoBehaviour
         attackText.color = Color.white; // ”’F‚É•ÏX
         this.gameObject.SetActive(true);
 
-        if (GameManager.instance.playerCharacter.characterModel.gold < 3)
+        if (GameMain.instance.playerCharacter.characterModel.gold < 3)
         {
             attackText.color = new Color32(122, 122, 122, 255);
         }
 
-        if (GameManager.instance.playerCharacter.characterModel.isLord == false && GameManager.instance.playerCharacter.characterModel.isAttackable == false)
+        if (GameMain.instance.playerCharacter.characterModel.isLord == false && GameMain.instance.playerCharacter.characterModel.isAttackable == false)
         {
             attackText.color = new Color32(122, 122, 122, 255);
         }

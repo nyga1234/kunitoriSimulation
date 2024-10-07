@@ -9,7 +9,7 @@ public class BanishmentCommandUI : MonoBehaviour
     private Color originalUIColor; // Œ³‚Ì”wŒiF‚ğ•Û‚·‚é•Ï”
     [SerializeField] TextMeshProUGUI banishmentText;
 
-    public GameManager gameManager;
+    public GameMain gameManager;
 
     void Start()
     {
@@ -26,7 +26,7 @@ public class BanishmentCommandUI : MonoBehaviour
         ChangeBackgroundColor(originalUIColor);
         banishmentText.color = Color.white; // ”’F‚É•ÏX
         this.gameObject.SetActive(true);
-        if (GameManager.instance.playerCharacter.influence.characterList.Count == 1)
+        if (GameMain.instance.playerCharacter.influence.characterList.Count == 1)
         {
             banishmentText.color = new Color32(122, 122, 122, 255);
         }

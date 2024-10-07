@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static GameManager;
-
 public class Character4UI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI CharacterNameText;//–¼‘O
@@ -53,7 +51,7 @@ public class Character4UI : MonoBehaviour
         CharacterRankText.text = character.characterModel.rank.ToString();
         CharacterFameText.text = character.characterModel.fame.ToString();
         CharacterAmbitionText.text = character.characterModel.ambition.ToString();
-        if (character.characterModel.isLord == true || character.influence.influenceName == "NoneInfluence" || character == GameManager.instance.playerCharacter)
+        if (character.characterModel.isLord == true || character.influence.influenceName == "NoneInfluence" || character == GameMain.instance.playerCharacter)
         {
             CharacterLoyaltyText.text = "--";
         }

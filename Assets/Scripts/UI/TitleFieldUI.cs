@@ -142,21 +142,21 @@ public class TitleFieldUI : MonoBehaviour
     public void ShowChangeLordTurnText()
     {
         this.gameObject.SetActive(true);
-        titleFieldText.text = "     " + GameManager.instance.turnCount + "期";
+        titleFieldText.text = "     " + GameMain.instance.turnCount + "期";
         titleFieldSubText.text = "国家フェーズ";
     }
 
     public void ShowChangePersonalTurnText()
     {
         this.gameObject.SetActive(true);
-        titleFieldText.text = "     " + GameManager.instance.turnCount + "期";
+        titleFieldText.text = "     " + GameMain.instance.turnCount + "期";
         titleFieldSubText.text = "個人フェーズ";
     }
 
     public void ShowChangeBattleTurnText()
     {
         this.gameObject.SetActive(true);
-        titleFieldText.text = "     " + GameManager.instance.turnCount + "期";
+        titleFieldText.text = "     " + GameMain.instance.turnCount + "期";
         titleFieldSubText.text = "戦闘フェーズ";
     }
 

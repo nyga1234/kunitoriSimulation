@@ -52,7 +52,7 @@ public class BattleUI : MonoBehaviour
         AttackButton.transform.position = attackButtonTransform.position;
         RetreatButton.transform.position = defenceButtonTransform.position;
 
-        if (defenderCharacter == GameManager.instance.playerCharacter)
+        if (defenderCharacter == GameMain.instance.playerCharacter)
         {
             AttackButton.transform.position = defenceButtonTransform.position;
             RetreatButton.transform.position = attackButtonTransform.position;

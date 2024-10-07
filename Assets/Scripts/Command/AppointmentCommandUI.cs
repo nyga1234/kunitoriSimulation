@@ -8,7 +8,7 @@ public class AppointmentCommandUI : MonoBehaviour
 {
     private Color originalColor; // Œ³‚Ì”wŒiF‚ğ•Û‚·‚é•Ï”
     [SerializeField] TextMeshProUGUI appointmentText;
-    public GameManager gameManager;
+    public GameMain gameManager;
 
     void Start()
     {

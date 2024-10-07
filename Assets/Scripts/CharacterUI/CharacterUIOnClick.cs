@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.TextCore.Text;
-using static GameManager;
+using static GameMain;
 
 public class CharacterUIOnClick : MonoBehaviour
 {
-    public GameManager gameManager;
+    public GameMain gameManager;
     public BattleManager battleManager;
     //public InflueneceManager influenceManager;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
@@ -38,14 +38,14 @@ public class CharacterUIOnClick : MonoBehaviour
         if (yesNoUI.IsYes())
         {
             clickedCharacter.characterModel.isPlayerCharacter = true;
-            GameManager.instance.playerCharacter = clickedCharacter;
+            GameMain.instance.playerCharacter = clickedCharacter;
 
             characterIndexMenu.gameObject.SetActive(false);
             characterIndexUI.HideCharacterIndexUI();
             characterDetailUI.gameObject.SetActive(false);
 
-            GameManager.instance.phase = Phase.SetupPhase;
-            GameManager.instance.PhaseCalc();
+            GameMain.instance.phase = Phase.SetupPhase;
+            GameMain.instance.PhaseCalc();
         }
         else
         {
@@ -92,7 +92,7 @@ public class CharacterUIOnClick : MonoBehaviour
             dialogueUI.ShowSuccessBanishmentUI();
             yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
 
-            GameManager.instance.LeaveInfluence(clickedCharacter);
+            GameMain.instance.LeaveInfluence(clickedCharacter);
 
             characterIndexMenu.gameObject.SetActive(false);
             characterIndexUI.HideCharacterIndexUI();
@@ -102,7 +102,7 @@ public class CharacterUIOnClick : MonoBehaviour
         }
         else
         {
-            characterIndexUI.ShowCharacterIndexUI(GameManager.instance.playerCharacter.influence.characterList);
+            characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
         }
     }
 
@@ -115,9 +115,9 @@ public class CharacterUIOnClick : MonoBehaviour
 
         if (yesNoUI.IsYes())
         {
-            GameManager.instance.step = Step.Battle;
+            GameMain.instance.step = Step.Battle;
             HideCharacterIndex();
-            if (clickedCharacter == GameManager.instance.playerCharacter)
+            if (clickedCharacter == GameMain.instance.playerCharacter)
             {
                 battleUI.ShowBattleUI(battleManager.attackerCharacter, clickedCharacter, territoryManager.territory);
                 battleManager.StartBattle(battleManager.attackerCharacter, clickedCharacter);
@@ -142,10 +142,10 @@ public class CharacterUIOnClick : MonoBehaviour
 
         if (yesNoUI.IsYes())
         {
-            GameManager.instance.step = Step.Battle;
+            GameMain.instance.step = Step.Battle;
             HideCharacterIndex();
 
-            if (clickedCharacter == GameManager.instance.playerCharacter)
+            if (clickedCharacter == GameMain.instance.playerCharacter)
             {
                 battleUI.ShowBattleUI(clickedCharacter, defenceCharacter, territoryManager.territory);
                 battleManager.StartBattle(clickedCharacter, defenceCharacter);
@@ -157,7 +157,7 @@ public class CharacterUIOnClick : MonoBehaviour
         }
         else
         {
-            characterIndexUI.ShowCharacterIndexUI(GameManager.instance.playerCharacter.influence.characterList);
+            characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
         }
     }
 
@@ -179,19 +179,19 @@ public class CharacterUIOnClick : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             //キャラクター選択ステップ
-            if (GameManager.instance.step == Step.Choice)
+            if (GameMain.instance.step == Step.Choice)
             {
                 clickedFlag = true;
                 StartCoroutine(WaitForSelectCharacter());
             }
             //探索ステップ
-            if (GameManager.instance.step == Step.Search)
+            if (GameMain.instance.step == Step.Search)
             {
                 clickedFlag = true;
                 StartCoroutine(WaitForSearchCharacter());
             }
             //任命ステップ
-            else if (GameManager.instance.step == Step.Appointment)
+            else if (GameMain.instance.step == Step.Appointment)
             {
                 // クリックされたキャラクターの身分を取得
                 Rank clickedRank = clickedCharacter.characterModel.rank;
@@ -218,11 +218,11 @@ public class CharacterUIOnClick : MonoBehaviour
                 // キャラクターリストを身分の高い順にソート
                 clickedCharacter.influence.SortCharacterByRank(clickedCharacter.influence.characterList);
                 //UI更新
-                characterIndexUI.ShowCharacterIndexUI(GameManager.instance.playerCharacter.influence.characterList);
+                characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
                 characterDetailUI.ShowCharacterDetailUI(clickedCharacter);
             }
             //追放ステップ
-            else if (GameManager.instance.step == Step.Banishment)
+            else if (GameMain.instance.step == Step.Banishment)
             {
                 if (clickedCharacter.characterModel.isLord != true)
                 {
@@ -236,10 +236,10 @@ public class CharacterUIOnClick : MonoBehaviour
                 }
             }
             //戦闘ステップ
-            else if (GameManager.instance.step == Step.Attack || GameManager.instance.step == Step.Battle)
+            else if (GameMain.instance.step == Step.Attack || GameMain.instance.step == Step.Battle)
             {
                 //プレイヤー勢力が防衛側の場合
-                if (GameManager.instance.defenceFlag == true)
+                if (GameMain.instance.defenceFlag == true)
                 {
                     if (clickedCharacter.characterModel.isAttackable == true)
                     {

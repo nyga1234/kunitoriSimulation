@@ -28,7 +28,7 @@ public class CharacterController : MonoBehaviour
     // キャラクターを勢力から除外するメソッド
     public void RemoveInfluence()
     {
-        SetInfluence(GameManager.instance.noneInfluence);
+        SetInfluence(GameMain.instance.noneInfluence);
     }
 
     public void AddSoliders(List<SoliderController> soliderList)
