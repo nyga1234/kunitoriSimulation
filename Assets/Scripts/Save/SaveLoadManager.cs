@@ -21,7 +21,7 @@ public class SaveLoadManager : MonoBehaviour
         {
             string json = File.ReadAllText(savePath);
             GameState gameState = JsonUtility.FromJson<GameState>(json);
-            Debug.Log("Game Loaded: " + savePath);
+            //Debug.Log("Game Loaded: " + savePath);
             return gameState;
         }
         else

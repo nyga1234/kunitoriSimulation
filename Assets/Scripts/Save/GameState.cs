@@ -11,11 +11,14 @@ public class GameState
     public List<CharacterData> characters;
     public int playerCharacterId;
     public List<InfluenceData> influences;
+    //public CharacterController playerCharacter;
 }
 
 [System.Serializable]
 public class CharacterData
 {
+    public Sprite icon;
+    public string name;
     public int characterId;
     public int force;
     public int inteli;

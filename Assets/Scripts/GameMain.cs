@@ -116,16 +116,17 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     private void Start()
     {
         Initialize();
-        if (!SaveLoadManager.HasSaveData(1))
-        {
-            Debug.Log("ゲームを最初から開始します");
-            StartGame();
-        }
-        else
-        {
-            Debug.Log("ゲームを途中から開始します");
-            LoadGame(1);
-        }
+        StartGame();
+        //if (!SaveLoadManager.HasSaveData(1))
+        //{
+        //    Debug.Log("ゲームを最初から開始します");
+        //    StartGame();
+        //}
+        //else
+        //{
+        //    Debug.Log("ゲームを途中から開始します");
+        //    LoadGame(1);
+        //}
     }
 
     private void Update()
@@ -1401,6 +1402,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             characters = new List<CharacterData>(),
             playerCharacterId = playerCharacter.characterModel.characterId,
             influences = new List<InfluenceData>(),
+            //playerCharacter = playerCharacter,
         };
 
         // キャラクターデータの収集
@@ -1408,6 +1410,8 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         {
             CharacterData charData = new CharacterData
             {
+                icon = character.characterModel.icon,
+                name = character.characterModel.name,
                 characterId = character.characterModel.characterId,
                 force = character.characterModel.force,
                 inteli = character.characterModel.inteli,
@@ -1470,7 +1474,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                     influenceName = territory.influence != null ? territory.influence.influenceName : null,
                 };
                 influenceData.territories.Add(territoryData);
-                Debug.Log(territoryData.influenceName);
+                //Debug.Log(territoryData.influenceName);
             }
             gameState.influences.Add(influenceData);
         }
@@ -1492,6 +1496,8 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             {
                 CharacterController character = characterList.Find(c => c.characterModel.characterId == charData.characterId);
 
+                character.characterModel.icon = charData.icon;
+                character.characterModel.name = charData.name;
                 character.characterModel.force = charData.force;
                 character.characterModel.inteli = charData.inteli;
                 character.characterModel.tact = charData.tact;

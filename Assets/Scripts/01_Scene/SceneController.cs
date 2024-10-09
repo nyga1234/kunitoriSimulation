@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UniRx;
 using Cysharp.Threading.Tasks;
-using Unity.VisualScripting;
 
 public partial class SceneController : SingletonMonoBehaviour<SceneController>
 {

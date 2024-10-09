@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 public class ConfirmOverwriteUI : MonoBehaviour
 {
@@ -29,4 +30,31 @@ public class ConfirmOverwriteUI : MonoBehaviour
         onConfirm = confirmAction; // OK時に実行するアクションを設定
         this.gameObject.SetActive(true); // ダイアログを表示
     }
+
+    //// 上書きを確認するダイアログを表示して、結果を返す非同期メソッド
+    //public async UniTask<bool> ShowAsync()
+    //{
+    //    this.gameObject.SetActive(true); // ダイアログを表示
+
+    //    bool isConfirmed = false;
+
+    //    // OKボタンのクリックを待つ
+    //    okButton.onClick.AddListener(() =>
+    //    {
+    //        isConfirmed = true;
+    //        this.gameObject.SetActive(false); // ダイアログを閉じる
+    //    });
+
+    //    // キャンセルボタンのクリックを待つ
+    //    cancelButton.onClick.AddListener(() =>
+    //    {
+    //        isConfirmed = false;
+    //        this.gameObject.SetActive(false); // ダイアログを閉じる
+    //    });
+
+    //    // ダイアログが閉じるまで待機
+    //    await UniTask.WaitUntil(() => !this.gameObject.activeSelf);
+
+    //    return isConfirmed; // OKが押されたかどうかを返す
+    //}
 }
