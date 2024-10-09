@@ -138,7 +138,7 @@ public class SaveLoadUI : MonoBehaviour
         foreach (var soldierData in soldierList)
         {
             var soldierObject = Instantiate(imageSoliderPrefab, field);
-            soldierObject.GetComponent<ShowSaveViewSoldier>().ShowSoldierUI(soldierData.icon);
+            soldierObject.GetComponent<SoldierImageView>().ShowSoldierImage(soldierData.icon, true);
         }
     }
 

@@ -10,14 +10,14 @@ public class SoliderController : MonoBehaviour
     SoliderView soliderView;
     ImageSoliderView imageSoliderView;
     PersonalSoliderView personalSoliderView;
-    BattleSoliderView battleSoliderView;
+    //BattleSoliderView battleSoliderView;
 
     private void Awake()
     {
         soliderView = GetComponent<SoliderView>();
         imageSoliderView = GetComponent<ImageSoliderView>();
         personalSoliderView = GetComponent<PersonalSoliderView>();
-        battleSoliderView = GetComponent<BattleSoliderView>();
+        //battleSoliderView = GetComponent<BattleSoliderView>();
     }
 
     public void Init(int soliderId, int soliderUniqueId)
@@ -40,28 +40,8 @@ public class SoliderController : MonoBehaviour
         personalSoliderView.ShowPersonalSoliderUI(solider.soliderModel);
     }
 
-    public void ShowBattleDetailSoliderUI(SoliderController solider, bool Attack)
-    {
-        battleSoliderView.ShowBattleSoliderUI(solider.soliderModel, Attack);
-    }
-
-    //public void CheckAlive()
+    //public void ShowBattleDetailSoliderUI(SoliderController solider, bool Attack)
     //{
-    //    if (soliderModel.isAlive)
-    //    {
-    //        soliderView.ShowSoliderUI(soliderModel);
-    //    }
-    //    else
-    //    {
-    //        Destroy(this.gameObject);
-    //    }
+    //    battleSoliderView.ShowBattleSoliderUI(solider.soliderModel, Attack);
     //}
-
-    /*
-    // キャラクターを設定するメソッド
-    public void SetCharacter(CharacterController character)
-    {
-        this.character = character;
-    }
-    */
 }

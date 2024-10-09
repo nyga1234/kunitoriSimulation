@@ -23,7 +23,8 @@ public class BattleDetailUI : MonoBehaviour
 
     [SerializeField] Transform AttackerSoliderListField;
     [SerializeField] Transform DefenderSoliderListField;
-    [SerializeField] SoliderController battleSolidefPrefab;
+    [SerializeField] GameObject battleSolidefPrefab;
+    //[SerializeField] SoliderController battleSolidefPrefab;
 
     int attackerSoliderHPSum;
     int defenderSoliderHPSum;
@@ -80,8 +81,10 @@ public class BattleDetailUI : MonoBehaviour
 
     void ShowSolider(SoliderController solider, Transform field, bool Attack)
     {
-        SoliderController battleSolider = Instantiate(battleSolidefPrefab, field, false);
-        battleSolider.ShowBattleDetailSoliderUI(solider, Attack);
+        //SoliderController battleSolider = Instantiate(battleSolidefPrefab, field, false);
+        //battleSolider.ShowBattleDetailSoliderUI(solider, Attack);
+        GameObject soldierObject = Instantiate(battleSolidefPrefab, field, false);
+        soldierObject.GetComponent<SoldierImageView>().ShowSoldierImage(solider.soliderModel.icon, Attack);
     }
 
     public void ShowLandformInformationUI()
