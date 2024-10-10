@@ -138,11 +138,6 @@ public class Influence : MonoBehaviour
         {
             territoryImage.sprite = influenceImage;
         }
-        //SpriteRenderer territorySpriteRenderer = territory.GetComponent<SpriteRenderer>();
-        //if (territorySpriteRenderer != null && influenceImage != null)
-        //{
-        //    territorySpriteRenderer.sprite = influenceImage;
-        //}
     }
 
     // Territoryを勢力から除外するメソッド
@@ -195,11 +190,6 @@ public class Influence : MonoBehaviour
                 character.CalcLoyalty();
             }
         }
-        ////キャラクターの忠誠を設定
-        //if (character.influence.influenceName != "NoneInfluence" && character.characterModel.isLord != true)
-        //{
-        //    character.CalcLoyalty();
-        //}
     }
 
     // キャラクターを勢力から除外するメソッド
@@ -210,55 +200,6 @@ public class Influence : MonoBehaviour
         //character.RemoveInfluence();
     }
 
-    //public int CalcTerritorySum(Influence influence)
-    //{
-    //    //this.territorySum = territoryList.Count(territory => territory.influence.InfluenceType == influenceType);
-    //    this.territorySum = influence.territoryList.Count;
-    //    return this.territorySum;
-    //}
-
-    //public void CalcGoldSum(List<CharacterController> characterList)
-    //{
-    //    int goldSum = 0;
-
-    //    foreach (CharacterController character in characterList)
-    //    {
-    //        // 各キャラクターの所持金を合計に加算
-    //        goldSum += character.characterModel.gold;
-    //    }
-    //    this.goldSum = goldSum;
-    //}
-
-    //public void CalcCharacterSum(List<CharacterController> characterList)
-    //{
-    //    this.characterSum = characterList.Count;
-    //}
-
-    //public void CalcSoliderSum(List<CharacterController> characterList)
-    //{
-    //    int soliderSum = 0;
-
-    //    foreach (CharacterController character in characterList)
-    //    {
-    //        soliderSum += character.soliderList.Count;
-    //    }
-    //    this.soliderSum = soliderSum;
-    //}
-
-    //public void CalcForceSum(List<CharacterController> characterList)
-    //{
-    //    int forceSum = 0;
-
-    //    foreach(CharacterController character in characterList)
-    //    {
-    //        foreach (SoliderController solider in character.soliderList)
-    //        {
-    //            forceSum += solider.soliderModel.force;
-    //        }
-    //    }
-    //    this.forceSum = forceSum;
-    //}
-
     public void UpdateSums(Influence influence)
     {
         this.territorySum = influence.territoryList.Count;
@@ -267,12 +208,4 @@ public class Influence : MonoBehaviour
         this.soliderSum = influence.characterList.Sum(c => c.soliderList.Count);
         this.forceSum = influence.characterList.Sum(c => c.soliderList.Sum(s => s.soliderModel.force));
     }
-
-    //[CreateAssetMenu(fileName = "InfluenceData", menuName = "Game/InfluenceData")]
-    //public class InfluenceData : ScriptableObject
-    //{
-    //    public string influenceName;
-    //    public Sprite influenceSprite;
-    //    public List<CharacterController> characters;
-    //}
 }

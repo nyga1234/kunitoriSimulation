@@ -4,10 +4,6 @@ using UnityEngine;
 using System.Linq;
 using Random = UnityEngine.Random;
 using UnityEngine.UI;
-using UnityEngine.TextCore.Text;
-using static UnityEngine.ParticleSystem;
-using System;
-using static Territory;
 
 public class GameMain : SingletonMonoBehaviour<GameMain>
 {
@@ -365,10 +361,9 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     {
         // キャラクターの生成
         CharacterController newCharacter = Instantiate(characterPrefab, Character);
+        //CharacterController newCharacter = new GameObject().AddComponent<CharacterController>();
         newCharacter.gameObject.SetActive(false);
         newCharacter.Init(characterId);
-        //newCharacter.characterModel.rank = rank;
-        //生成したキャラクターをキャラクターリストに追加
         characterList.Add(newCharacter);
         return newCharacter;
     }
