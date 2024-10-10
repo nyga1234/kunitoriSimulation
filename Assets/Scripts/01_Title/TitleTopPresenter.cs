@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UniRx;
+using UnityEditor.VersionControl;
 
 public class TitleTopPresenter : MonoBehaviour
 {
@@ -22,20 +23,32 @@ public class TitleTopPresenter : MonoBehaviour
     {
         #region View to Model
         newGameButton.onClick.AsObservable().Subscribe(_ => GameStart());
-        loadGameButton.onClick.AddListener(() => SceneManager.LoadScene("UISaveLoad"));
+        loadGameButton.onClick.AsObservable().Subscribe(async async => await SceneController.LoadAsync("UISaveLoad"));
         endGameButton.onClick.AsObservable().Subscribe(_ => GameEnd());
         #endregion  
+
+        SceneController.instance.Stack.Add("Title");
     }
 
-    public void GameStart()
+    private void OnDestroy()
+    {
+        SceneController.instance.Stack.Remove("Title");   
+    }
+
+    private void GameStart()
     {
         //await SceneController.LoadAsync(nameof(SaveLoadUI));
         
         GameManager.instance.ChangeScene("Title", "GameMain");
     }
 
-    public void GameEnd()
+    private void GameEnd()
     {
         Application.Quit();
     }
+
+    //private async void OpneSaveLoadWindow()
+    //{
+    //    await SceneController.LoadAsync("UISaveLoad");
+    //}
 }

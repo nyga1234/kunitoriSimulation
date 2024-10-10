@@ -113,6 +113,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     {
         Initialize();
         StartGame();
+        SceneController.instance.Stack.Add("GameMain");
         //if (!SaveLoadManager.HasSaveData(1))
         //{
         //    Debug.Log("ゲームを最初から開始します");
@@ -123,6 +124,11 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         //    Debug.Log("ゲームを途中から開始します");
         //    LoadGame(1);
         //}
+    }
+
+    private void OnDestroy()
+    {
+        SceneController.instance.Stack.Remove("GameMain");
     }
 
     private void Update()
