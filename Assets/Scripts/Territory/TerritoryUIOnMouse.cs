@@ -266,11 +266,12 @@ public class TerritoryUIOnMouse : MonoBehaviour
 
     public void InfluenceCalcSum(Influence influence)
     {
-        influence.CalcTerritorySum(influence);
-        influence.CalcGoldSum(influence.characterList);
-        influence.CalcCharacterSum(influence.characterList);
-        influence.CalcSoliderSum(influence.characterList);
-        influence.CalcForceSum(influence.characterList);
+        //influence.CalcTerritorySum(influence);
+        //influence.CalcGoldSum(influence.characterList);
+        //influence.CalcCharacterSum(influence.characterList);
+        //influence.CalcSoliderSum(influence.characterList);
+        //influence.CalcForceSum(influence.characterList);
+        influence.UpdateSums(influence);
     }
 
     public void ChangeTerritoryByBattle(Influence influence)
