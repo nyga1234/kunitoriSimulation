@@ -16,7 +16,8 @@ public class CharacterDetailUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI CharacterLoyaltyText;
 
     [SerializeField] Transform SoliderListField;
-    [SerializeField] SoliderController imageSolidefPrefab;
+    //[SerializeField] SoliderController imageSolidefPrefab;
+    [SerializeField] GameObject imageSolidefPrefab;
 
     public void ShowCharacterDetailUI(CharacterController character)
     {
@@ -57,8 +58,11 @@ public class CharacterDetailUI : MonoBehaviour
 
     void ShowSolider(SoliderController solider, Transform field)
     {
-        SoliderController imagelSolider = Instantiate(imageSolidefPrefab, field, false);
-        imagelSolider.ShowImageSoliderUI(solider);
+        //SoliderController imagelSolider = Instantiate(imageSolidefPrefab, field, false);
+        //imagelSolider.ShowImageSoliderUI(solider);
+        var soldierObject = Instantiate(imageSolidefPrefab, field);
+        soldierObject.GetComponent<SoldierImageView>().
+            ShowSoldierHP(solider.soliderModel.icon, solider.soliderModel.hp.ToString());
     }
 
     public void HideCharacterDetailUI()

@@ -12,8 +12,10 @@ public class BattleManager : MonoBehaviour
     [SerializeField] TerritoryManager territoryManager;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] Transform AttackerSoliderField, DefenderSoliderField;
-    [SerializeField] SoliderController attackSoliderPrefab;
-    [SerializeField] SoliderController defenceSoliderPrefab;
+    //[SerializeField] SoliderController attackSoliderPrefab;
+    //[SerializeField] SoliderController defenceSoliderPrefab;
+    [SerializeField] GameObject attackSoliderPrefab;
+    [SerializeField] GameObject defenceSoliderPrefab;
     [SerializeField] BattleDetailUI battleDetailUI;
     [SerializeField] BattleUI battleUI;
     [SerializeField] GameObject mapField;
@@ -72,13 +74,25 @@ public class BattleManager : MonoBehaviour
     {
         if (Attack)
         {
-            SoliderController battleSolider = Instantiate(attackSoliderPrefab, field, false);
-            battleSolider.ShowBattleSoliderUI(solider, Attack);
+            var soldierObject = Instantiate(attackSoliderPrefab, field);
+            soldierObject.GetComponent<SoldierImageView>().
+                ShowBattleSoldier(
+                solider.soliderModel.icon,
+                solider.soliderModel.hp,
+                solider.soliderModel.maxHP);
+            //SoliderController battleSolider = Instantiate(attackSoliderPrefab, field, false);
+            //battleSolider.ShowBattleSoliderUI(solider, Attack);
         }
         else
         {
-            SoliderController battleSolider = Instantiate(defenceSoliderPrefab, field, false);
-            battleSolider.ShowBattleSoliderUI(solider, Attack);
+            var soldierObject = Instantiate(defenceSoliderPrefab, field);
+            soldierObject.GetComponent<SoldierImageView>().
+                ShowBattleSoldier(
+                solider.soliderModel.icon,
+                solider.soliderModel.hp,
+                solider.soliderModel.maxHP);
+            //SoliderController battleSolider = Instantiate(defenceSoliderPrefab, field, false);
+            //battleSolider.ShowBattleSoliderUI(solider, Attack);
         }
     }
 

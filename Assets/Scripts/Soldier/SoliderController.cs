@@ -7,16 +7,16 @@ public class SoliderController : MonoBehaviour
     public SoliderModel soliderModel;
     public CharacterController character;
 
-    SoliderView soliderView;
-    ImageSoliderView imageSoliderView;
-    PersonalSoliderView personalSoliderView;
+    //SoliderView soliderView;
+    //ImageSoliderView imageSoliderView;
+    //PersonalSoliderView personalSoliderView;
     //BattleSoliderView battleSoliderView;
 
     private void Awake()
     {
-        soliderView = GetComponent<SoliderView>();
-        imageSoliderView = GetComponent<ImageSoliderView>();
-        personalSoliderView = GetComponent<PersonalSoliderView>();
+        //soliderView = GetComponent<SoliderView>();
+        //imageSoliderView = GetComponent<ImageSoliderView>();
+        //personalSoliderView = GetComponent<PersonalSoliderView>();
         //battleSoliderView = GetComponent<BattleSoliderView>();
     }
 
@@ -25,20 +25,20 @@ public class SoliderController : MonoBehaviour
         soliderModel = new SoliderModel(soliderId, soliderUniqueId);
     }
 
-    public void ShowBattleSoliderUI(SoliderController solider, bool Attack)
-    {
-        soliderView.ShowSoliderUI(solider.soliderModel, Attack);
-    }
+    //public void ShowBattleSoliderUI(SoliderController solider, bool Attack)
+    //{
+    //    soliderView.ShowSoliderUI(solider.soliderModel);
+    //}
 
-    public void ShowImageSoliderUI(SoliderController solider)
-    {
-        imageSoliderView.ShowImageSoliderUI(solider.soliderModel);
-    }
+    //public void ShowImageSoliderUI(SoliderController solider)
+    //{
+    //    imageSoliderView.ShowImageSoliderUI(solider.soliderModel);
+    //}
 
-    public void ShowPersonalSoliderUI(SoliderController solider)
-    {
-        personalSoliderView.ShowPersonalSoliderUI(solider.soliderModel);
-    }
+    //public void ShowPersonalSoliderUI(SoliderController solider)
+    //{
+    //    personalSoliderView.ShowPersonalSoliderUI(solider.soliderModel);
+    //}
 
     //public void ShowBattleDetailSoliderUI(SoliderController solider, bool Attack)
     //{

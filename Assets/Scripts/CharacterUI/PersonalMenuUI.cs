@@ -29,7 +29,8 @@ public class PersonalMenuUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI rebellionText;
 
     [SerializeField] Transform SoliderListField;
-    [SerializeField] SoliderController personalSolidefPrefab;
+    [SerializeField] GameObject personalSolidefPrefab;
+    //[SerializeField] SoliderController personalSolidefPrefab;
 
     public void ShowPersonalMenuUI(CharacterController character)
     {
@@ -102,8 +103,14 @@ public class PersonalMenuUI : MonoBehaviour
 
     void ShowSolider(SoliderController solider, Transform field)
     {
-        SoliderController personalSolider = Instantiate(personalSolidefPrefab, field, false);
-        personalSolider.ShowPersonalSoliderUI(solider);
+        var soldierObject = Instantiate(personalSolidefPrefab, field);
+        soldierObject.GetComponent<SoldierImageView>().
+            ShowSoldierStatus(
+            solider.soliderModel.icon, 
+            solider.soliderModel.hp.ToString(),
+            solider.soliderModel.lv.ToString());
+        //SoliderController personalSolider = Instantiate(personalSolidefPrefab, field, false);
+        //personalSolider.ShowPersonalSoliderUI(solider);
     }
 
     public void HidePersonalMenuUI()
