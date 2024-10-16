@@ -20,7 +20,7 @@ public class FunctionUI : MonoBehaviour
         saveButton.onClick.AddListener(() =>
         {
             saveLoadUI.gameObject.SetActive(true);  // SaveLoadUIを表示
-            saveLoadUI.SetMode(true);  // セーブモードを設定
+            SaveLoadManager.IsSaving = true;
             this.gameObject.SetActive(false);
         });
 
@@ -28,7 +28,7 @@ public class FunctionUI : MonoBehaviour
         loadButton.onClick.AddListener(() =>
         {
             saveLoadUI.gameObject.SetActive(true); // SaveLoadUIを表示
-            saveLoadUI.SetMode(false); // ロードモードを設定
+            SaveLoadManager.IsSaving = false;
             this.gameObject.SetActive(false);
         });
         //閉じる

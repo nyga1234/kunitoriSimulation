@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class SaveLoadManager : MonoBehaviour
 {
+    private static bool isSaving = true; // セーブかロードかを判断するフラグ
+    // プロパティを公開
+    public  static bool IsSaving { get { return isSaving; } set { isSaving = value; }}
+
     private static string GetSavePath(int slot) => Application.persistentDataPath + $"/gamestate_slot{slot}.json";
 
     public static void SaveGame(GameState gameState, int slot)
@@ -35,4 +39,10 @@ public class SaveLoadManager : MonoBehaviour
     {
         return File.Exists(GetSavePath(slot));
     }
+
+    //// セーブかロードかのモードをセット
+    //public void SetMode(bool saving)
+    //{
+    //    isSaving = saving;
+    //}
 }

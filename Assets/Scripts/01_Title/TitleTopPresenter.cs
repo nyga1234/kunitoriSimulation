@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UniRx;
 using UnityEditor.VersionControl;
+using System;
 
 public class TitleTopPresenter : MonoBehaviour
 {
@@ -23,7 +24,14 @@ public class TitleTopPresenter : MonoBehaviour
     {
         #region View to Model
         newGameButton.onClick.AsObservable().Subscribe(_ => GameStart());
-        loadGameButton.onClick.AsObservable().Subscribe(async async => await SceneController.LoadAsync("UISaveLoad"));
+
+        //loadGameButton.onClick.AsObservable().Subscribe(async async => await SceneController.LoadAsync("UISaveLoad"));
+        loadGameButton.onClick.AsObservable().Subscribe(async _ =>
+        {
+            SaveLoadManager.IsSaving = false;
+            await SceneController.LoadAsync("UISaveLoad");
+        });
+
         endGameButton.onClick.AsObservable().Subscribe(_ => GameEnd());
         #endregion  
 

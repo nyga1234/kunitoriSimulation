@@ -1,9 +1,10 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
+using UniRx;
 using UnityEngine.UI;
 
 public class SaveLoadUI : MonoBehaviour
@@ -18,7 +19,7 @@ public class SaveLoadUI : MonoBehaviour
     
     [SerializeField] private ConfirmOverwriteUI confirmOverwriteUI;
 
-    private bool isSaving = true; // セーブかロードかを判断するフラグ
+    //private bool isSaving = true; // セーブかロードかを判断するフラグ
     private List<GameObject> slotInstances = new List<GameObject>(); // 動的に生成されたスロットのインスタンス
 
     private int maxSlots = 3; // スロットの数（変更可能）
@@ -28,8 +29,7 @@ public class SaveLoadUI : MonoBehaviour
         GenerateSlots();// スロットの生成
 
         maskButton.onClick.AddListener(() => this.gameObject.SetActive(false));
-
-        closeButton.onClick.AddListener(() => this.gameObject.SetActive(false));
+        closeButton.onClick.AsObservable().Subscribe(_ => { UniTask uniTask = OnPressClose(); });
 
         UpdateSlotUI();
 
@@ -53,12 +53,12 @@ public class SaveLoadUI : MonoBehaviour
             saveSlotView.GetComponent<Button>().onClick.AddListener(() => OnSlotButtonClick(capturedIndex));
         }
 
-        closeButton.transform.SetAsLastSibling();// closeButtonを最後に移動
+        closeButton.transform.SetAsLastSibling();
     }
 
     private void OnSlotButtonClick(int slot)
     {
-        if (isSaving)
+        if (SaveLoadManager.IsSaving)
         {
             if (SaveLoadManager.HasSaveData(slot))
             {
@@ -70,14 +70,12 @@ public class SaveLoadUI : MonoBehaviour
             }
             else
             {
-                // セーブ処理
-                GameMain.instance.SaveGame(slot);
+                GameMain.instance.SaveGame(slot);// セーブ処理
             }
         }
         else
         {
-            // ロード処理
-            GameMain.instance.LoadGame(slot);
+            GameManager.instance.ChangeScene("Title", "GameMain"); // ロード処理
         }
 
         // UIを更新して表示する
@@ -123,12 +121,6 @@ public class SaveLoadUI : MonoBehaviour
         return $"{turnCount} : {rank} {name}";
     }
 
-    // セーブかロードかのモードをセット
-    public void SetMode(bool saving)
-    {
-        isSaving = saving;
-    }
-
     void ShowSoldierList(List<SoliderData> soldierList, Transform field)
     {
         foreach (Transform child in field)
@@ -142,4 +134,6 @@ public class SaveLoadUI : MonoBehaviour
             soldierObject.GetComponent<SoldierImageView>().ShowSoldierImage(soldierData.icon, true);
         }
     }
+
+    public async UniTask OnPressClose() => await SceneController.UnloadAsync("UISaveLoad");
 }

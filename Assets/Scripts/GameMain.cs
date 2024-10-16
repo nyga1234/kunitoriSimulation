@@ -48,6 +48,8 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     public List<Territory> allTerritoryList;
     public Influence noneInfluence;
 
+    [SerializeField] CharacterController serugius2;
+
     public CharacterController battleTurnCharacter;
 
     public bool defenceFlag;
@@ -1403,7 +1405,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             characters = new List<CharacterData>(),
             playerCharacterId = playerCharacter.characterModel.characterId,
             influences = new List<InfluenceData>(),
-            //playerCharacter = playerCharacter,
         };
 
         // キャラクターデータの収集
