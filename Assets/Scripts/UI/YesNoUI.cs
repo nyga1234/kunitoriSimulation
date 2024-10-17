@@ -51,7 +51,7 @@ public class YesNoUI : MonoBehaviour
         isYesNoVisible = true;
         Yes = false;
         this.gameObject.SetActive(true);
-        YesNoText.text = lordCharacter.characterModel.name + "軍から加入依頼です。加入しますか？";
+        YesNoText.text = lordCharacter.name + "軍から加入依頼です。加入しますか？";
     }
 
     public void ShowBanishmentYesNoUI()

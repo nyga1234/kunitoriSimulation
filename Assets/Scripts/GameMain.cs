@@ -48,8 +48,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     public List<Territory> allTerritoryList;
     public Influence noneInfluence;
 
-    [SerializeField] CharacterController serugius2;
-
     public CharacterController battleTurnCharacter;
 
     public bool defenceFlag;
@@ -143,45 +141,32 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
     private void Initialize()
     {
-        // キャラクターの生成
-        //領主
-        CharacterController serugius = CreateCharacter(1);
-        CharacterController victor = CreateCharacter(2);
-        CharacterController arisia = CreateCharacter(3);
-        CharacterController rourenthius = CreateCharacter(4);
-        CharacterController feodoora = CreateCharacter(25);
-        //領主配下
-        CharacterController eresuthia = CreateCharacter(5);
-        CharacterController renius = CreateCharacter(6);
-        CharacterController peruseus = CreateCharacter(7);
-        CharacterController amerieru = CreateCharacter(8);
-        CharacterController karisutaana = CreateCharacter(9);
-        CharacterController mariseruda = CreateCharacter(10);
-        CharacterController venethia = CreateCharacter(11);
-        CharacterController siguma = CreateCharacter(12);
-        CharacterController jovannni = CreateCharacter(26);
-        CharacterController simon = CreateCharacter(27);
-        //無所属
-        CharacterController sofuronia = CreateCharacter(13);
-        CharacterController ferisithi = CreateCharacter(14);
-        CharacterController rainnharuto = CreateCharacter(15);
-        CharacterController ferics = CreateCharacter(16);
-        CharacterController veronica = CreateCharacter(17);
-        CharacterController reo = CreateCharacter(18);
-        CharacterController marukus = CreateCharacter(19);
-        CharacterController reira = CreateCharacter(20);
-        CharacterController marissa = CreateCharacter(21);
-        CharacterController nataasya = CreateCharacter(22);
-        CharacterController iruma = CreateCharacter(23);
-        CharacterController riisya = CreateCharacter(24);
-        CharacterController akuserion = CreateCharacter(28);
-        CharacterController oriannna = CreateCharacter(29);
-        CharacterController garahaddo = CreateCharacter(30);
-        CharacterController aressandoro = CreateCharacter(31);
-        CharacterController dhionyusios = CreateCharacter(32);
-        CharacterController tadeus = CreateCharacter(33);
-        CharacterController siruvietto = CreateCharacter(34);
-        CharacterController ruben = CreateCharacter(35);
+        foreach (CharacterController character in characterList)
+        {
+            character.rank = 0;
+            character.fame = 0;
+            character.gold = 0;
+            character.loyalty = 0;
+            character.salary = 0;
+            character.isLord = false;
+            character.isPlayerCharacter = false;
+            character.isAttackable = true;
+            character.isBattle = false;
+            character.influence = null;
+            character.soliderList.Clear();
+            character.soliderForceSum = 0;
+        }
+
+        CharacterController serugius = characterList.Find(c => c.characterId == 1);
+        serugius.isLord = true;
+        CharacterController victor = characterList.Find(c => c.characterId == 2);
+        victor.isLord = true;
+        CharacterController arisia = characterList.Find(c => c.characterId == 3);
+        arisia.isLord = true;
+        CharacterController rourenthius = characterList.Find(c => c.characterId == 4);
+        rourenthius.isLord = true;
+        CharacterController feodoora = characterList.Find(c => c.characterId == 25);
+        feodoora.isLord = true;
 
         //勢力の生成
         // Resources.Loadを使用してスプライトを読み込む
@@ -198,7 +183,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         influenceList.Add(noneInfluence);
 
         //領主リストの取得
-        List<CharacterController> lordCharacterList = characterList.FindAll(character => character.characterModel.isLord);
+        List<CharacterController> lordCharacterList = characterList.FindAll(character => character.isLord);
 
         //領主に応じた勢力を作成
         foreach (CharacterController character in lordCharacterList)
@@ -235,49 +220,50 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         allTerritoryList = territoryGenerator.GenerateTerritory(initializeTerritoryList, influenceList);
 
         //領主
-        CharacterController serugius = characterList.Find(c => c.characterModel.characterId == 1);
-        CharacterController victor = characterList.Find(c => c.characterModel.characterId == 2);
-        CharacterController arisia = characterList.Find(c => c.characterModel.characterId == 3);
-        CharacterController rourenthius = characterList.Find(c => c.characterModel.characterId == 4);
-        CharacterController feodoora = characterList.Find(c => c.characterModel.characterId == 25);
+        CharacterController serugius = characterList.Find(c => c.characterId == 1);
+        CharacterController victor = characterList.Find(c => c.characterId == 2);
+        CharacterController arisia = characterList.Find(c => c.characterId == 3);
+        CharacterController rourenthius = characterList.Find(c => c.characterId == 4);
+        CharacterController feodoora = characterList.Find(c => c.characterId == 25);
         //領主配下
-        CharacterController eresuthia = characterList.Find(c => c.characterModel.characterId == 5);
-        CharacterController renius = characterList.Find(c => c.characterModel.characterId == 6);
-        CharacterController peruseus = characterList.Find(c => c.characterModel.characterId == 7);
-        CharacterController amerieru = characterList.Find(c => c.characterModel.characterId == 8);
-        CharacterController karisutaana = characterList.Find(c => c.characterModel.characterId == 9);
-        CharacterController mariseruda = characterList.Find(c => c.characterModel.characterId == 10);
-        CharacterController venethia = characterList.Find(c => c.characterModel.characterId == 11);
-        CharacterController siguma = characterList.Find(c => c.characterModel.characterId == 12);
-        CharacterController jovannni = characterList.Find(c => c.characterModel.characterId == 26);
-        CharacterController simon = characterList.Find(c => c.characterModel.characterId == 27);
+        CharacterController eresuthia = characterList.Find(c => c.characterId == 5);
+        CharacterController renius = characterList.Find(c => c.characterId == 6);
+        CharacterController peruseus = characterList.Find(c => c.characterId == 7);
+        CharacterController amerieru = characterList.Find(c => c.characterId == 8);
+        CharacterController karisutaana = characterList.Find(c => c.characterId == 9);
+        CharacterController mariseruda = characterList.Find(c => c.characterId == 10);
+        CharacterController venethia = characterList.Find(c => c.characterId == 11);
+        CharacterController siguma = characterList.Find(c => c.characterId == 12);
+        CharacterController jovannni = characterList.Find(c => c.characterId == 26);
+        CharacterController simon = characterList.Find(c => c.characterId == 27);
         //無所属
-        CharacterController sofuronia = characterList.Find(c => c.characterModel.characterId == 13);
-        CharacterController ferisithi = characterList.Find(c => c.characterModel.characterId == 14);
-        CharacterController rainnharuto = characterList.Find(c => c.characterModel.characterId == 15);
-        CharacterController ferics = characterList.Find(c => c.characterModel.characterId == 16);
-        CharacterController veronica = characterList.Find(c => c.characterModel.characterId == 17);
-        CharacterController reo = characterList.Find(c => c.characterModel.characterId == 18);
-        CharacterController marukus = characterList.Find(c => c.characterModel.characterId == 19);
-        CharacterController reira = characterList.Find(c => c.characterModel.characterId == 20);
-        CharacterController marissa = characterList.Find(c => c.characterModel.characterId == 21);
-        CharacterController nataasya = characterList.Find(c => c.characterModel.characterId == 22);
-        CharacterController iruma = characterList.Find(c => c.characterModel.characterId == 23);
-        CharacterController riisya = characterList.Find(c => c.characterModel.characterId == 24);
-        CharacterController oriannna = characterList.Find(c => c.characterModel.characterId == 29);
-        CharacterController garahaddo = characterList.Find(c => c.characterModel.characterId == 30);
-        CharacterController aressandoro = characterList.Find(c => c.characterModel.characterId == 31);
-        CharacterController akuserion = characterList.Find(c => c.characterModel.characterId == 28);
-        CharacterController dhionyusios = characterList.Find(c => c.characterModel.characterId == 32);
-        CharacterController tadeus = characterList.Find(c => c.characterModel.characterId == 33);
-        CharacterController siruvietto = characterList.Find(c => c.characterModel.characterId == 34);
-        CharacterController ruben = characterList.Find(c => c.characterModel.characterId == 35);
+        CharacterController sofuronia = characterList.Find(c => c.characterId == 13);
+        CharacterController ferisithi = characterList.Find(c => c.characterId == 14);
+        CharacterController rainnharuto = characterList.Find(c => c.characterId == 15);
+        CharacterController ferics = characterList.Find(c => c.characterId == 16);
+        CharacterController veronica = characterList.Find(c => c.characterId == 17);
+        CharacterController reo = characterList.Find(c => c.characterId == 18);
+        CharacterController marukus = characterList.Find(c => c.characterId == 19);
+        CharacterController reira = characterList.Find(c => c.characterId == 20);
+        CharacterController marissa = characterList.Find(c => c.characterId == 21);
+        CharacterController nataasya = characterList.Find(c => c.characterId == 22);
+        CharacterController iruma = characterList.Find(c => c.characterId == 23);
+        CharacterController riisya = characterList.Find(c => c.characterId == 24);
+        CharacterController oriannna = characterList.Find(c => c.characterId == 29);
+        CharacterController garahaddo = characterList.Find(c => c.characterId == 30);
+        CharacterController aressandoro = characterList.Find(c => c.characterId == 31);
+        CharacterController akuserion = characterList.Find(c => c.characterId == 28);
+        CharacterController dhionyusios = characterList.Find(c => c.characterId == 32);
+        CharacterController tadeus = characterList.Find(c => c.characterId == 33);
+        CharacterController siruvietto = characterList.Find(c => c.characterId == 34);
+        CharacterController ruben = characterList.Find(c => c.characterId == 35);
 
         //キャラクターを勢力へ所属させる
         foreach (Influence influence in influenceList)
         {
             if (influence.influenceName == "セルギウス")
             {
+                Debug.Log("キャラを勢力へ所属");
                 influence.AddCharacter(serugius);
                 influence.AddCharacter(eresuthia);
                 influence.AddCharacter(renius);
@@ -365,21 +351,10 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         PhaseCalc();
     }
 
-    public CharacterController CreateCharacter(int characterId)
-    {
-        // キャラクターの生成
-        CharacterController newCharacter = Instantiate(characterPrefab, Character);
-        //CharacterController newCharacter = new GameObject().AddComponent<CharacterController>();
-        newCharacter.gameObject.SetActive(false);
-        newCharacter.Init(characterId);
-        characterList.Add(newCharacter);
-        return newCharacter;
-    }
-
     public Influence CreateInfluence(CharacterController character, Sprite influenceImage)
     {
-        Influence newInfluence = new GameObject(character.characterModel.name).AddComponent<Influence>();
-        newInfluence.Init(character.characterModel.name, influenceImage);
+        Influence newInfluence = new GameObject(character.name).AddComponent<Influence>();
+        newInfluence.Init(character.name, influenceImage);
         influenceList.Add(newInfluence);
         newInfluence.transform.SetParent(Influence, false);
         return newInfluence;
@@ -387,6 +362,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
     public void AssignSoldierListToCharacter(CharacterController character, List<int> soldierIDList)
     {
+        //character.soliderList.Clear();
         // 対応する兵士IDで兵士を初期化してリストに追加
         foreach (int soldierID in soldierIDList)
         {
@@ -465,13 +441,13 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         //全てのキャラクターを攻撃可能に設定
         foreach (CharacterController character in characterList)
         {
-            character.characterModel.isAttackable = true;
+            character.isAttackable = true;
         }
 
         //全てのキャラクターのバトルフラグをfalseに設定
         foreach (CharacterController character in characterList)
         {
-            character.characterModel.isBattle = false;
+            character.isBattle = false;
         }
 
         //全ての兵士のHPを回復
@@ -495,14 +471,14 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 influenceIncome = influence.territoryList.Count * territoryIncome;
                 foreach (CharacterController character in influence.characterList)
                 {
-                    character.characterModel.gold += Mathf.RoundToInt(influenceIncome * character.characterModel.salary / 100.0f);
+                    character.gold += Mathf.RoundToInt(influenceIncome * character.salary / 100.0f);
                 }
             }
             else
             {
                 foreach (CharacterController character in influence.characterList)
                 {
-                    character.characterModel.gold += Mathf.RoundToInt(character.characterModel.tact / 100.0f * 10.0f);
+                    character.gold += Mathf.RoundToInt(character.tact / 100.0f * 10.0f);
                 }
             }
         }
@@ -513,7 +489,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
     void PlayerLordPhase()
     {
-        if (playerCharacter.characterModel.isLord == true)
+        if (playerCharacter.isLord == true)
         {
             Debug.Log("プレイヤー領主フェーズです。");
 
@@ -537,7 +513,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
         mapField.SetActive(true);
         //他キャラクターの領主リストの取得
-        List<CharacterController> lordCharacterList = characterList.FindAll(character => character.characterModel.isLord && !character.characterModel.isPlayerCharacter);
+        List<CharacterController> lordCharacterList = characterList.FindAll(character => character.isLord && !character.isPlayerCharacter);
 
         //各領主ターン
         foreach (CharacterController lordCharacter in lordCharacterList)
@@ -548,7 +524,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             {
                 case 1:
                 case 2:
-                    while (lordCharacter.influence.characterList.Count <= 2 && lordCharacter.characterModel.gold >= 9 && noneInfluence.characterList.Count != 0)
+                    while (lordCharacter.influence.characterList.Count <= 2 && lordCharacter.gold >= 9 && noneInfluence.characterList.Count != 0)
                     {
                         yield return StartCoroutine(NoneRandomCharacterAddInfluence(lordCharacter));
                     }
@@ -557,7 +533,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 case 4:
                 case 5:
                 case 6:
-                    while (lordCharacter.influence.characterList.Count <= 3 && lordCharacter.characterModel.gold >= 9 && noneInfluence.characterList.Count != 0)
+                    while (lordCharacter.influence.characterList.Count <= 3 && lordCharacter.gold >= 9 && noneInfluence.characterList.Count != 0)
                     {
                         yield return StartCoroutine(NoneRandomCharacterAddInfluence(lordCharacter));
                     }
@@ -566,7 +542,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 case 8:  
                 case 9:
                 case 10:
-                    while (lordCharacter.influence.characterList.Count <= 4 && lordCharacter.characterModel.gold >= 9 && noneInfluence.characterList.Count != 0)
+                    while (lordCharacter.influence.characterList.Count <= 4 && lordCharacter.gold >= 9 && noneInfluence.characterList.Count != 0)
                     {
                         yield return StartCoroutine(NoneRandomCharacterAddInfluence(lordCharacter));
                     }
@@ -576,16 +552,16 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 case 13:
                 case 14:
                 case 15:
-                    while (lordCharacter.influence.characterList.Count <= 5 && lordCharacter.characterModel.gold >= 9 && noneInfluence.characterList.Count != 0)
+                    while (lordCharacter.influence.characterList.Count <= 5 && lordCharacter.gold >= 9 && noneInfluence.characterList.Count != 0)
                     {
                         yield return StartCoroutine(NoneRandomCharacterAddInfluence(lordCharacter));
                     }
                     break;
             }
-            int beforeRank = (int)playerCharacter.characterModel.rank;
+            int beforeRank = (int)playerCharacter.rank;
             //名声の高い順に身分を設定
             lordCharacter.influence.SetRankByFame();
-            int afterRank = (int)playerCharacter.characterModel.rank;
+            int afterRank = (int)playerCharacter.rank;
 
             if (afterRank > beforeRank)
             {
@@ -623,27 +599,27 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         titleFieldUI.ShowChangePersonalTurnText();
 
         mapField.SetActive(true);
-        List<CharacterController> otherCharacterList = characterList.FindAll(x => !x.characterModel.isPlayerCharacter);
+        List<CharacterController> otherCharacterList = characterList.FindAll(x => !x.isPlayerCharacter);
         
         foreach (CharacterController otherCharacter in otherCharacterList)
         {
             characterTurnUI.ShowCharacterTurnUI(otherCharacter);
 
             //忠誠の値に応じて所属勢力を去る
-            if (otherCharacter.characterModel.isLord == false && otherCharacter.influence != noneInfluence)
+            if (otherCharacter.isLord == false && otherCharacter.influence != noneInfluence)
             {
                 int leaveProbability = 0;
-                leaveProbability = 99 - otherCharacter.characterModel.loyalty;
+                leaveProbability = 99 - otherCharacter.loyalty;
                 // 0から99の間のランダムな値を生成する
                 int randomValue = Random.Range(0, 100);
                 // ランダムな値が所定の確率以下であれば所属勢力を去る
                 if (randomValue < leaveProbability)
                 {
                     // 所属勢力を去る処理をここに書く
-                    Debug.Log(otherCharacter.characterModel.name + "は所属勢力を去ります");
+                    Debug.Log(otherCharacter.name + "は所属勢力を去ります");
                     if (otherCharacter.influence == playerCharacter.influence)
                     {
-                        if (playerCharacter.characterModel.isLord == true)
+                        if (playerCharacter.isLord == true)
                         {
                             dialogueUI.ShowLeaveInfluenceUI(otherCharacter);
                         }
@@ -655,38 +631,38 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             }
 
             //兵士雇用
-            while (otherCharacter.soliderList.Count < 10 && otherCharacter.characterModel.gold >= 2)
+            while (otherCharacter.soliderList.Count < 10 && otherCharacter.gold >= 2)
             {
                 SoliderController solider = Instantiate(soliderPrefab);
                 solider.Init(1, CreateSoliderUniqueID());
                 solider.gameObject.SetActive(false);
                 otherCharacter.soliderList.Add(solider);
                 allSoliderList.Add(solider);
-                otherCharacter.characterModel.gold -= 2;
+                otherCharacter.gold -= 2;
             }
             //兵士訓練
             //領主の場合
-            if (otherCharacter.characterModel.isLord == true)
+            if (otherCharacter.isLord == true)
             {
-                while (otherCharacter.characterModel.gold >= 15)
+                while (otherCharacter.gold >= 15)
                 {
                     foreach (SoliderController solider in otherCharacter.soliderList)
                     {
                         solider.soliderModel.Training(solider);
                     }
-                    otherCharacter.characterModel.gold -= 2;
+                    otherCharacter.gold -= 2;
                 }
             }
             //領主以外の場合
             else
             {
-                while (otherCharacter.characterModel.gold >= 7)
+                while (otherCharacter.gold >= 7)
                 {
                     foreach (SoliderController solider in otherCharacter.soliderList)
                     {
                         solider.soliderModel.Training(solider);
                     }
-                    otherCharacter.characterModel.gold -= 2;
+                    otherCharacter.gold -= 2;
                 }
             }
 
@@ -746,12 +722,12 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         Debug.Log("OtherBattlePhase");
         phase = Phase.OtherBattlePhase;
         battleTurnCharacter = character;
-        Debug.Log(character.characterModel.name + "のターンです。");
+        Debug.Log(character.name + "のターンです。");
         //侵攻するか判断
-        if (character.influence != noneInfluence && character.characterModel.isLord == true && uniteCountryFlag == false)
+        if (character.influence != noneInfluence && character.isLord == true && uniteCountryFlag == false)
         {
             //まだ戦闘していないキャラクター数を取得
-            int battlefalseCharacterCount = character.influence.characterList.Count(c => !c.characterModel.isBattle);
+            int battlefalseCharacterCount = character.influence.characterList.Count(c => !c.isBattle);
             switch (character.influence.characterList.Count)
             {
                 case 1:
@@ -826,7 +802,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
         //侵攻させるキャラを決める
             //侵攻先よりも強いキャラを取得
-        List<CharacterController> attackableCharacterList = character.influence.characterList.FindAll(character => character.characterModel.isAttackable);
+        List<CharacterController> attackableCharacterList = character.influence.characterList.FindAll(character => character.isAttackable);
         foreach (CharacterController chara in character.influence.characterList)
         {
             soliderHPSum = 0;
@@ -850,7 +826,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         //相手よりも強いキャラがいない場合
         else
         {
-            attackableCharacterList = character.influence.characterList.FindAll(character => character.characterModel.isAttackable);
+            attackableCharacterList = character.influence.characterList.FindAll(character => character.isAttackable);
             //一番強いキャラを初期化
             System.Random random4 = new System.Random();
             CharacterController randomDefenceCharacter = attackableCharacterList[random4.Next(attackableCharacterList.Count)];
@@ -886,7 +862,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         defenceFlag = false;
 
         //侵攻された領土がプレイヤー勢力　かつ　プレイヤーが領主の場合
-        if (territoryManager.territory.influence == playerCharacter.influence && playerCharacter.characterModel.isLord == true)
+        if (territoryManager.territory.influence == playerCharacter.influence && playerCharacter.isLord == true)
         {
             defenceFlag = true;
 
@@ -913,7 +889,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         else
         {
             //防衛側で戦闘可能なキャラクターがいる場合
-            bool canAttack = territoryManager.territory.influence.characterList.Exists(c => c.characterModel.isAttackable);
+            bool canAttack = territoryManager.territory.influence.characterList.Exists(c => c.isAttackable);
             if (canAttack)
             {
                 //侵攻側よりも強いキャラを防御キャラに選択 /　強いキャラがいない場合は一番強いキャラを防御キャラに選択
@@ -1001,7 +977,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             else
             {
                 Debug.Log("無条件で勝利");
-                attackCharacter.characterModel.isAttackable = false;
+                attackCharacter.isAttackable = false;
 
                 territoryUIOnMouse.ChangeTerritoryByBattle(attackCharacter.influence);
                 battleManager.isBattleEnd = true;
@@ -1019,7 +995,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         CharacterController defenderCharacter;
         //防御キャラを取得
         //侵攻側よりも強いキャラを取得
-        List<CharacterController> attackableCharacterList = territoryManager.territory.influence.characterList.FindAll(character => character.characterModel.isAttackable);
+        List<CharacterController> attackableCharacterList = territoryManager.territory.influence.characterList.FindAll(character => character.isAttackable);
         foreach (CharacterController chara in territoryManager.territory.influence.characterList)
         {
             int soliderHPSum = 0;
@@ -1037,17 +1013,17 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         {
             foreach (CharacterController chara in attackableCharacterList)
             {
-                Debug.Log(chara.characterModel.name);
+                Debug.Log(chara.name);
             }
             System.Random random3 = new System.Random();
             CharacterController randomDefenceCharacter = attackableCharacterList[random3.Next(attackableCharacterList.Count)];
             defenderCharacter = randomDefenceCharacter;
-            Debug.Log(defenderCharacter.characterModel.name);
+            Debug.Log(defenderCharacter.name);
         }
         //侵攻側よりも強いキャラがいない場合は一番強いキャラを出撃させる
         else
         {
-            attackableCharacterList = territoryManager.territory.influence.characterList.FindAll(character => character.characterModel.isAttackable);
+            attackableCharacterList = territoryManager.territory.influence.characterList.FindAll(character => character.isAttackable);
             //一番強いキャラを初期化
             System.Random random4 = new System.Random();
             CharacterController randomDefenceCharacter = attackableCharacterList[random4.Next(attackableCharacterList.Count)];
@@ -1070,7 +1046,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
             }
             defenderCharacter = strongestCharacter;
-            Debug.Log(defenderCharacter.characterModel.name);
+            Debug.Log(defenderCharacter.name);
         }
         return defenderCharacter;
     }
@@ -1211,7 +1187,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 //プレイヤーキャラクターを勢力へ所属
                 randomNoneCharacter.influence.RemoveCharacter(randomNoneCharacter);
                 lordCharacter.influence.AddCharacter(randomNoneCharacter);
-                lordCharacter.characterModel.gold -= 9;
+                lordCharacter.gold -= 9;
 
                 dialogueUI.ShowEmployedUI(lordCharacter);
                 yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
@@ -1223,7 +1199,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             //ランダムキャラクターを勢力へ所属
             randomNoneCharacter.influence.RemoveCharacter(randomNoneCharacter);
             lordCharacter.influence.AddCharacter(randomNoneCharacter);
-            lordCharacter.characterModel.gold -= 9;
+            lordCharacter.gold -= 9;
         }
 
         // 処理が終了したことを呼び出し元に通知する
@@ -1235,7 +1211,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     public void LeaveInfluence(CharacterController leaveCharacter)
     {
         //追放するキャラクターより下の身分のキャラを取得 
-        List<CharacterController> lowerRankCharacters = leaveCharacter.influence.characterList.FindAll(c => (int)c.characterModel.rank < (int)leaveCharacter.characterModel.rank);
+        List<CharacterController> lowerRankCharacters = leaveCharacter.influence.characterList.FindAll(c => (int)c.rank < (int)leaveCharacter.rank);
 
         //キャラクターを追放
         leaveCharacter.influence.RemoveCharacter(leaveCharacter);
@@ -1245,7 +1221,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             //追放したキャラクターより下の身分のキャラを昇格　給料%、身分を計算
             foreach (CharacterController lowerRankCharacter in lowerRankCharacters)
             {
-                lowerRankCharacter.characterModel.rank = (Rank)((int)lowerRankCharacter.characterModel.rank + 1);
+                lowerRankCharacter.rank = (Rank)((int)lowerRankCharacter.rank + 1);
                 lowerRankCharacter.CalcSalary();
                 lowerRankCharacter.CalcLoyalty();
             }
@@ -1403,7 +1379,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             phase = this.phase,
             step = this.step,
             characters = new List<CharacterData>(),
-            playerCharacterId = playerCharacter.characterModel.characterId,
+            playerCharacterId = playerCharacter.characterId,
             influences = new List<InfluenceData>(),
         };
 
@@ -1412,23 +1388,22 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         {
             CharacterData charData = new CharacterData
             {
-                icon = character.characterModel.icon,
-                name = character.characterModel.name,
-                characterId = character.characterModel.characterId,
-                force = character.characterModel.force,
-                inteli = character.characterModel.inteli,
-                tact = character.characterModel.tact,
-                fame = character.characterModel.fame,
-                ambition = character.characterModel.ambition,
-                loyalty = character.characterModel.loyalty,
-                salary = character.characterModel.salary,
-                conflict = character.characterModel.conflict,
-                rank = character.characterModel.rank,
-                gold = character.characterModel.gold,
-                isLord = character.characterModel.isLord,
-                isPlayerCharacter = character.characterModel.isPlayerCharacter,
-                isAttackable = character.characterModel.isAttackable,
-                isBattle = character.characterModel.isBattle,
+                icon = character.icon,
+                name = character.name,
+                characterId = character.characterId,
+                force = character.force,
+                inteli = character.inteli,
+                tact = character.tact,
+                fame = character.fame,
+                ambition = character.ambition,
+                loyalty = character.loyalty,
+                salary = character.salary,
+                rank = character.rank,
+                gold = character.gold,
+                isLord = character.isLord,
+                isPlayerCharacter = character.isPlayerCharacter,
+                isAttackable = character.isAttackable,
+                isBattle = character.isBattle,
 
                 influenceName = character.influence != null ? character.influence.influenceName : "None",
             };
@@ -1462,7 +1437,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             InfluenceData influenceData = new InfluenceData
             {
                 influenceName = influence.influenceName,
-                characterIds = influence.characterList.Select(c => c.characterModel.characterId).ToList()
+                characterIds = influence.characterList.Select(c => c.characterId).ToList()
             };
             //領土データの収集
             foreach (var territory in influence.territoryList)
@@ -1496,24 +1471,23 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             // キャラクターの復元
             foreach (var charData in gameState.characters)
             {
-                CharacterController character = characterList.Find(c => c.characterModel.characterId == charData.characterId);
+                CharacterController character = characterList.Find(c => c.characterId == charData.characterId);
 
-                character.characterModel.icon = charData.icon;
-                character.characterModel.name = charData.name;
-                character.characterModel.force = charData.force;
-                character.characterModel.inteli = charData.inteli;
-                character.characterModel.tact = charData.tact;
-                character.characterModel.fame = charData.fame;
-                character.characterModel.ambition = charData.ambition;
-                character.characterModel.loyalty = charData.loyalty;
-                character.characterModel.salary = charData.salary;
-                character.characterModel.conflict = charData.conflict;
-                character.characterModel.rank = charData.rank;
-                character.characterModel.gold = charData.gold;
-                character.characterModel.isLord = charData.isLord;
-                character.characterModel.isPlayerCharacter = charData.isPlayerCharacter;
-                character.characterModel.isAttackable = charData.isAttackable;
-                character.characterModel.isBattle = charData.isBattle;
+                character.icon = charData.icon;
+                character.name = charData.name;
+                character.force = charData.force;
+                character.inteli = charData.inteli;
+                character.tact = charData.tact;
+                character.fame = charData.fame;
+                character.ambition = charData.ambition;
+                character.loyalty = charData.loyalty;
+                character.salary = charData.salary;
+                character.rank = charData.rank;
+                character.gold = charData.gold;
+                character.isLord = charData.isLord;
+                character.isPlayerCharacter = charData.isPlayerCharacter;
+                character.isAttackable = charData.isAttackable;
+                character.isBattle = charData.isBattle;
                 character.influence = influenceList.Find(i => i.influenceName == charData.influenceName);
 
                 // 兵士の復元
@@ -1537,7 +1511,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
             }
             //プレイヤーキャラクターの復元
-            playerCharacter = characterList.Find(x => x.characterModel.characterId == gameState.playerCharacterId);
+            playerCharacter = characterList.Find(x => x.characterId == gameState.playerCharacterId);
 
             // 勢力の復元
             foreach (var influenceData in gameState.influences)
@@ -1547,7 +1521,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 //勢力にキャラクターを所属させる&&キャラクターを勢力に所属させる
                 foreach (int characterId in influenceData.characterIds)
                 {
-                    CharacterController character = characterList.Find(c => c.characterModel.characterId == characterId);
+                    CharacterController character = characterList.Find(c => c.characterId == characterId);
                     if (character != null)
                     {
                         character.SetInfluence(influence);

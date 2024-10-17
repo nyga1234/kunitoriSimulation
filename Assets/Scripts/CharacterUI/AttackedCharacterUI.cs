@@ -34,20 +34,20 @@ public class AttackedCharacterUI : MonoBehaviour
 
         ChangeTextColorWhite();
 
-        CharacterNameText.text = character.characterModel.name;
-        CharacterForceText.text = character.characterModel.force.ToString();
-        CharacterInteliText.text = character.characterModel.inteli.ToString();
-        CharacterTactText.text = character.characterModel.tact.ToString();
-        //CharacterRankText.text = character.characterModel.rank.ToString();
-        CharacterFameText.text = character.characterModel.fame.ToString();
-        CharacterAmbitionText.text = character.characterModel.ambition.ToString();
-        if (character.characterModel.isLord == true || character.influence.influenceName == "NoneInfluence")
+        CharacterNameText.text = character.name;
+        CharacterForceText.text = character.force.ToString();
+        CharacterInteliText.text = character.inteli.ToString();
+        CharacterTactText.text = character.tact.ToString();
+        //CharacterRankText.text = character.rank.ToString();
+        CharacterFameText.text = character.fame.ToString();
+        CharacterAmbitionText.text = character.ambition.ToString();
+        if (character.rank == Rank.—ÌŽå || character.influence.influenceName == "NoneInfluence")
         {
             CharacterLoyaltyText.text = "--";
         }
         else
         {
-            CharacterLoyaltyText.text = character.characterModel.loyalty.ToString();
+            CharacterLoyaltyText.text = character.loyalty.ToString();
         }
         if (character.influence.influenceName == "NoneInfluence")
         {
@@ -55,7 +55,7 @@ public class AttackedCharacterUI : MonoBehaviour
         }
         else
         {
-            CharacterSalaryText.text = character.characterModel.salary.ToString();
+            CharacterSalaryText.text = character.salary.ToString();
         }
 
         CharacterUIOnMouse onMouseComponent = this.gameObject.GetComponent<CharacterUIOnMouse>();

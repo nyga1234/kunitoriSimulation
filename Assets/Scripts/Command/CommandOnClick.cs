@@ -121,7 +121,7 @@ public class CommandOnClick : MonoBehaviour
             {
                 case 1:
                 case 2:
-                    if (gameManager.playerCharacter.characterModel.gold >= 9)
+                    if (gameManager.playerCharacter.gold >= 9)
                     {
                         if (gameManager.playerCharacter.influence.characterList.Count <= 2)
                         {
@@ -141,7 +141,7 @@ public class CommandOnClick : MonoBehaviour
                 case 4: 
                 case 5:
                 case 6:
-                    if (gameManager.playerCharacter.characterModel.gold >= 9)
+                    if (gameManager.playerCharacter.gold >= 9)
                     {
                         if (gameManager.playerCharacter.influence.characterList.Count <= 3)
                         {
@@ -161,7 +161,7 @@ public class CommandOnClick : MonoBehaviour
                 case 8:
                 case 9:
                 case 10:
-                    if (gameManager.playerCharacter.characterModel.gold >= 9)
+                    if (gameManager.playerCharacter.gold >= 9)
                     {
                         if (gameManager.playerCharacter.influence.characterList.Count <= 4)
                         {
@@ -181,7 +181,7 @@ public class CommandOnClick : MonoBehaviour
                 case 12:
                 case 13:
                 case 14:
-                    if (gameManager.playerCharacter.characterModel.gold >= 9)
+                    if (gameManager.playerCharacter.gold >= 9)
                     {
                         if (gameManager.playerCharacter.influence.characterList.Count <= 5)
                         {
@@ -229,7 +229,7 @@ public class CommandOnClick : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            if (gameManager.playerCharacter.soliderList.Count < 10 && gameManager.playerCharacter.characterModel.gold >= 2)
+            if (gameManager.playerCharacter.soliderList.Count < 10 && gameManager.playerCharacter.gold >= 2)
             {
                 SoundManager.instance.PlayRecruitSE();
                 SoliderController solider = Instantiate(soliderPrefab);
@@ -237,7 +237,7 @@ public class CommandOnClick : MonoBehaviour
                 solider.gameObject.SetActive(false);
                 gameManager.playerCharacter.soliderList.Add(solider);
                 gameManager.allSoliderList.Add(solider);
-                gameManager.playerCharacter.characterModel.gold -= 2;
+                gameManager.playerCharacter.gold -= 2;
                 personalMenuUI.ShowPersonalMenuUI(gameManager.playerCharacter);
                 influenceUI.ShowInfluenceUI(gameManager.playerCharacter.influence);
             }
@@ -246,7 +246,7 @@ public class CommandOnClick : MonoBehaviour
                 TitleFieldUI.instance.titleFieldText.text = "      åŸópâ¬î\Ç»ï∫émÇÕ10êlÇ‹Ç≈Ç≈Ç∑";
                 return;
             }
-            else if (gameManager.playerCharacter.characterModel.gold < 2)
+            else if (gameManager.playerCharacter.gold < 2)
             {
                 TitleFieldUI.instance.titleFieldText.text = "      éëã‡Ç™ë´ÇËÇ‹ÇπÇÒ";
                 return;
@@ -258,14 +258,14 @@ public class CommandOnClick : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            if (gameManager.playerCharacter.characterModel.gold >= 2)
+            if (gameManager.playerCharacter.gold >= 2)
             {
                 SoundManager.instance.PlayTrainingSE();
                 foreach (SoliderController solider in gameManager.playerCharacter.soliderList)
                 {
                     solider.soliderModel.Training(solider);
                 }
-                gameManager.playerCharacter.characterModel.gold -= 2;
+                gameManager.playerCharacter.gold -= 2;
                 personalMenuUI.ShowPersonalMenuUI(gameManager.playerCharacter);
                 influenceUI.ShowInfluenceUI(gameManager.playerCharacter.influence);
             }
@@ -304,7 +304,7 @@ public class CommandOnClick : MonoBehaviour
 
     public void OnPointerClickVagabond()
     {
-        if(gameManager.playerCharacter.characterModel.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
+        if(gameManager.playerCharacter.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
         {
             return;
         }
@@ -338,7 +338,7 @@ public class CommandOnClick : MonoBehaviour
 
     public void OnPointerClickRebellion()
     {
-        if (gameManager.playerCharacter.characterModel.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
+        if (gameManager.playerCharacter.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
         {
             return;
         }
@@ -348,14 +348,14 @@ public class CommandOnClick : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            if (GameMain.instance.playerCharacter.characterModel.isLord == false && GameMain.instance.playerCharacter.characterModel.isAttackable == false)
+            if (GameMain.instance.playerCharacter.isLord == false && GameMain.instance.playerCharacter.isAttackable == false)
             {
                 TitleFieldUI.instance.titleFieldText.text = "      êNçUçœÇ›Ç≈Ç∑";
                 return;
             }
 
 
-            if (GameMain.instance.playerCharacter.characterModel.gold >= 3)
+            if (GameMain.instance.playerCharacter.gold >= 3)
             {
                 SoundManager.instance.PlayClickSE();
                 GameMain.instance.step = Step.Attack;
@@ -506,7 +506,7 @@ public class CommandOnClick : MonoBehaviour
         SoundManager.instance.PlayClickSE();
         GameMain.instance.step = Step.Search;
 
-        gameManager.playerCharacter.characterModel.gold -= 9;
+        gameManager.playerCharacter.gold -= 9;
         characterMenuUI.HideCharacterMenuUI();
         characterDetailUI.HideCharacterDetailUI();
 

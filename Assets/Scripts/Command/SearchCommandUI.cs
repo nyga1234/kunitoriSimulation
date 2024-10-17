@@ -33,7 +33,7 @@ public class SearchCommandUI : MonoBehaviour
         {
             case 1:
             case 2:
-                if (gameManager.playerCharacter.influence.characterList.Count >= 3 || gameManager.playerCharacter.characterModel.gold < 9)
+                if (gameManager.playerCharacter.influence.characterList.Count >= 3 || gameManager.playerCharacter.gold < 9)
                 {
                     searchText.color = new Color32(122, 122, 122, 255);//非表示
                 }
@@ -42,7 +42,7 @@ public class SearchCommandUI : MonoBehaviour
             case 4:
             case 5:
             case 6:
-                if (gameManager.playerCharacter.influence.characterList.Count >= 4 || gameManager.playerCharacter.characterModel.gold < 9)
+                if (gameManager.playerCharacter.influence.characterList.Count >= 4 || gameManager.playerCharacter.gold < 9)
                 {
                     searchText.color = new Color32(122, 122, 122, 255);//非表示
                 }
@@ -51,7 +51,7 @@ public class SearchCommandUI : MonoBehaviour
             case 8:
             case 9:
             case 10:
-                if (gameManager.playerCharacter.influence.characterList.Count >= 5 || gameManager.playerCharacter.characterModel.gold < 9)
+                if (gameManager.playerCharacter.influence.characterList.Count >= 5 || gameManager.playerCharacter.gold < 9)
                 {
                     searchText.color = new Color32(122, 122, 122, 255);//非表示
                 }
@@ -60,7 +60,7 @@ public class SearchCommandUI : MonoBehaviour
             case 12:
             case 13:
             case 14:
-                if (gameManager.playerCharacter.influence.characterList.Count >= 6 || gameManager.playerCharacter.characterModel.gold < 9)
+                if (gameManager.playerCharacter.influence.characterList.Count >= 6 || gameManager.playerCharacter.gold < 9)
                 {
                     searchText.color = new Color32(122, 122, 122, 255);//非表示
                 }

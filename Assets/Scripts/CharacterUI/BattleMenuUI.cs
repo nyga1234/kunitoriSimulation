@@ -37,16 +37,16 @@ public class BattleMenuUI : MonoBehaviour
         gameObject.SetActive(true);
         battleMenuCommandUI.ShowBattleMenuCommandUI();
 
-        moneyText.text = "資金 " + character.characterModel.gold.ToString();
+        moneyText.text = "資金 " + character.gold.ToString();
 
         if (influence != GameMain.instance.noneInfluence)
         {
             //領主画像の設定
-            CharacterController LordCharacter = character.influence.characterList.Find(chara => chara.characterModel.isLord);
-            lordImage.sprite = LordCharacter.characterModel.icon;
+            CharacterController LordCharacter = character.influence.characterList.Find(chara => chara.rank == Rank.領主);
+            lordImage.sprite = LordCharacter.icon;
 
             //領主配下画像の設定
-            List<CharacterController> noLordCharacterList = character.influence.characterList.FindAll(x => !x.characterModel.isLord);
+            List<CharacterController> noLordCharacterList = character.influence.characterList.FindAll(x => !x.isLord);
             for (int i = 0; i < noLordCharacterList.Count; i++)
             {
                 if (noLordCharacterList[i] != null)
@@ -55,13 +55,13 @@ public class BattleMenuUI : MonoBehaviour
                     Image characterImage = GetCharacterImage(i + 1);
 
                     // 対応するImageにスプライトを代入
-                    characterImage.sprite = noLordCharacterList[i].characterModel.icon;
+                    characterImage.sprite = noLordCharacterList[i].icon;
                 }
             }
         }
         else
         {
-            lordImage.sprite = character.characterModel.icon;
+            lordImage.sprite = character.icon;
 
             character1Image.gameObject.SetActive(false);
             character2Image.gameObject.SetActive(false);
@@ -71,8 +71,8 @@ public class BattleMenuUI : MonoBehaviour
             character6Image.gameObject.SetActive(false);
         }
         
-        charaNameText.text = character.characterModel.name;
-        rankText.text = character.characterModel.rank.ToString();
+        charaNameText.text = character.name;
+        rankText.text = character.rank.ToString();
 
         territoryUIOnMouse.InfluenceCalcSum(influence);
         territorySumText.text = "[領地数] " + influence.territorySum.ToString();

@@ -207,7 +207,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
                         }
                         else
                         {
-                            if (GameMain.instance.playerCharacter.characterModel.isLord == true)
+                            if (GameMain.instance.playerCharacter.isLord == true)
                             {
                                 SoundManager.instance.PlayClickSE();
                                 titleFieldUI.titleFieldText.text = "     侵攻させる部隊を選択してください";

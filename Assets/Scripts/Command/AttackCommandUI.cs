@@ -27,12 +27,12 @@ public class AttackCommandUI : MonoBehaviour
         attackText.color = Color.white; // ”’F‚É•ÏX
         this.gameObject.SetActive(true);
 
-        if (GameMain.instance.playerCharacter.characterModel.gold < 3)
+        if (GameMain.instance.playerCharacter.gold < 3)
         {
             attackText.color = new Color32(122, 122, 122, 255);
         }
 
-        if (GameMain.instance.playerCharacter.characterModel.isLord == false && GameMain.instance.playerCharacter.characterModel.isAttackable == false)
+        if (GameMain.instance.playerCharacter.isLord == false && GameMain.instance.playerCharacter.isAttackable == false)
         {
             attackText.color = new Color32(122, 122, 122, 255);
         }

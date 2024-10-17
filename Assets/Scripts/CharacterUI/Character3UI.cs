@@ -32,7 +32,7 @@ public class Character3UI : MonoBehaviour
     {
         ChangeTextColorWhite();
         ChangeBackgroundColor(originalColor);
-        if (character.characterModel.isAttackable == false)
+        if (character.isAttackable == false)
         {
             CharacterNameText.color = new Color32(122, 122, 122, 255);
             CharacterForceText.color = new Color32(122, 122, 122, 255);
@@ -45,20 +45,20 @@ public class Character3UI : MonoBehaviour
             CharacterSalaryText.color = new Color32(122, 122, 122, 255);
         }
         gameObject.SetActive(true);
-        CharacterNameText.text = character.characterModel.name;
-        CharacterForceText.text = character.characterModel.force.ToString();
-        CharacterInteliText.text = character.characterModel.inteli.ToString();
-        CharacterTactText.text = character.characterModel.tact.ToString();
-        CharacterRankText.text = character.characterModel.rank.ToString();
-        CharacterFameText.text = character.characterModel.fame.ToString();
-        CharacterAmbitionText.text = character.characterModel.ambition.ToString();
-        if (character.characterModel.isLord == true || character.influence.influenceName == "NoneInfluence" || character == GameMain.instance.playerCharacter)
+        CharacterNameText.text = character.name;
+        CharacterForceText.text = character.force.ToString();
+        CharacterInteliText.text = character.inteli.ToString();
+        CharacterTactText.text = character.tact.ToString();
+        CharacterRankText.text = character.rank.ToString();
+        CharacterFameText.text = character.fame.ToString();
+        CharacterAmbitionText.text = character.ambition.ToString();
+        if (character.rank == Rank.—ÌŽå == true || character.influence.influenceName == "NoneInfluence" || character == GameMain.instance.playerCharacter)
         {
             CharacterLoyaltyText.text = "--";
         }
         else
         {
-            CharacterLoyaltyText.text = character.characterModel.loyalty.ToString();
+            CharacterLoyaltyText.text = character.loyalty.ToString();
         }
         if (character.influence.influenceName == "NoneInfluence")
         {
@@ -66,7 +66,7 @@ public class Character3UI : MonoBehaviour
         }
         else
         {
-            CharacterSalaryText.text = character.characterModel.salary.ToString();
+            CharacterSalaryText.text = character.salary.ToString();
         }
     }
 

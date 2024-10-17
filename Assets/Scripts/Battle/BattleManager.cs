@@ -418,8 +418,8 @@ public class BattleManager : MonoBehaviour
             {
                 TitleFieldUI.instance.titleFieldText.text = "      敵軍は退却しました";
             }
-            attackerCharacter.characterModel.isAttackable = false;
-            defenderCharacter.characterModel.fame += 2;
+            attackerCharacter.isAttackable = false;
+            defenderCharacter.fame += 2;
             isBattleEnd = true;
         }
         else if (defenderRetreatFlag == true)
@@ -432,15 +432,15 @@ public class BattleManager : MonoBehaviour
             {
                 TitleFieldUI.instance.titleFieldText.text = "      敵軍は退却しました";
             }
-            Debug.Log(attackerCharacter.characterModel.name + "の勝利です。");
-            attackerCharacter.characterModel.isAttackable = false;
-            attackerCharacter.characterModel.fame += 2;
+            Debug.Log(attackerCharacter.name + "の勝利です。");
+            attackerCharacter.isAttackable = false;
+            attackerCharacter.fame += 2;
             territoryUIOnMouse.ChangeTerritoryByBattle(attackerCharacter.influence);
             isBattleEnd = true;
         }
 
-        attackerCharacter.characterModel.isBattle = true;
-        defenderCharacter.characterModel.isBattle = true;
+        attackerCharacter.isBattle = true;
+        defenderCharacter.isBattle = true;
     }
 
     public IEnumerator ShowEndBattle()
@@ -493,9 +493,9 @@ public class BattleManager : MonoBehaviour
                 chara.influence.RemoveCharacter(chara);
                 // 無所属に所属させる
                 GameMain.instance.noneInfluence.AddCharacter(chara);
-                if (chara.characterModel.isLord == true)
+                if (chara.isLord == true)
                 {
-                    chara.characterModel.isLord = false;
+                    chara.isLord = false;
                 }
             }
         }
@@ -507,7 +507,7 @@ public class BattleManager : MonoBehaviour
         //攻撃可能なキャラ数を取得
         if (GameMain.instance.battleTurnCharacter.influence != GameMain.instance.noneInfluence)
         {
-            int attackableCharacterCount = GameMain.instance.battleTurnCharacter.influence.characterList.Count(c => c.characterModel.isAttackable);
+            int attackableCharacterCount = GameMain.instance.battleTurnCharacter.influence.characterList.Count(c => c.isAttackable);
             //勢力に所属するキャラ数に応じて処理を分ける
             switch (GameMain.instance.battleTurnCharacter.influence.characterList.Count)
             {
@@ -518,7 +518,7 @@ public class BattleManager : MonoBehaviour
                 case 4:
                     if (attackableCharacterCount > 2)
                     {
-                        Debug.Log("再度" + GameMain.instance.battleTurnCharacter.characterModel.name + "のターンです");
+                        Debug.Log("再度" + GameMain.instance.battleTurnCharacter.name + "のターンです");
                         GameMain.instance.OtherBattlePhase(GameMain.instance.battleTurnCharacter);
                     }
                     else// if (defenderCharacter.influence == GameMain.instance.playerCharacter.influence)
@@ -531,7 +531,7 @@ public class BattleManager : MonoBehaviour
                 case 6:
                     if (attackableCharacterCount > 3)
                     {
-                        Debug.Log("再度" + GameMain.instance.battleTurnCharacter.characterModel.name + "のターンです");
+                        Debug.Log("再度" + GameMain.instance.battleTurnCharacter.name + "のターンです");
                         GameMain.instance.OtherBattlePhase(GameMain.instance.battleTurnCharacter);
                     }
                     else// if (defenderCharacter.influence == GameMain.instance.playerCharacter.influence)
@@ -677,8 +677,8 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(GameMain.instance.BlinkTerritory(0.5f, attackerCharacter, GameMain.instance.playerCharacter, territoryManager.territory));
         yield return new WaitForSeconds(battleAfterWaitTime);
 
-        attackerCharacter.characterModel.isAttackable = false;
-        attackerCharacter.characterModel.isBattle = true;
+        attackerCharacter.isAttackable = false;
+        attackerCharacter.isBattle = true;
         territoryUIOnMouse.ChangeTerritoryByBattle(attackerCharacter.influence);
         isBattleEnd = true;
 

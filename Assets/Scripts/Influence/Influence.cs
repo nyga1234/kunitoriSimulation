@@ -88,12 +88,12 @@ public class Influence : MonoBehaviour
     public void SetRankByFame()
     {
         // 領主のランクは領主で固定
-        //characterList.Find(c => c.characterModel.isLord).characterModel.rank = Rank.領主;
+        //characterList.Find(c => c.isLord).rank = Rank.領主;
 
         // 領主以外のキャラクターを名声の高い順にソート
         List<CharacterController> sortedCharacters = characterList
-            .Where(c => !c.characterModel.isLord)
-            .OrderByDescending(c => c.characterModel.fame)
+            .Where(c => !c.isLord)
+            .OrderByDescending(c => c.fame)
             .ToList();
 
         // 身分を順に設定
@@ -102,19 +102,19 @@ public class Influence : MonoBehaviour
             switch (i)
             {
                 case 0:
-                    sortedCharacters[i].characterModel.rank = Rank.補佐;
+                    sortedCharacters[i].rank = Rank.補佐;
                     break;
                 case 1:
-                    sortedCharacters[i].characterModel.rank = Rank.大将;
+                    sortedCharacters[i].rank = Rank.大将;
                     break;
                 case 2:
-                    sortedCharacters[i].characterModel.rank = Rank.中将;
+                    sortedCharacters[i].rank = Rank.中将;
                     break;
                 case 3:
-                    sortedCharacters[i].characterModel.rank = Rank.少将;
+                    sortedCharacters[i].rank = Rank.少将;
                     break;
                 case 4:
-                    sortedCharacters[i].characterModel.rank = Rank.准将;
+                    sortedCharacters[i].rank = Rank.准将;
                     break;
             }
         }
@@ -124,7 +124,7 @@ public class Influence : MonoBehaviour
     // 身分の高い順にソート
     public void SortCharacterByRank(List<CharacterController> characterList)
     {
-        this.characterList = characterList.OrderByDescending(c => c.characterModel.rank).ToList();
+        this.characterList = characterList.OrderByDescending(c => c.rank).ToList();
     }
 
     //勢力にTerritoryを追加するメソッド
@@ -159,22 +159,22 @@ public class Influence : MonoBehaviour
             switch (this.characterList.Count)
             {
                 case 1:
-                    character.characterModel.rank = Rank.領主;
+                    character.rank = Rank.領主;
                     break;
                 case 2:
-                    character.characterModel.rank = Rank.補佐;
+                    character.rank = Rank.補佐;
                     break;
                 case 3:
-                    character.characterModel.rank = Rank.大将;
+                    character.rank = Rank.大将;
                     break;
                 case 4:
-                    character.characterModel.rank = Rank.中将;
+                    character.rank = Rank.中将;
                     break;
                 case 5:
-                    character.characterModel.rank = Rank.少将;
+                    character.rank = Rank.少将;
                     break;
                 case 6:
-                    character.characterModel.rank = Rank.准将;
+                    character.rank = Rank.准将;
                     break;
             }
             SortCharacterByRank(characterList);
@@ -185,7 +185,7 @@ public class Influence : MonoBehaviour
             //キャラクターの給料%を設定
             character.CalcSalary();
             //キャラクターの忠誠を設定
-            if (!character.characterModel.isLord)
+            if (!character.isLord)
             {
                 character.CalcLoyalty();
             }
@@ -196,7 +196,7 @@ public class Influence : MonoBehaviour
     public void RemoveCharacter(CharacterController character)
     {
         characterList.Remove(character);
-        character.characterModel.rank = Rank.浪士;
+        character.rank = Rank.浪士;
         //character.RemoveInfluence();
     }
 
@@ -204,7 +204,7 @@ public class Influence : MonoBehaviour
     {
         this.territorySum = influence.territoryList.Count;
         this.characterSum = influence.characterList.Count;
-        this.goldSum = influence.characterList.Sum(c => c.characterModel.gold);
+        this.goldSum = influence.characterList.Sum(c => c.gold);
         this.soliderSum = influence.characterList.Sum(c => c.soliderList.Count);
         this.forceSum = influence.characterList.Sum(c => c.soliderList.Sum(s => s.soliderModel.force));
     }

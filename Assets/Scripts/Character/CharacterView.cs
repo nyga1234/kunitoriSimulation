@@ -18,15 +18,15 @@ public class CharacterView : MonoBehaviour
     public void ShowCharacterUI(CharacterController character)
     {
         gameObject.SetActive(true);
-        Character1NameText.text = character.characterModel.name;
-        Character1ForceText.text = character.characterModel.force.ToString();
-        Character1InteliText.text = character.characterModel.inteli.ToString();
-        Character1TactText.text = character.characterModel.tact.ToString();
-        Character1RankText.text = character.characterModel.rank.ToString();
-        Character1FameText.text = character.characterModel.fame.ToString();
-        Character1AmbitionText.text = character.characterModel.ambition.ToString();
-        Character1LoyaltyText.text = character.characterModel.ambition.ToString();
-        Character1SalaryText.text = character.characterModel.ambition.ToString();
+        Character1NameText.text = character.name;
+        Character1ForceText.text = character.force.ToString();
+        Character1InteliText.text = character.inteli.ToString();
+        Character1TactText.text = character.tact.ToString();
+        Character1RankText.text = character.rank.ToString();
+        Character1FameText.text = character.fame.ToString();
+        Character1AmbitionText.text = character.ambition.ToString();
+        Character1LoyaltyText.text = character.ambition.ToString();
+        Character1SalaryText.text = character.ambition.ToString();
     }
 
     public void HideCharacterUI()

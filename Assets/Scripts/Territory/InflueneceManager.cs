@@ -194,7 +194,7 @@
 //            //        }
 //            //        else
 //            //        {
-//            //            if (GameManager.instance.playerCharacter.characterModel.isLord == true)
+//            //            if (GameManager.instance.playerCharacter.isLord == true)
 //            //            {
 //            //                SoundManager.instance.PlayClickSE();
 //            //                titleFieldUI.titleFieldText.text = "     NU‚³‚¹‚é•”‘à‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢";
@@ -352,7 +352,7 @@
 //    //                }
 //    //                else
 //    //                {
-//    //                    if (GameManager.instance.playerCharacter.characterModel.isLord == true)
+//    //                    if (GameManager.instance.playerCharacter.isLord == true)
 //    //                    {
 //    //                        SoundManager.instance.PlayClickSE();
 //    //                        titleFieldUI.titleFieldText.text = "     NU‚³‚¹‚é•”‘à‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢";

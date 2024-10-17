@@ -26,14 +26,14 @@ public class InfluenceOnMapUI : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        CharacterController lordCharacter = influence.characterList.Find(character => character.characterModel.isLord);
+        CharacterController lordCharacter = influence.characterList.Find(character => character.isLord);
 
         SetBattleFieldUI(territory);
 
         if (lordCharacter != null)
         {
-            lordImage.sprite = lordCharacter.characterModel.icon;
-            lordNameText.text = "—Ìå " + lordCharacter.characterModel.name;
+            lordImage.sprite = lordCharacter.icon;
+            lordNameText.text = "—Ìå " + lordCharacter.name;
 
             territoryUIOnMouse.InfluenceCalcSum(influence);
             territorySumText.text = "[—Ì”] " + influence.territorySum.ToString();

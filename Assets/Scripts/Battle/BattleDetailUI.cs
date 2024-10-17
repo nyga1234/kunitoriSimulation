@@ -33,14 +33,14 @@ public class BattleDetailUI : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        attackerCharaIcon.sprite = attackCharacter.characterModel.icon;
-        defenderCharaIcon.sprite = defenceCharacter.characterModel.icon;
+        attackerCharaIcon.sprite = attackCharacter.icon;
+        defenderCharaIcon.sprite = defenceCharacter.icon;
 
-        CharacterController attackerLordCharacter = attackCharacter.influence.characterList.Find(chara => chara.characterModel.isLord);
-        CharacterController defenderLordCharacter = defenceCharacter.influence.characterList.Find(chara => chara.characterModel.isLord);
+        CharacterController attackerLordCharacter = attackCharacter.influence.characterList.Find(chara => chara.rank == Rank.—Ìå);
+        CharacterController defenderLordCharacter = defenceCharacter.influence.characterList.Find(chara => chara.rank == Rank.—Ìå);
 
-        attackerCharaInfoText.text = attackerLordCharacter.characterModel.name + "ŒR" + " " + attackCharacter.characterModel.name + "‘à";
-        defenderCharaInfoText.text = defenderLordCharacter.characterModel.name + "ŒR" + " " + defenceCharacter.characterModel.name + "‘à";
+        attackerCharaInfoText.text = attackerLordCharacter.name + "ŒR" + " " + attackCharacter.name + "‘à";
+        defenderCharaInfoText.text = defenderLordCharacter.name + "ŒR" + " " + defenceCharacter.name + "‘à";
 
         // ‰Šú‰»
         attackerSoliderHPSum = 0;

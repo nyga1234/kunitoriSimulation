@@ -44,25 +44,25 @@ public class SoliderModel
 
     public void Attack(CharacterController attackChara, CharacterController defenceChara, SoliderController defenceSolider, Territory territory)
     {
-        float attackSoliderAT = at * attackChara.characterModel.force;
+        float attackSoliderAT = at * attackChara.force;
 
         float defenceSoliderDF = 0.0f;
         switch (territory.defenceTerritoryType)
         {
             case Territory.DefenceTerritoryType.desert:
-                defenceSoliderDF = defenceChara.characterModel.inteli * 0.5f;
+                defenceSoliderDF = defenceChara.inteli * 0.5f;
                 break;
             case Territory.DefenceTerritoryType.wilderness:
-                defenceSoliderDF = defenceChara.characterModel.inteli * 0.75f;
+                defenceSoliderDF = defenceChara.inteli * 0.75f;
                 break;
             case Territory.DefenceTerritoryType.plain:
-                defenceSoliderDF = defenceChara.characterModel.inteli * 1.0f;
+                defenceSoliderDF = defenceChara.inteli * 1.0f;
                 break;
             case Territory.DefenceTerritoryType.forest:
-                defenceSoliderDF = defenceChara.characterModel.inteli * 1.25f;
+                defenceSoliderDF = defenceChara.inteli * 1.25f;
                 break;
             case Territory.DefenceTerritoryType.fort:
-                defenceSoliderDF = defenceChara.characterModel.inteli * 1.5f;
+                defenceSoliderDF = defenceChara.inteli * 1.5f;
                 break;
         }
 
@@ -94,25 +94,25 @@ public class SoliderModel
 
     public void CounterAttack(CharacterController attackChara, CharacterController defenceChara, SoliderController attackSolider, Territory territory)
     {
-        float defenceSoliderAT = at * defenceChara.characterModel.force;
+        float defenceSoliderAT = at * defenceChara.force;
 
         float attackSoliderDF = 0.0f;
         switch (territory.attackTerritoryType)
         {
             case Territory.AttackTerritoryType.desert:
-                attackSoliderDF = attackChara.characterModel.inteli * 0.8f;
+                attackSoliderDF = attackChara.inteli * 0.8f;
                 break;
             case Territory.AttackTerritoryType.wilderness:
-                attackSoliderDF = attackChara.characterModel.inteli * 0.9f;
+                attackSoliderDF = attackChara.inteli * 0.9f;
                 break;
             case Territory.AttackTerritoryType.plain:
-                attackSoliderDF = attackChara.characterModel.inteli * 1.0f;
+                attackSoliderDF = attackChara.inteli * 1.0f;
                 break;
             case Territory.AttackTerritoryType.forest:
-                attackSoliderDF = attackChara.characterModel.inteli * 1.1f;
+                attackSoliderDF = attackChara.inteli * 1.1f;
                 break;
             case Territory.AttackTerritoryType.fort:
-                attackSoliderDF = attackChara.characterModel.inteli * 1.2f;
+                attackSoliderDF = attackChara.inteli * 1.2f;
                 break;
         }
 

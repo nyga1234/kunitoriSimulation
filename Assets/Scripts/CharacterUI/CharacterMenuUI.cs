@@ -37,19 +37,19 @@ public class CharacterMenuUI : MonoBehaviour
     {
         gameObject.SetActive(true);
         characterMenuCommandUI.ShowCharacterMenuCommandUI();
-        moneyText.text = "資金 " + character.characterModel.gold.ToString();
+        moneyText.text = "資金 " + character.gold.ToString();
 
-        rankText.text = character.characterModel.rank.ToString();
+        rankText.text = character.rank.ToString();
 
         //領主画像の設定
-        lordImage.sprite = character.characterModel.icon;
+        lordImage.sprite = character.icon;
         //領主配下画像の設定
         for (int i = 1; i <= 6; i++)
         {
             Image characterImage = GetCharacterImage(i);
             characterImage.sprite = charaUI;
         }
-        List<CharacterController> noPlayerCharacterList = character.influence.characterList.FindAll(x => !x.characterModel.isPlayerCharacter);
+        List<CharacterController> noPlayerCharacterList = character.influence.characterList.FindAll(x => !x.isPlayerCharacter);
         
         for (int i = 0; i < noPlayerCharacterList.Count; i++)
         {
@@ -59,12 +59,12 @@ public class CharacterMenuUI : MonoBehaviour
                 Image characterImage = GetCharacterImage(i + 1);
 
                 // 対応するImageにスプライトを代入
-                characterImage.sprite = noPlayerCharacterList[i].characterModel.icon;
+                characterImage.sprite = noPlayerCharacterList[i].icon;
             }
         }
 
         territoryUIOnMouse.InfluenceCalcSum(influence);
-        charaNameText.text = character.characterModel.name;
+        charaNameText.text = character.name;
         territorySumText.text = "[領地数] " + influence.territorySum.ToString();
         goldSumText.text = "[資金計]" + influence.goldSum.ToString();
         forceSumText.text = "[総戦力] " + influence.forceSum.ToString();

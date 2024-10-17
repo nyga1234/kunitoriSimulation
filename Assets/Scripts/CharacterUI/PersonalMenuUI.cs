@@ -41,11 +41,11 @@ public class PersonalMenuUI : MonoBehaviour
         enterText.color = Color.white; // ”’F‚É•ÏX
         vagabondText.color = Color.white; // ”’F‚É•ÏX
         rebellionText.color = Color.white; // ”’F‚É•ÏX
-        if (character.soliderList.Count >= 10 || character.characterModel.gold <= 1)
+        if (character.soliderList.Count >= 10 || character.gold <= 1)
         {
             recruitText.color = new Color32(122, 122, 122, 255);
         }
-        if (character.characterModel.gold <= 1)
+        if (character.gold <= 1)
         {
             trainingText.color = new Color32(122, 122, 122, 255);
         }
@@ -53,35 +53,35 @@ public class PersonalMenuUI : MonoBehaviour
         {
             enterText.color = new Color32(255, 255, 255, 0);
         }
-        if (character.characterModel.isLord == true || character.influence == GameMain.instance.noneInfluence)
+        if (character.isLord == true || character.influence == GameMain.instance.noneInfluence)
         {
             vagabondText.color = new Color32(255, 255, 255, 0);
         }
-        if (character.characterModel.isLord == true || character.influence == GameMain.instance.noneInfluence)
+        if (character.isLord == true || character.influence == GameMain.instance.noneInfluence)
         {
             rebellionText.color = new Color32(255, 255, 255, 0);
         }
 
-        moneyText.text = "Ž‘‹à " + character.characterModel.gold.ToString();
+        moneyText.text = "Ž‘‹à " + character.gold.ToString();
 
-        characterImage.sprite = character.characterModel.icon;
+        characterImage.sprite = character.icon;
 
-        rankText.text = character.characterModel.rank.ToString();
-        characterNameText.text = character.characterModel.name;
+        rankText.text = character.rank.ToString();
+        characterNameText.text = character.name;
 
-        goldText.text = "[ŠŽ‹à] " + character.characterModel.gold.ToString();
-        forceText.text = "[í“¬] " + character.characterModel.force.ToString();
-        inteliText.text = "[’q–d] " + character.characterModel.inteli.ToString();
-        tactText.text = "[Žè˜r] " + character.characterModel.tact.ToString();
-        fameText.text = "[–¼º] " + character.characterModel.fame.ToString();
-        ambitionText.text = "[–ìS] " + character.characterModel.ambition.ToString();
-        if (character.characterModel.isLord == true || character.influence.influenceName == "NoneInfluence" || character == GameMain.instance.playerCharacter)
+        goldText.text = "[ŠŽ‹à] " + character.gold.ToString();
+        forceText.text = "[í“¬] " + character.force.ToString();
+        inteliText.text = "[’q–d] " + character.inteli.ToString();
+        tactText.text = "[Žè˜r] " + character.tact.ToString();
+        fameText.text = "[–¼º] " + character.fame.ToString();
+        ambitionText.text = "[–ìS] " + character.ambition.ToString();
+        if (character.isLord == true || character.influence.influenceName == "NoneInfluence" || character == GameMain.instance.playerCharacter)
         {
             loyalityText.text = "[’‰½] --";
         }
         else
         {
-            loyalityText.text = "[’‰½] " + character.characterModel.loyalty.ToString();
+            loyalityText.text = "[’‰½] " + character.loyalty.ToString();
         }
         ShowSoliderList(character.soliderList, SoliderListField);
     }

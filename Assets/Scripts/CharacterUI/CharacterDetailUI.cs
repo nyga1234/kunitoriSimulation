@@ -22,20 +22,20 @@ public class CharacterDetailUI : MonoBehaviour
     public void ShowCharacterDetailUI(CharacterController character)
     {
         gameObject.SetActive(true);
-        characterIcon.sprite = character.characterModel.icon;
-        CharacterNameText.text = character.characterModel.name;
-        CharacterForceText.text = "[êÌì¨] " + character.characterModel.force.ToString();
-        CharacterInteliText.text = "[íqñd] " + character.characterModel.inteli.ToString();
-        CharacterTactText.text = "[éËòr] " + character.characterModel.tact.ToString();
-        CharacterFameText.text = "[ñºê∫] " + character.characterModel.fame.ToString();
-        CharacterAmbitionText.text = "[ñÏêS] " + character.characterModel.ambition.ToString();
-        if(character.characterModel.isLord == true || character.influence.influenceName == "NoneInfluence")
+        characterIcon.sprite = character.icon;
+        CharacterNameText.text = character.name;
+        CharacterForceText.text = "[êÌì¨] " + character.force.ToString();
+        CharacterInteliText.text = "[íqñd] " + character.inteli.ToString();
+        CharacterTactText.text = "[éËòr] " + character.tact.ToString();
+        CharacterFameText.text = "[ñºê∫] " + character.fame.ToString();
+        CharacterAmbitionText.text = "[ñÏêS] " + character.ambition.ToString();
+        if(character.isLord == true || character.influence.influenceName == "NoneInfluence")
         {
             CharacterLoyaltyText.text = "[íâêΩ] --";
         }
         else
         {
-            CharacterLoyaltyText.text = "[íâêΩ] " + character.characterModel.loyalty.ToString();
+            CharacterLoyaltyText.text = "[íâêΩ] " + character.loyalty.ToString();
         }
         
         ShowSoliderList(character.soliderList, SoliderListField);

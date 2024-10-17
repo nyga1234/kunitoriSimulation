@@ -14,10 +14,10 @@ public class CharacterTurnUI : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        characterIcon.sprite = character.characterModel.icon;
+        characterIcon.sprite = character.icon;
 
-        charaRankText.text = character.characterModel.rank.ToString();
-        charaNameText.text = character.characterModel.name;
+        charaRankText.text = character.rank.ToString();
+        charaNameText.text = character.name;
     }
 
     public void HideCharacterTurnUI()

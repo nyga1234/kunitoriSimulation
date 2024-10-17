@@ -18,7 +18,7 @@ public class DialogueUI : MonoBehaviour
         // ƒ_ƒCƒAƒƒO‚ğ•\¦‚·‚éˆ—
         this.gameObject.SetActive(true);
         isDialogueVisible = true;
-        dialogueText.text = character.characterModel.name + "‚ª¨—Í‚ğ‹‚è‚Ü‚µ‚½";
+        dialogueText.text = character.name + "‚ª¨—Í‚ğ‹‚è‚Ü‚µ‚½";
     }
 
     public void ShowEnterInfluenceUI()
@@ -42,7 +42,7 @@ public class DialogueUI : MonoBehaviour
         SoundManager.instance.PlayDialogueSE();
         this.gameObject.SetActive(true);
         isDialogueVisible = true;
-        dialogueText.text = lordCharacter.characterModel.name + "ŒR‚Ö‰Á“ü‚µ‚Ü‚µ‚½";
+        dialogueText.text = lordCharacter.name + "ŒR‚Ö‰Á“ü‚µ‚Ü‚µ‚½";
     }
 
     public void ShowSuccessBanishmentUI()
@@ -66,7 +66,7 @@ public class DialogueUI : MonoBehaviour
         SoundManager.instance.PlayDialogueSE();
         this.gameObject.SetActive(true);
         isDialogueVisible = true;
-        dialogueText.text = character.characterModel.rank + "‚É¸Ši‚µ‚Ü‚µ‚½";
+        dialogueText.text = character.rank + "‚É¸Ši‚µ‚Ü‚µ‚½";
     }
 
     public void ShowDemotionRankUI(CharacterController character)
@@ -74,7 +74,7 @@ public class DialogueUI : MonoBehaviour
         SoundManager.instance.PlayDialogueSE();
         this.gameObject.SetActive(true);
         isDialogueVisible = true;
-        dialogueText.text = character.characterModel.rank + "‚É~Ši‚µ‚Ü‚µ‚½";
+        dialogueText.text = character.rank + "‚É~Ši‚µ‚Ü‚µ‚½";
     }
 
     public void ShowAttackedUI()

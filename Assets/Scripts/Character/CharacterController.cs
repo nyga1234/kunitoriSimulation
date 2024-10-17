@@ -4,20 +4,49 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.TextCore.Text;
 
-public class CharacterController : MonoBehaviour
+//身分
+public enum Rank
 {
-    public CharacterModel characterModel;
+    浪士 = 0,
+    准将 = 1,
+    少将 = 2,
+    中将 = 3,
+    大将 = 4,
+    補佐 = 5,
+    領主 = 6,
+}
+
+[CreateAssetMenu(fileName = "Character", menuName = "CreateCharacter")]
+public class CharacterController : ScriptableObject
+{
+    [Header("Constant Value")]
+    public int characterId;
+    public Sprite icon;
+    public new string name;
+    public int force; //戦闘
+    public int inteli;//智謀
+    public int tact;//手腕
+    public int ambition;//野心
+
+    [Header("Changing Value")]
+    public Rank rank;//身分
+    public int fame;//名声
+    public int gold;//お金
+    public int loyalty;//忠誠
+    public int salary;//給料%
+    public bool isLord;//領主か将軍か
+    public bool isPlayerCharacter;
+    public bool isAttackable = true;
+    public bool isBattle = false;
 
     public Influence influence;
-
     public List<SoliderController> soliderList;
-
     public int soliderForceSum;
 
-    public void Init(int characterID)
-    {
-        characterModel = new CharacterModel(characterID);
-    }
+    //public void Init(int characterID)
+    //{
+    //    characterModel = new CharacterModel(characterID);
+    //}
 
     // キャラクターを勢力に所属するメソッド
     public void SetInfluence(Influence influence)
@@ -41,41 +70,41 @@ public class CharacterController : MonoBehaviour
         switch (influence.characterList.Count)
         {
             case 1:
-                influence.characterList[0].characterModel.salary = 100;
+                influence.characterList[0].salary = 100;
                 break;
             case 2:
-                influence.characterList[0].characterModel.salary = 60;
-                influence.characterList[1].characterModel.salary = 40;
+                influence.characterList[0].salary = 60;
+                influence.characterList[1].salary = 40;
                 CalcSalaryOnFame();
                 break;
             case 3:
-                influence.characterList[0].characterModel.salary = 45;
-                influence.characterList[1].characterModel.salary = 30;
-                influence.characterList[2].characterModel.salary = 25;
+                influence.characterList[0].salary = 45;
+                influence.characterList[1].salary = 30;
+                influence.characterList[2].salary = 25;
                 CalcSalaryOnFame();
                 break;
             case 4:
-                influence.characterList[0].characterModel.salary = 35;
-                influence.characterList[1].characterModel.salary = 26;
-                influence.characterList[2].characterModel.salary = 22;
-                influence.characterList[3].characterModel.salary = 17;
+                influence.characterList[0].salary = 35;
+                influence.characterList[1].salary = 26;
+                influence.characterList[2].salary = 22;
+                influence.characterList[3].salary = 17;
                 CalcSalaryOnFame();
                 break;
             case 5:
-                influence.characterList[0].characterModel.salary = 28;
-                influence.characterList[1].characterModel.salary = 23;
-                influence.characterList[2].characterModel.salary = 19;
-                influence.characterList[3].characterModel.salary = 16;
-                influence.characterList[4].characterModel.salary = 14;
+                influence.characterList[0].salary = 28;
+                influence.characterList[1].salary = 23;
+                influence.characterList[2].salary = 19;
+                influence.characterList[3].salary = 16;
+                influence.characterList[4].salary = 14;
                 CalcSalaryOnFame();
                 break;
             case 6:
-                influence.characterList[0].characterModel.salary = 24;
-                influence.characterList[1].characterModel.salary = 20;
-                influence.characterList[2].characterModel.salary = 17;
-                influence.characterList[3].characterModel.salary = 15;
-                influence.characterList[4].characterModel.salary = 13;
-                influence.characterList[5].characterModel.salary = 11;
+                influence.characterList[0].salary = 24;
+                influence.characterList[1].salary = 20;
+                influence.characterList[2].salary = 17;
+                influence.characterList[3].salary = 15;
+                influence.characterList[4].salary = 13;
+                influence.characterList[5].salary = 11;
                 CalcSalaryOnFame();
                 break;
         }
@@ -88,14 +117,14 @@ public class CharacterController : MonoBehaviour
         //各キャラクターの給料を名声に基づき計算
         foreach (CharacterController character in influence.characterList)
         {
-            character.characterModel.salary += (int)Mathf.Round(character.characterModel.fame * 0.5f);
+            character.salary += (int)Mathf.Round(character.fame * 0.5f);
         }
         //キャラクターリストのトータル給料を取得
-        totalSalary += influence.characterList.Sum(c => c.characterModel.salary);
+        totalSalary += influence.characterList.Sum(c => c.salary);
         //各キャラクターの給料をトータル給料から計算
         foreach (CharacterController character in influence.characterList)
         {
-            character.characterModel.salary = Mathf.RoundToInt((float)character.characterModel.salary / totalSalary * 100);
+            character.salary = Mathf.RoundToInt((float)character.salary / totalSalary * 100);
         }
     }
 
@@ -103,9 +132,9 @@ public class CharacterController : MonoBehaviour
     {
         //野心を基に忠誠を計算
         int characterLoyalty;
-        characterLoyalty = 100 - characterModel.ambition;
+        characterLoyalty = 100 - ambition;
         //身分を基に忠誠を計算
-        switch (characterModel.rank)
+        switch (rank)
         {
             case Rank.補佐:
                 characterLoyalty += 35;
@@ -124,15 +153,15 @@ public class CharacterController : MonoBehaviour
                 break;
         }
         //給料を基に忠誠を計算
-        characterLoyalty += characterModel.salary;
+        characterLoyalty += salary;
         //領主の手腕を基に忠誠を計算
-        CharacterController lordCharacter = influence.characterList.Find(character => character.characterModel.isLord);
-        characterLoyalty += lordCharacter.characterModel.tact - 90;
+        CharacterController lordCharacter = influence.characterList.Find(character => character.rank == Rank.領主);
+        characterLoyalty += lordCharacter.tact - 90;
 
-        characterModel.loyalty = characterLoyalty;
-        if (characterModel.loyalty >= 100)
+        loyalty = characterLoyalty;
+        if (loyalty >= 100)
         {
-            characterModel.loyalty = 100;
+            loyalty = 100;
         }
     }
 

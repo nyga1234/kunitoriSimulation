@@ -59,23 +59,23 @@ public class BattleUI : MonoBehaviour
         }
         this.gameObject.SetActive(true);
 
-        attackerMilitaryText.text = attackerCharacter.characterModel.name;
-        defenderMilitaryText.text = defenderCharacter.characterModel.name;
+        attackerMilitaryText.text = attackerCharacter.name;
+        defenderMilitaryText.text = defenderCharacter.name;
 
         SetBattleFieldUI(territory);
 
-        attackerIcon.sprite = attackerCharacter.characterModel.icon;
-        defenderIcon.sprite = defenderCharacter.characterModel.icon;
+        attackerIcon.sprite = attackerCharacter.icon;
+        defenderIcon.sprite = defenderCharacter.icon;
 
-        attackerRankText.text = attackerCharacter.characterModel.rank.ToString();
-        attackerNameText.text = attackerCharacter.characterModel.name.ToString();
-        attackerForceText.text = "[êÌì¨]" + attackerCharacter.characterModel.force.ToString();
-        attackerInteliText.text = "[íqñd]" + attackerCharacter.characterModel.inteli.ToString();
+        attackerRankText.text = attackerCharacter.rank.ToString();
+        attackerNameText.text = attackerCharacter.name.ToString();
+        attackerForceText.text = "[êÌì¨]" + attackerCharacter.force.ToString();
+        attackerInteliText.text = "[íqñd]" + attackerCharacter.inteli.ToString();
 
-        defenderRankText.text = defenderCharacter.characterModel.rank.ToString();
-        defenderNameText.text = defenderCharacter.characterModel.name.ToString();
-        defenderForceText.text = "[êÌì¨]" + defenderCharacter.characterModel.force.ToString();
-        defenderInteliText.text = "[íqñd]" + defenderCharacter.characterModel.inteli.ToString();
+        defenderRankText.text = defenderCharacter.rank.ToString();
+        defenderNameText.text = defenderCharacter.name.ToString();
+        defenderForceText.text = "[êÌì¨]" + defenderCharacter.force.ToString();
+        defenderInteliText.text = "[íqñd]" + defenderCharacter.inteli.ToString();
     }
 
     public void HideBattleUI()

@@ -115,7 +115,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterVagabond()
     {
-        if (gameManager.playerCharacter.characterModel.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
+        if (gameManager.playerCharacter.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
         {
             return;
         }
@@ -131,7 +131,7 @@ public class CommandOnMouse : MonoBehaviour
     
     public void OnPointerEnterRebellion()
     {
-        if (gameManager.playerCharacter.characterModel.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
+        if (gameManager.playerCharacter.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
         {
             return;
         }
@@ -147,7 +147,7 @@ public class CommandOnMouse : MonoBehaviour
 
     public void OnPointerEnterAttack()
     {
-        if (GameMain.instance.playerCharacter.characterModel.isLord == true)
+        if (GameMain.instance.playerCharacter.isLord == true)
         {
             titleFieldUI.ShowAttackText();
         }

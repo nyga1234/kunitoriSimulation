@@ -37,7 +37,7 @@ public class CharacterUIOnClick : MonoBehaviour
 
         if (yesNoUI.IsYes())
         {
-            clickedCharacter.characterModel.isPlayerCharacter = true;
+            clickedCharacter.isPlayerCharacter = true;
             GameMain.instance.playerCharacter = clickedCharacter;
 
             characterIndexMenu.gameObject.SetActive(false);
@@ -194,7 +194,7 @@ public class CharacterUIOnClick : MonoBehaviour
             else if (GameMain.instance.step == Step.Appointment)
             {
                 // クリックされたキャラクターの身分を取得
-                Rank clickedRank = clickedCharacter.characterModel.rank;
+                Rank clickedRank = clickedCharacter.rank;
                 // 一つ上の身分を計算
                 Rank newRank = (Rank)((int)clickedRank + 1);
                 // 身分が領主の場合は処理を行わない
@@ -208,7 +208,7 @@ public class CharacterUIOnClick : MonoBehaviour
                     SoundManager.instance.PlayClickSE();
                     TitleFieldUI.instance.titleFieldText.text = "      昇格したいキャラクターをクリック";
                     // 一つ上の身分のキャラクターを探す
-                    CharacterController characterToSwap = clickedCharacter.influence.characterList.Find(c => c.characterModel.rank == newRank);
+                    CharacterController characterToSwap = clickedCharacter.influence.characterList.Find(c => c.rank == newRank);
                     // 入れ替え
                     if (characterToSwap != null)
                     {
@@ -224,7 +224,7 @@ public class CharacterUIOnClick : MonoBehaviour
             //追放ステップ
             else if (GameMain.instance.step == Step.Banishment)
             {
-                if (clickedCharacter.characterModel.isLord != true)
+                if (clickedCharacter.isLord != true)
                 {
                     clickedFlag = true;
                     StartCoroutine(WaitForBanishmentCharacter());
@@ -241,7 +241,7 @@ public class CharacterUIOnClick : MonoBehaviour
                 //プレイヤー勢力が防衛側の場合
                 if (GameMain.instance.defenceFlag == true)
                 {
-                    if (clickedCharacter.characterModel.isAttackable == true)
+                    if (clickedCharacter.isAttackable == true)
                     {
                         clickedFlag = true;
                         StartCoroutine(WaitForDefenceBattle());
@@ -255,12 +255,12 @@ public class CharacterUIOnClick : MonoBehaviour
                 //プレイヤー勢力が侵攻側の場合
                 else
                 {
-                    if (clickedCharacter.characterModel.isAttackable == true)
+                    if (clickedCharacter.isAttackable == true)
                     {
                         battleManager.isBattleEnd = false;
 
                         //守備側勢力から戦闘可能なキャラクターをランダムに取得
-                        List<CharacterController> defenceCharacterList = territoryManager.influence.characterList.FindAll(c => c.characterModel.isAttackable);
+                        List<CharacterController> defenceCharacterList = territoryManager.influence.characterList.FindAll(c => c.isAttackable);
                         System.Random random = new System.Random();
                         defenceCharacter = defenceCharacterList[random.Next(defenceCharacterList.Count)];
 
@@ -281,9 +281,9 @@ public class CharacterUIOnClick : MonoBehaviour
     private void SwapCharacters(CharacterController clickedCharacter, CharacterController characterToSwap)
     {
         // キャラクターの身分を入れ替え
-        Rank tempRank = clickedCharacter.characterModel.rank;
-        clickedCharacter.characterModel.rank = characterToSwap.characterModel.rank;
-        characterToSwap.characterModel.rank = tempRank;
+        Rank tempRank = clickedCharacter.rank;
+        clickedCharacter.rank = characterToSwap.rank;
+        characterToSwap.rank = tempRank;
 
         clickedCharacter.CalcLoyalty();
         characterToSwap.CalcLoyalty();
