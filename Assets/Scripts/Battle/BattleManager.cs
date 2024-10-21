@@ -62,24 +62,24 @@ public class BattleManager : MonoBehaviour
         ShowSoliderList(defenderCharacter.soliderList, DefenderSoliderField, false);
     }
 
-    void CreateSoliderList(List<SoliderController> soliderList, Transform field, bool Attack)
+    void CreateSoliderList(List<SoldierController> soliderList, Transform field, bool Attack)
     {
-        foreach (SoliderController solider in soliderList)
+        foreach (SoldierController solider in soliderList)
         {
             CreateAttackrSolider(solider, field, Attack);
         }
     }
 
-    void CreateAttackrSolider(SoliderController solider, Transform field, bool Attack)
+    void CreateAttackrSolider(SoldierController solider, Transform field, bool Attack)
     {
         if (Attack)
         {
             var soldierObject = Instantiate(attackSoliderPrefab, field);
             soldierObject.GetComponent<SoldierImageView>().
                 ShowBattleSoldier(
-                solider.soliderModel.icon,
-                solider.soliderModel.hp,
-                solider.soliderModel.maxHP);
+                solider.icon,
+                solider.hp,
+                solider.maxHP);
             //SoliderController battleSolider = Instantiate(attackSoliderPrefab, field, false);
             //battleSolider.ShowBattleSoliderUI(solider, Attack);
         }
@@ -88,15 +88,15 @@ public class BattleManager : MonoBehaviour
             var soldierObject = Instantiate(defenceSoliderPrefab, field);
             soldierObject.GetComponent<SoldierImageView>().
                 ShowBattleSoldier(
-                solider.soliderModel.icon,
-                solider.soliderModel.hp,
-                solider.soliderModel.maxHP);
+                solider.icon,
+                solider.hp,
+                solider.maxHP);
             //SoliderController battleSolider = Instantiate(defenceSoliderPrefab, field, false);
             //battleSolider.ShowBattleSoliderUI(solider, Attack);
         }
     }
 
-    void ShowSoliderList(List<SoliderController> soliderList, Transform field, bool Attack)
+    void ShowSoliderList(List<SoldierController> soliderList, Transform field, bool Attack)
     {
         // Œ»İ•\¦‚³‚ê‚Ä‚¢‚é•ºm‚ğíœ
         //foreach (Transform child in field)
@@ -106,13 +106,13 @@ public class BattleManager : MonoBehaviour
         HideSoliderList(soliderList, field);
 
         // V‚µ‚¢•ºmƒŠƒXƒg‚ğì¬
-        foreach (SoliderController solider in soliderList)
+        foreach (SoldierController solider in soliderList)
         {
             CreateAttackrSolider(solider, field, Attack);
         }
     }
 
-    void HideSoliderList(List<SoliderController> soliderList, Transform field)
+    void HideSoliderList(List<SoldierController> soliderList, Transform field)
     {
         // Œ»İ•\¦‚³‚ê‚Ä‚¢‚é•ºm‚ğíœ
         foreach (Transform child in field)
@@ -209,11 +209,11 @@ public class BattleManager : MonoBehaviour
     {
         if (attackChara.soliderList.Count != 0 && defenceChara.soliderList.Count != 0)
         {
-            foreach (SoliderController attackerSolider in attackChara.soliderList)
+            foreach (SoldierController attackerSolider in attackChara.soliderList)
             {
-                SoliderController defenderSolider = GetRandomSolider(defenceChara.soliderList);
-                attackerSolider.soliderModel.Attack(attackChara, defenceChara, defenderSolider, territoryManager.territory);
-                //defenderSolider.soliderModel.CounterAttack(attackChara, defenceChara, attackerSolider, influeneceManager.territory);
+                SoldierController defenderSolider = GetRandomSolider(defenceChara.soliderList);
+                attackerSolider.Attack(attackChara, defenceChara, defenderSolider, territoryManager.territory);
+                //defenderSolider.CounterAttack(attackChara, defenceChara, attackerSolider, influeneceManager.territory);
             }
         }
         else
@@ -225,29 +225,29 @@ public class BattleManager : MonoBehaviour
     public void IsAliveCheckSolider(CharacterController attackChara, CharacterController defenceChara)
     {
         //HP‚ª0‚É‚È‚Á‚½•ºm‚ğæ“¾
-        List<SoliderController> deadAttackers = new List<SoliderController>();
-        foreach (SoliderController solider in attackChara.soliderList)
+        List<SoldierController> deadAttackers = new List<SoldierController>();
+        foreach (SoldierController solider in attackChara.soliderList)
         {
-            if (solider.soliderModel.isAlive == false)
+            if (solider.isAlive == false)
             {
                 deadAttackers.Add(solider);
             }
         }
-        List<SoliderController> deadDefenders = new List<SoliderController>();
-        foreach (SoliderController solider in defenceChara.soliderList)
+        List<SoldierController> deadDefenders = new List<SoldierController>();
+        foreach (SoldierController solider in defenceChara.soliderList)
         {
-            if (solider.soliderModel.isAlive == false)
+            if (solider.isAlive == false)
             {
                 deadDefenders.Add(solider);
             }
         }
         //HP‚ª0‚É‚È‚Á‚½•ºm‚ğƒŠƒXƒg‚©‚çíœ‚©‚ÂDestroy
-        foreach (SoliderController solider in deadAttackers)
+        foreach (SoldierController solider in deadAttackers)
         {
             attackChara.soliderList.Remove(solider);
             Destroy(solider);
         }
-        foreach (SoliderController solider in deadDefenders)
+        foreach (SoldierController solider in deadDefenders)
         {
             defenceChara.soliderList.Remove(solider);
             Destroy(solider);
@@ -273,15 +273,15 @@ public class BattleManager : MonoBehaviour
         }
 
         int attackerSoliderHpSum = 0;
-        foreach (SoliderController solider in attackCharacter.soliderList)
+        foreach (SoldierController solider in attackCharacter.soliderList)
         {
-            attackerSoliderHpSum += solider.soliderModel.hp;
+            attackerSoliderHpSum += solider.hp;
         }
 
         int defenderSoliderHpSum = 0;
-        foreach (SoliderController solider in defenceCharacter.soliderList)
+        foreach (SoldierController solider in defenceCharacter.soliderList)
         {
-            defenderSoliderHpSum += solider.soliderModel.hp;
+            defenderSoliderHpSum += solider.hp;
         }
 
         //–h‰q‘¤‚ª•‰‚¯‚Ä‚¢‚éê‡
@@ -293,9 +293,9 @@ public class BattleManager : MonoBehaviour
                 {
                     //»”™‚Ìê‡A‚¢‚¸‚ê‚©•ºm‚ÌHP‚ª20–¢–‚É‚È‚Á‚½‚ç‘Ş‹p‚³‚¹‚é
                     case Territory.DefenceTerritoryType.desert:
-                        foreach (SoliderController solider in defenceCharacter.soliderList)
+                        foreach (SoldierController solider in defenceCharacter.soliderList)
                         {
-                            if (solider.soliderModel.hp < 20)
+                            if (solider.hp < 20)
                             {
                                 defenderRetreatFlag = true;
                                 Debug.Log("–h‰q‘¤‚ª•‰‚¯‚Ü‚µ‚½");
@@ -304,9 +304,9 @@ public class BattleManager : MonoBehaviour
                         break;
                     //r–ì‚Ìê‡A‚¢‚¸‚ê‚©•ºm‚ÌHP‚ª10–¢–‚É‚È‚Á‚½‚ç‘Ş‹p‚³‚¹‚é
                     case Territory.DefenceTerritoryType.wilderness:
-                        foreach (SoliderController solider in defenceCharacter.soliderList)
+                        foreach (SoldierController solider in defenceCharacter.soliderList)
                         {
-                            if (solider.soliderModel.hp < 10)
+                            if (solider.hp < 10)
                             {
                                 defenderRetreatFlag = true;
                                 Debug.Log("–h‰q‘¤‚ª•‰‚¯‚Ü‚µ‚½");
@@ -349,9 +349,9 @@ public class BattleManager : MonoBehaviour
                 {
                     //»”™‚Ìê‡A‚¢‚¸‚ê‚©•ºm‚ÌHP‚ª20–¢–‚É‚È‚Á‚½‚ç‘Ş‹p‚³‚¹‚é
                     case Territory.AttackTerritoryType.desert:
-                        foreach (SoliderController solider in attackCharacter.soliderList)
+                        foreach (SoldierController solider in attackCharacter.soliderList)
                         {
-                            if (solider.soliderModel.hp < 20)
+                            if (solider.hp < 20)
                             {
                                 attackerRetreatFlag = true;
                                 Debug.Log("NU‘¤‚ª•‰‚¯‚Ü‚µ‚½");
@@ -360,9 +360,9 @@ public class BattleManager : MonoBehaviour
                         break;
                     //r–ì‚Ìê‡A‚¢‚¸‚ê‚©•ºm‚ÌHP‚ª10–¢–‚É‚È‚Á‚½‚ç‘Ş‹p‚³‚¹‚é
                     case Territory.AttackTerritoryType.wilderness:
-                        foreach (SoliderController solider in attackCharacter.soliderList)
+                        foreach (SoldierController solider in attackCharacter.soliderList)
                         {
-                            if (solider.soliderModel.hp < 10)
+                            if (solider.hp < 10)
                             {
                                 attackerRetreatFlag = true;
                                 Debug.Log("NU‘¤‚ª•‰‚¯‚Ü‚µ‚½");
@@ -544,7 +544,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private SoliderController GetRandomSolider(List<SoliderController> soliderList)
+    private SoldierController GetRandomSolider(List<SoldierController> soliderList)
     {
         if (soliderList.Count == 0)
         {

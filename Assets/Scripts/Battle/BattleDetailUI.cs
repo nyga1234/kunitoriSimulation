@@ -46,13 +46,13 @@ public class BattleDetailUI : MonoBehaviour
         attackerSoliderHPSum = 0;
         defenderSoliderHPSum = 0;
 
-        foreach (SoliderController solider in attackCharacter.soliderList)
+        foreach (SoldierController solider in attackCharacter.soliderList)
         {
-            attackerSoliderHPSum += solider.soliderModel.hp;
+            attackerSoliderHPSum += solider.hp;
         }
-        foreach (SoliderController solider in defenceCharacter.soliderList)
+        foreach (SoldierController solider in defenceCharacter.soliderList)
         {
-            defenderSoliderHPSum += solider.soliderModel.hp;
+            defenderSoliderHPSum += solider.hp;
         }
 
         attackerForceText.text = attackerSoliderHPSum.ToString();
@@ -64,7 +64,7 @@ public class BattleDetailUI : MonoBehaviour
         ShowSoliderList(defenceCharacter.soliderList, DefenderSoliderListField, false);
     }
 
-    void ShowSoliderList(List<SoliderController> soliderList, Transform field, bool Attack)
+    void ShowSoliderList(List<SoldierController> soliderList, Transform field, bool Attack)
     {
         // 現在表示されている兵士を削除
         foreach (Transform child in field)
@@ -73,18 +73,18 @@ public class BattleDetailUI : MonoBehaviour
         }
 
         // 新しい兵士リストを作成
-        foreach (SoliderController solider in soliderList)
+        foreach (SoldierController solider in soliderList)
         {
             ShowSolider(solider, field, Attack);
         }
     }
 
-    void ShowSolider(SoliderController solider, Transform field, bool Attack)
+    void ShowSolider(SoldierController solider, Transform field, bool Attack)
     {
         //SoliderController battleSolider = Instantiate(battleSolidefPrefab, field, false);
         //battleSolider.ShowBattleDetailSoliderUI(solider, Attack);
         GameObject soldierObject = Instantiate(battleSolidefPrefab, field, false);
-        soldierObject.GetComponent<SoldierImageView>().ShowSoldierImage(solider.soliderModel.icon, Attack);
+        soldierObject.GetComponent<SoldierImageView>().ShowSoldierImage(solider.icon, Attack);
     }
 
     public void ShowLandformInformationUI()

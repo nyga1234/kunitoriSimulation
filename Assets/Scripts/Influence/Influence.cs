@@ -7,10 +7,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.TextCore.Text;
 
-public class Influence : MonoBehaviour
+[CreateAssetMenu(fileName = "Influence", menuName = "CreateInfluence")]
+public class Influence : ScriptableObject
 {
+    [Header("Constant Value")]
     public string influenceName;
     public Sprite influenceImage;
+
+    [Header("Changing Value")]
+    public int territorySum;
+    public int goldSum;
+    public int characterSum;
+    public int soliderSum;
+    public int forceSum;
     public List<CharacterController> characterList;
     public List<Territory> territoryList;
 
@@ -26,11 +35,15 @@ public class Influence : MonoBehaviour
         this.influenceImage = influenceImage;
     }
 
-    public int territorySum;
-    public int goldSum;
-    public int characterSum;
-    public int soliderSum;
-    public int forceSum;
+    public void Initialize()
+    {
+        territorySum = 0;
+        goldSum = 0;
+        characterSum = 0;
+        soliderSum = 0;
+        forceSum = 0;
+        characterList.Clear();
+    }
 
     public bool IsAttackableTerritory(Territory territory)
     {
@@ -121,12 +134,6 @@ public class Influence : MonoBehaviour
         SortCharacterByRank(characterList);
     }
 
-    // 身分の高い順にソート
-    public void SortCharacterByRank(List<CharacterController> characterList)
-    {
-        this.characterList = characterList.OrderByDescending(c => c.rank).ToList();
-    }
-
     //勢力にTerritoryを追加するメソッド
     public void AddTerritory(Territory territory)
     {
@@ -192,6 +199,12 @@ public class Influence : MonoBehaviour
         }
     }
 
+    // 身分の高い順にソート
+    public void SortCharacterByRank(List<CharacterController> characterList)
+    {
+        this.characterList = characterList.OrderByDescending(c => c.rank).ToList();
+    }
+
     // キャラクターを勢力から除外するメソッド
     public void RemoveCharacter(CharacterController character)
     {
@@ -206,6 +219,23 @@ public class Influence : MonoBehaviour
         this.characterSum = influence.characterList.Count;
         this.goldSum = influence.characterList.Sum(c => c.gold);
         this.soliderSum = influence.characterList.Sum(c => c.soliderList.Count);
-        this.forceSum = influence.characterList.Sum(c => c.soliderList.Sum(s => s.soliderModel.force));
+        this.forceSum = influence.characterList.Sum(c => c.soliderList.Sum(s => s.force));
     }
+
+    // コピーコンストラクタの追加
+    public Influence(Influence original)
+    {
+        influenceName = original.influenceName;
+        influenceImage = original.influenceImage;
+        territorySum = original.territorySum;
+        goldSum = original.goldSum;
+        characterSum = original.characterSum;
+        soliderSum = original.soliderSum;
+        forceSum = original.forceSum;
+
+        // リストを新しく作成してコピー
+        characterList = new List<CharacterController>(original.characterList);
+        territoryList = new List<Territory>(original.territoryList);
+    }
+
 }

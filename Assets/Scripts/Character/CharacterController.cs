@@ -19,7 +19,7 @@ public enum Rank
 [CreateAssetMenu(fileName = "Character", menuName = "CreateCharacter")]
 public class CharacterController : ScriptableObject
 {
-    [Header("Constant Value")]
+    [Header("Initial Set Value")]
     public int characterId;
     public Sprite icon;
     public new string name;
@@ -27,26 +27,51 @@ public class CharacterController : ScriptableObject
     public int inteli;//智謀
     public int tact;//手腕
     public int ambition;//野心
-
-    [Header("Changing Value")]
+    public bool isLord;//領主か将軍か
     public Rank rank;//身分
+    public Influence influence;
+    public List<SoldierController> soliderList;
+
+    [Header("Later Set Value")]
     public int fame;//名声
     public int gold;//お金
     public int loyalty;//忠誠
     public int salary;//給料%
-    public bool isLord;//領主か将軍か
     public bool isPlayerCharacter;
     public bool isAttackable = true;
     public bool isBattle = false;
-
-    public Influence influence;
-    public List<SoliderController> soliderList;
     public int soliderForceSum;
 
-    //public void Init(int characterID)
+    //private CharacterEntity characterEntity;
+
+    //private CharacterController CreateCharacter(CharacterEntity characterE)
     //{
-    //    characterModel = new CharacterModel(characterID);
+    //    CharacterController characterC = new CharacterController();
+    //    characterC.characterId = characterE.characterId;
+    //    characterC.icon = characterE.icon;
+    //    characterC.name = characterE.name;
+    //    characterC.force = characterE.force;
+    //    characterC.inteli = characterE.inteli;
+    //    characterC.tact = characterE.tact;
+    //    characterC.ambition = characterE.ambition;
+    //    return characterC;
     //}
+
+    public void Initialize()
+    {
+        //rank = 0;
+        fame = 0;
+        gold = 0;
+        loyalty = 0;
+        salary = 0;
+        isLord = false;
+        isPlayerCharacter = false;
+        isAttackable = true;
+        isBattle = false;
+        influence = null;
+        soliderList.Clear();
+        soliderForceSum = 0;
+    }
 
     // キャラクターを勢力に所属するメソッド
     public void SetInfluence(Influence influence)
@@ -60,7 +85,7 @@ public class CharacterController : ScriptableObject
         SetInfluence(GameMain.instance.noneInfluence);
     }
 
-    public void AddSoliders(List<SoliderController> soliderList)
+    public void AddSoliders(List<SoldierController> soliderList)
     {
         this.soliderList.AddRange(soliderList);
     }
@@ -167,9 +192,35 @@ public class CharacterController : ScriptableObject
 
     public void CalcSoliderForceSum()
     {
-        foreach (SoliderController solider in soliderList)
+        foreach (SoldierController solider in soliderList)
         {
-            soliderForceSum += solider.soliderModel.force;
+            soliderForceSum += solider.force;
         }
+    }
+
+    // コピーコンストラクタの追加
+    public CharacterController(CharacterController original)
+    {
+        characterId = original.characterId;
+        icon = original.icon;
+        name = original.name;
+        force = original.force;
+        inteli = original.inteli;
+        tact = original.tact;
+        ambition = original.ambition;
+        isLord = original.isLord;
+        rank = original.rank;
+        influence = original.influence; // 参照をそのままコピー（必要に応じて変更）
+        fame = original.fame;
+        gold = original.gold;
+        loyalty = original.loyalty;
+        salary = original.salary;
+        isPlayerCharacter = original.isPlayerCharacter;
+        isAttackable = original.isAttackable;
+        isBattle = original.isBattle;
+        soliderForceSum = original.soliderForceSum;
+
+        // SoldierListのコピー
+        soliderList = new List<SoldierController>(original.soliderList);
     }
 }

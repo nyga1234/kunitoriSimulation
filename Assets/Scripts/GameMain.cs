@@ -7,10 +7,13 @@ using UnityEngine.UI;
 
 public class GameMain : SingletonMonoBehaviour<GameMain>
 {
+    [SerializeField] UtilityParamObject constParam;
+    public List<CharacterController> characterList;
+    public List<Influence> influenceList;
+
     [SerializeField] Cursor cursor;
     [SerializeField] VSImageUI vsImageUI;
-    [SerializeField] CharacterController characterPrefab;
-    [SerializeField] SoliderController soliderPrefab;
+    [SerializeField] SoldierController soliderPrefab;
     [SerializeField] TitleFieldUI titleFieldUI;
     [SerializeField] DialogueUI dialogueUI;
     [SerializeField] YesNoUI yesNoUI;
@@ -37,14 +40,9 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     [SerializeField] GameObject characterSearchMenu;
     public TerritoryGenerator territoryGenerator;
 
-    [SerializeField] private Transform Character;
-    [SerializeField] private Transform Solider;
-    [SerializeField] private Transform Influence;
-
-    public List<CharacterController> characterList;
-    public List<SoliderController> allSoliderList;
+    public List<SoldierController> allSoliderList;
     public CharacterController playerCharacter;
-    public List<Influence> influenceList;
+    
     public List<Territory> allTerritoryList;
     public Influence noneInfluence;
 
@@ -112,18 +110,20 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     private void Start()
     {
         Initialize();
-        StartGame();
+        //StartGame();
+
+
+        if (!SaveLoadManager.HasSaveData(0))
+        {
+            Debug.Log("ゲームを最初から開始します");
+            StartGame();
+        }
+        else
+        {
+            Debug.Log("ゲームを途中から開始します");
+            LoadGame(1);
+        }
         SceneController.instance.Stack.Add("GameMain");
-        //if (!SaveLoadManager.HasSaveData(1))
-        //{
-        //    Debug.Log("ゲームを最初から開始します");
-        //    StartGame();
-        //}
-        //else
-        //{
-        //    Debug.Log("ゲームを途中から開始します");
-        //    LoadGame(1);
-        //}
     }
 
     private void OnDestroy()
@@ -141,74 +141,80 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
     private void Initialize()
     {
-        foreach (CharacterController character in characterList)
+        this.influenceList.Clear();
+        this.characterList.Clear();
+
+        foreach (Influence influence in constParam.influenceList)
         {
-            character.rank = 0;
-            character.fame = 0;
-            character.gold = 0;
-            character.loyalty = 0;
-            character.salary = 0;
-            character.isLord = false;
-            character.isPlayerCharacter = false;
-            character.isAttackable = true;
-            character.isBattle = false;
-            character.influence = null;
-            character.soliderList.Clear();
-            character.soliderForceSum = 0;
+            influenceList.Add(Instantiate(influence));
         }
-
-        CharacterController serugius = characterList.Find(c => c.characterId == 1);
-        serugius.isLord = true;
-        CharacterController victor = characterList.Find(c => c.characterId == 2);
-        victor.isLord = true;
-        CharacterController arisia = characterList.Find(c => c.characterId == 3);
-        arisia.isLord = true;
-        CharacterController rourenthius = characterList.Find(c => c.characterId == 4);
-        rourenthius.isLord = true;
-        CharacterController feodoora = characterList.Find(c => c.characterId == 25);
-        feodoora.isLord = true;
-
-        //勢力の生成
-        // Resources.Loadを使用してスプライトを読み込む
-        blackInfluenceSprite = Resources.Load<Sprite>(blackFlagPath);
-        blueInfluenceSprite = Resources.Load<Sprite>(blueFlagPath);
-        pinkInfluenceSprite = Resources.Load<Sprite>(pinkFlagPath);
-        purplenfluenceSprite = Resources.Load<Sprite>(purpleFlagPath);
-        yellowfluenceSprite = Resources.Load<Sprite>(yellowFlagPath);
-        noneInfluenceSprite = Resources.Load<Sprite>(greyFlagPath);
-
-        //無所属勢力の作成
-        noneInfluence = new GameObject(noneInfluenceName).AddComponent<Influence>();
-        noneInfluence.Init(noneInfluenceName, noneInfluenceSprite);
-        influenceList.Add(noneInfluence);
-
-        //領主リストの取得
-        List<CharacterController> lordCharacterList = characterList.FindAll(character => character.isLord);
-
-        //領主に応じた勢力を作成
-        foreach (CharacterController character in lordCharacterList)
+        noneInfluence = influenceList.Find(c => c.influenceName == "NoneInfluence");
+        foreach (CharacterController character in constParam.characterList)
         {
-            if (character == victor)
-            {
-                CreateInfluence(character, blackInfluenceSprite);
-            }
-            else if (character == serugius)
-            {
-                CreateInfluence(character, blueInfluenceSprite);
-            }
-            else if (character == arisia)
-            {
-                CreateInfluence(character, pinkInfluenceSprite);
-            }
-            else if (character == rourenthius)
-            {
-                CreateInfluence(character, purplenfluenceSprite);
-            }
-            else if (character == feodoora)
-            {
-                CreateInfluence(character, yellowfluenceSprite);
-            }
+            characterList.Add(Instantiate(character));
         }
+        //foreach (CharacterController character in characterList)
+        //{
+        //    character.Initialize();
+        //}
+
+        //CharacterController serugius = characterList.Find(c => c.characterId == 1);
+        //serugius.isLord = true;
+        //CharacterController victor = characterList.Find(c => c.characterId == 2);
+        //victor.isLord = true;
+        //CharacterController arisia = characterList.Find(c => c.characterId == 3);
+        //arisia.isLord = true;
+        //CharacterController rourenthius = characterList.Find(c => c.characterId == 4);
+        //rourenthius.isLord = true;
+        //CharacterController feodoora = characterList.Find(c => c.characterId == 25);
+        //feodoora.isLord = true;
+
+        //foreach (Influence influence in influenceList)
+        //{
+        //    influence.Initialize();
+        //}
+
+        ////勢力の生成
+        //// Resources.Loadを使用してスプライトを読み込む
+        //blackInfluenceSprite = Resources.Load<Sprite>(blackFlagPath);
+        //blueInfluenceSprite = Resources.Load<Sprite>(blueFlagPath);
+        //pinkInfluenceSprite = Resources.Load<Sprite>(pinkFlagPath);
+        //purplenfluenceSprite = Resources.Load<Sprite>(purpleFlagPath);
+        //yellowfluenceSprite = Resources.Load<Sprite>(yellowFlagPath);
+        //noneInfluenceSprite = Resources.Load<Sprite>(greyFlagPath);
+
+        ////無所属勢力の作成
+        //noneInfluence = new GameObject(noneInfluenceName).AddComponent<Influence>();
+        //noneInfluence.Init(noneInfluenceName, noneInfluenceSprite);
+        //influenceList.Add(noneInfluence);
+
+        ////領主リストの取得
+        //List<CharacterController> lordCharacterList = characterList.FindAll(character => character.isLord);
+
+        ////領主に応じた勢力を作成
+        //foreach (CharacterController character in lordCharacterList)
+        //{
+        //    if (character == victor)
+        //    {
+        //        CreateInfluence(character, blackInfluenceSprite);
+        //    }
+        //    else if (character == serugius)
+        //    {
+        //        CreateInfluence(character, blueInfluenceSprite);
+        //    }
+        //    else if (character == arisia)
+        //    {
+        //        CreateInfluence(character, pinkInfluenceSprite);
+        //    }
+        //    else if (character == rourenthius)
+        //    {
+        //        CreateInfluence(character, purplenfluenceSprite);
+        //    }
+        //    else if (character == feodoora)
+        //    {
+        //        CreateInfluence(character, yellowfluenceSprite);
+        //    }
+        //}
 
         initializeTerritoryList = territoryGenerator.InitializeTerritory();
         //territoryGenerator.GenerateTerritory(territoryGenerator.InitializeTerritory(), influenceList);
@@ -217,7 +223,25 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
     private void StartGame()
     {
-        allTerritoryList = territoryGenerator.GenerateTerritory(initializeTerritoryList, influenceList);
+        //allTerritoryList = territoryGenerator.GenerateTerritory(initializeTerritoryList, influenceList);
+
+        //foreach (Influence influence in constParam.influenceList)
+        //{
+        //    Influence newInfluence = new Influence(influence);
+
+        //    this.influenceList.Add(newInfluence);
+
+        //    foreach (CharacterController character in influence.characterList)
+        //    {
+        //        CharacterController newCharacter = new CharacterController(character);
+
+        //        this.characterList.Add(newCharacter);
+        //    }
+        //}
+
+        
+
+        
 
         //領主
         CharacterController serugius = characterList.Find(c => c.characterId == 1);
@@ -258,6 +282,20 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         CharacterController siruvietto = characterList.Find(c => c.characterId == 34);
         CharacterController ruben = characterList.Find(c => c.characterId == 35);
 
+        ////給料%と忠誠を計算
+        //List<CharacterController> lordCharacterList = characterList.FindAll(character => character.influence.influenceName != "NoneInfluence");
+        //foreach (CharacterController character in lordCharacterList)
+        //{
+        //    //キャラクターの給料%を設定
+        //    character.CalcSalary();
+        //    //キャラクターの忠誠を設定
+        //    if (!character.isLord)
+        //    {
+        //        character.CalcLoyalty();
+        //    }
+        //}
+
+
         //キャラクターを勢力へ所属させる
         foreach (Influence influence in influenceList)
         {
@@ -273,7 +311,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 influence.AddCharacter(victor);
                 influence.AddCharacter(peruseus);
                 influence.AddCharacter(amerieru);
-                
+
             }
             else if (influence.influenceName == "アリシア")
             {
@@ -324,41 +362,74 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         List<int> soliderIntList3 = new List<int>() { 2, 2, 2, 2, 2, 1, 1, 1, 1, 1 };
         List<int> soliderIntList4 = new List<int>() { 1, 1, 1, 1, 1 };
 
-        //キャラクター毎に兵士を所属させる
+        ////キャラクター毎に兵士を所属させる
+        //foreach (CharacterController character in characterList)
+        //{
+        //    if (character == serugius || character == victor || character == arisia || character == rourenthius || character == feodoora)
+        //    {
+        //        AssignSoldierListToCharacter(character, soliderIntList);
+        //    }
+        //    else if(character == eresuthia || character == peruseus || character == karisutaana || character == venethia || character == jovannni)
+        //    {
+        //        AssignSoldierListToCharacter(character, soliderIntList2);
+        //    }
+        //    else if (character == renius || character == amerieru || character == mariseruda || character == siguma || character == simon)
+        //    {
+        //        AssignSoldierListToCharacter(character, soliderIntList3);
+        //    }
+        //    else
+        //    {
+        //        AssignSoldierListToCharacter(character, soliderIntList4);
+        //    }
+        //}
+
         foreach (CharacterController character in characterList)
         {
             if (character == serugius || character == victor || character == arisia || character == rourenthius || character == feodoora)
             {
-                AssignSoldierListToCharacter(character, soliderIntList);
+                foreach (SoldierController soldier in constParam.soldierList1)
+                {
+                    character.soliderList.Add(Instantiate(soldier));
+                }
             }
-            else if(character == eresuthia || character == peruseus || character == karisutaana || character == venethia || character == jovannni)
+            else if (character == eresuthia || character == peruseus || character == karisutaana || character == venethia || character == jovannni)
             {
-                AssignSoldierListToCharacter(character, soliderIntList2);
+                foreach (SoldierController soldier in constParam.soldierList2)
+                {
+                    character.soliderList.Add(Instantiate(soldier));
+                }
             }
             else if (character == renius || character == amerieru || character == mariseruda || character == siguma || character == simon)
             {
-                AssignSoldierListToCharacter(character, soliderIntList3);
+                foreach (SoldierController soldier in constParam.soldierList3)
+                {
+                    character.soliderList.Add(Instantiate(soldier));
+                }
             }
             else
             {
-                AssignSoldierListToCharacter(character, soliderIntList4);
+                foreach (SoldierController soldier in constParam.soldierList4)
+                {
+                    character.soliderList.Add(Instantiate(soldier));
+                }
             }
         }
 
         //allTerritoryList = territoryGenerator.Generate(influenceList);
+        allTerritoryList = territoryGenerator.GenerateTerritory(initializeTerritoryList, influenceList);
 
         phase = Phase.CharacterChoicePhase;
         PhaseCalc();
     }
 
-    public Influence CreateInfluence(CharacterController character, Sprite influenceImage)
-    {
-        Influence newInfluence = new GameObject(character.name).AddComponent<Influence>();
-        newInfluence.Init(character.name, influenceImage);
-        influenceList.Add(newInfluence);
-        newInfluence.transform.SetParent(Influence, false);
-        return newInfluence;
-    }
+    //public Influence CreateInfluence(CharacterController character, Sprite influenceImage)
+    //{
+    //    Influence newInfluence = new GameObject(character.name).AddComponent<Influence>();
+    //    newInfluence.Init(character.name, influenceImage);
+    //    influenceList.Add(newInfluence);
+    //    newInfluence.transform.SetParent(Influence, false);
+    //    return newInfluence;
+    //}
 
     public void AssignSoldierListToCharacter(CharacterController character, List<int> soldierIDList)
     {
@@ -366,11 +437,11 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         // 対応する兵士IDで兵士を初期化してリストに追加
         foreach (int soldierID in soldierIDList)
         {
-            SoliderController soldier = Instantiate(soliderPrefab, Solider);
-            soldier.Init(soldierID, CreateSoliderUniqueID());
-            soldier.gameObject.SetActive(false);
-            character.soliderList.Add(soldier);
-            allSoliderList.Add(soldier);
+            //SoliderController soldier = Instantiate(soliderPrefab, Solider);
+            //soldier.Init(soldierID, CreateSoliderUniqueID());
+            //soldier.gameObject.SetActive(false);
+            //character.soliderList.Add(soldier);
+            //allSoliderList.Add(soldier);
         }
     }
 
@@ -453,9 +524,9 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         //全ての兵士のHPを回復
         foreach (CharacterController character in characterList)
         {
-            foreach (SoliderController solider in character.soliderList)
+            foreach (SoldierController solider in character.soliderList)
             {
-                solider.soliderModel.hp = solider.soliderModel.maxHP;
+                solider.hp = solider.maxHP;
             }
         }
 
@@ -466,7 +537,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         {
             if (influence != noneInfluence)
             {
-                int territoryIncome = 15;
+                int territoryIncome = 30;
                 int influenceIncome = 0;//値を初期化
                 influenceIncome = influence.territoryList.Count * territoryIncome;
                 foreach (CharacterController character in influence.characterList)
@@ -633,12 +704,14 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             //兵士雇用
             while (otherCharacter.soliderList.Count < 10 && otherCharacter.gold >= 2)
             {
-                SoliderController solider = Instantiate(soliderPrefab);
-                solider.Init(1, CreateSoliderUniqueID());
-                solider.gameObject.SetActive(false);
-                otherCharacter.soliderList.Add(solider);
-                allSoliderList.Add(solider);
+                otherCharacter.soliderList.Add(Instantiate(constParam.soldierList.Find(c => c.soliderID == 1)));
                 otherCharacter.gold -= 2;
+                //SoliderController solider = Instantiate(soliderPrefab);
+                //solider.Init(1, CreateSoliderUniqueID());
+                //solider.gameObject.SetActive(false);
+                //otherCharacter.soliderList.Add(solider);
+                //allSoliderList.Add(solider);
+                //otherCharacter.gold -= 2;
             }
             //兵士訓練
             //領主の場合
@@ -646,9 +719,9 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             {
                 while (otherCharacter.gold >= 15)
                 {
-                    foreach (SoliderController solider in otherCharacter.soliderList)
+                    foreach (SoldierController solider in otherCharacter.soliderList)
                     {
-                        solider.soliderModel.Training(solider);
+                        solider.Training(solider);
                     }
                     otherCharacter.gold -= 2;
                 }
@@ -658,9 +731,9 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             {
                 while (otherCharacter.gold >= 7)
                 {
-                    foreach (SoliderController solider in otherCharacter.soliderList)
+                    foreach (SoldierController solider in otherCharacter.soliderList)
                     {
-                        solider.soliderModel.Training(solider);
+                        solider.Training(solider);
                     }
                     otherCharacter.gold -= 2;
                 }
@@ -790,9 +863,9 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         foreach (CharacterController chara in territoryManager.territory.influence.characterList)
         {
             soliderHPSum = 0;
-            foreach (SoliderController solider in chara.soliderList)
+            foreach (SoldierController solider in chara.soliderList)
             {
-                soliderHPSum += solider.soliderModel.hp;
+                soliderHPSum += solider.hp;
             }
             if (soliderHPSum > soliderHPMax)
             {
@@ -806,9 +879,9 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         foreach (CharacterController chara in character.influence.characterList)
         {
             soliderHPSum = 0;
-            foreach (SoliderController solider in chara.soliderList)
+            foreach (SoldierController solider in chara.soliderList)
             {
-                soliderHPSum += solider.soliderModel.hp;
+                soliderHPSum += solider.hp;
             }
             if (soliderHPSum < soliderHPMax)
             {
@@ -837,9 +910,9 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             foreach (CharacterController chara in attackableCharacterList)
             {
                 soliderHPSum2 = 0;
-                foreach (SoliderController solider in chara.soliderList)
+                foreach (SoldierController solider in chara.soliderList)
                 {
-                    soliderHPSum2 += solider.soliderModel.hp;
+                    soliderHPSum2 += solider.hp;
                     if (soliderHPSum2 > soliderStrongestHPSum)
                     {
                         strongestCharacter = chara;
@@ -999,9 +1072,9 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         foreach (CharacterController chara in territoryManager.territory.influence.characterList)
         {
             int soliderHPSum = 0;
-            foreach (SoliderController solider in chara.soliderList)
+            foreach (SoldierController solider in chara.soliderList)
             {
-                soliderHPSum += solider.soliderModel.hp;
+                soliderHPSum += solider.hp;
             }
             if (soliderHPSum < attackSoliderHPSum)
             {
@@ -1034,9 +1107,9 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             foreach (CharacterController chara in attackableCharacterList)
             {
                 int soliderHPSum = 0;
-                foreach (SoliderController solider in chara.soliderList)
+                foreach (SoldierController solider in chara.soliderList)
                 {
-                    soliderHPSum += solider.soliderModel.hp;
+                    soliderHPSum += solider.hp;
                     if (soliderHPSum > soliderStrongestHPSum)
                     {
                         strongestCharacter = chara;
@@ -1412,17 +1485,17 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             {
                 SoliderData soliderData = new SoliderData
                 {
-                    soliderID = solider.soliderModel.soliderID,
-                    hp = solider.soliderModel.hp,
-                    df = solider.soliderModel.df,
-                    maxHP = solider.soliderModel.maxHP,
-                    at = solider.soliderModel.at,
-                    force = solider.soliderModel.force,
-                    icon = solider.soliderModel.icon,
-                    lv = solider.soliderModel.lv,
-                    experience = solider.soliderModel.experience,
-                    isAlive = solider.soliderModel.isAlive,
-                    uniqueID = solider.soliderModel.uniqueID
+                    soliderID = solider.soliderID,
+                    hp = solider.hp,
+                    df = solider.df,
+                    maxHP = solider.maxHP,
+                    at = solider.at,
+                    force = solider.force,
+                    icon = solider.icon,
+                    lv = solider.lv,
+                    experience = solider.experience,
+                    isAlive = solider.isAlive,
+                    uniqueID = solider.uniqueID
                 };
                 // 兵士データをキャラクターデータに追加
                 charData.soliders.Add(soliderData);
@@ -1493,20 +1566,22 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 // 兵士の復元
                 foreach (var soliderData in charData.soliders)
                 {
-                    SoliderController solider = Instantiate(soliderPrefab, Solider);
-                    solider.Init(soliderData.soliderID, soliderData.uniqueID);
-                    solider.soliderModel.hp = soliderData.hp;
-                    solider.soliderModel.df = soliderData.df;
-                    solider.soliderModel.maxHP = soliderData.maxHP;
-                    solider.soliderModel.at = soliderData.at;
-                    solider.soliderModel.force = soliderData.force;
-                    solider.soliderModel.icon = soliderData.icon;
-                    solider.soliderModel.lv = soliderData.lv;
-                    solider.soliderModel.experience = soliderData.experience;
-                    solider.soliderModel.isAlive = soliderData.isAlive;
+                    SoldierController newSoldier = Instantiate(constParam.soldierList.Find(c => c.soliderID == soliderData.soliderID));
+                    //constParam.soldierList
+                    //SoldierController solider = Instantiate(soliderPrefab, Solider);
+                    //solider.Init(soliderData.soliderID, soliderData.uniqueID);
+                    newSoldier.hp = soliderData.hp;
+                    newSoldier.df = soliderData.df;
+                    newSoldier.maxHP = soliderData.maxHP;
+                    newSoldier.at = soliderData.at;
+                    newSoldier.force = soliderData.force;
+                    newSoldier.icon = soliderData.icon;
+                    newSoldier.lv = soliderData.lv;
+                    newSoldier.experience = soliderData.experience;
+                    newSoldier.isAlive = soliderData.isAlive;
 
-                    character.soliderList.Add(solider);
-                    allSoliderList.Add(solider);
+                    character.soliderList.Add(newSoldier);
+                    allSoliderList.Add(newSoldier);
                 }
 
             }

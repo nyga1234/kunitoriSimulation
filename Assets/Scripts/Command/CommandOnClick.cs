@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 
 public class CommandOnClick : MonoBehaviour
 {
+    [SerializeField] UtilityParamObject constParam;
     [SerializeField] YesNoUI yesNoUI;
     [SerializeField] DialogueUI dialogueUI;
     [SerializeField] CharacterMenuUI characterMenuUI;
@@ -27,7 +28,7 @@ public class CommandOnClick : MonoBehaviour
 
     public GameMain gameManager;
 
-    [SerializeField] SoliderController soliderPrefab;
+    [SerializeField] SoldierController soliderPrefab;
 
     public bool clickedFlag = false;
 
@@ -232,14 +233,20 @@ public class CommandOnClick : MonoBehaviour
             if (gameManager.playerCharacter.soliderList.Count < 10 && gameManager.playerCharacter.gold >= 2)
             {
                 SoundManager.instance.PlayRecruitSE();
-                SoliderController solider = Instantiate(soliderPrefab);
-                solider.Init(1, GameMain.instance.CreateSoliderUniqueID());
-                solider.gameObject.SetActive(false);
-                gameManager.playerCharacter.soliderList.Add(solider);
-                gameManager.allSoliderList.Add(solider);
+                gameManager.playerCharacter.soliderList.Add(Instantiate(constParam.soldierList.Find(c => c.soliderID == 1)));
                 gameManager.playerCharacter.gold -= 2;
                 personalMenuUI.ShowPersonalMenuUI(gameManager.playerCharacter);
                 influenceUI.ShowInfluenceUI(gameManager.playerCharacter.influence);
+
+                //SoundManager.instance.PlayRecruitSE();
+                //SoliderController solider = Instantiate(soliderPrefab);
+                //solider.Init(1, GameMain.instance.CreateSoliderUniqueID());
+                //solider.gameObject.SetActive(false);
+                //gameManager.playerCharacter.soliderList.Add(solider);
+                //gameManager.allSoliderList.Add(solider);
+                //gameManager.playerCharacter.gold -= 2;
+                //personalMenuUI.ShowPersonalMenuUI(gameManager.playerCharacter);
+                //influenceUI.ShowInfluenceUI(gameManager.playerCharacter.influence);
             }
             else if (gameManager.playerCharacter.soliderList.Count >= 10)
             {
@@ -261,9 +268,9 @@ public class CommandOnClick : MonoBehaviour
             if (gameManager.playerCharacter.gold >= 2)
             {
                 SoundManager.instance.PlayTrainingSE();
-                foreach (SoliderController solider in gameManager.playerCharacter.soliderList)
+                foreach (SoldierController solider in gameManager.playerCharacter.soliderList)
                 {
-                    solider.soliderModel.Training(solider);
+                    solider.Training(solider);
                 }
                 gameManager.playerCharacter.gold -= 2;
                 personalMenuUI.ShowPersonalMenuUI(gameManager.playerCharacter);

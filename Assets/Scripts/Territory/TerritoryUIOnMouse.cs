@@ -76,9 +76,9 @@ public class TerritoryUIOnMouse : MonoBehaviour
             cursor.gameObject.SetActive(false);
 
             int attackSoliderHPSum = 0;
-            foreach (SoliderController solider in GameMain.instance.playerCharacter.soliderList)
+            foreach (SoldierController solider in GameMain.instance.playerCharacter.soliderList)
             {
-                attackSoliderHPSum += solider.soliderModel.hp;
+                attackSoliderHPSum += solider.hp;
             }
 
             Debug.Log(territoryManager.territory.influence.influenceName);

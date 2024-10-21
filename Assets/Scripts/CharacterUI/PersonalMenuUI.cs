@@ -86,7 +86,7 @@ public class PersonalMenuUI : MonoBehaviour
         ShowSoliderList(character.soliderList, SoliderListField);
     }
 
-    void ShowSoliderList(List<SoliderController> soliderList, Transform field)
+    void ShowSoliderList(List<SoldierController> soliderList, Transform field)
     {
         // 現在表示されている兵士を削除
         foreach (Transform child in field)
@@ -95,20 +95,20 @@ public class PersonalMenuUI : MonoBehaviour
         }
 
         // 新しい兵士リストを作成
-        foreach (SoliderController solider in soliderList)
+        foreach (SoldierController solider in soliderList)
         {
             ShowSolider(solider, field);
         }
     }
 
-    void ShowSolider(SoliderController solider, Transform field)
+    void ShowSolider(SoldierController solider, Transform field)
     {
         var soldierObject = Instantiate(personalSolidefPrefab, field);
         soldierObject.GetComponent<SoldierImageView>().
             ShowSoldierStatus(
-            solider.soliderModel.icon, 
-            solider.soliderModel.hp.ToString(),
-            solider.soliderModel.lv.ToString());
+            solider.icon, 
+            solider.hp.ToString(),
+            solider.lv.ToString());
         //SoliderController personalSolider = Instantiate(personalSolidefPrefab, field, false);
         //personalSolider.ShowPersonalSoliderUI(solider);
     }
