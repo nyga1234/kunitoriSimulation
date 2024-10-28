@@ -4,8 +4,11 @@ using UnityEngine;
 public class SaveLoadManager : MonoBehaviour
 {
     private static bool isSaving = true; // セーブかロードかを判断するフラグ
-    // プロパティを公開
     public  static bool IsSaving { get { return isSaving; } set { isSaving = value; }}
+
+    private static int selectSlot = -1;
+    public static int SelectSlot { get {  return selectSlot; } set { selectSlot = value; }}
+
 
     private static string GetSavePath(int slot) => Application.persistentDataPath + $"/gamestate_slot{slot}.json";
 

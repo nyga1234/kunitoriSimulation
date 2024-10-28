@@ -35,6 +35,8 @@ public class TitleTopPresenter : MonoBehaviour
         endGameButton.onClick.AsObservable().Subscribe(_ => GameEnd());
         #endregion  
 
+        GameManager.instance?.Loading?.Hide();
+
         SceneController.instance.Stack.Add("Title");
     }
 
@@ -43,11 +45,11 @@ public class TitleTopPresenter : MonoBehaviour
         SceneController.instance.Stack.Remove("Title");   
     }
 
-    private void GameStart()
+    private async void GameStart()
     {
         //await SceneController.LoadAsync(nameof(SaveLoadUI));
         
-        GameManager.instance.ChangeScene("Title", "GameMain");
+        await GameManager.instance.ChangeScene("Title", "GameMain");
     }
 
     private void GameEnd()

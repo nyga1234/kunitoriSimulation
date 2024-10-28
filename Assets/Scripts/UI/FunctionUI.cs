@@ -1,49 +1,47 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UniRx;
+using Cysharp.Threading.Tasks;
 
 public class FunctionUI : MonoBehaviour
 {
     [SerializeField] private Button maskButton;
     [SerializeField] private Button saveButton;
     [SerializeField] private Button loadButton;
-    [SerializeField] private Button closeButton;
+    [SerializeField] private Button configButton;
+    [SerializeField] private Button titleButton;
     [SerializeField] private Button quitButton;
-
-    [SerializeField] private SaveLoadUI saveLoadUI;
+    [SerializeField] private Button closeButton;
 
     private void Start()
     {
-        //閉じる
         maskButton.onClick.AddListener(() => this.gameObject.SetActive(false));
 
-        // セーブボタンが押された場合
-        saveButton.onClick.AddListener(() =>
+        saveButton.onClick.AsObservable().Subscribe(async _ =>
         {
-            saveLoadUI.gameObject.SetActive(true);  // SaveLoadUIを表示
             SaveLoadManager.IsSaving = true;
-            this.gameObject.SetActive(false);
+            await SceneController.LoadAsync("UISaveLoad");
         });
 
-        // ロードボタンが押された場合
-        loadButton.onClick.AddListener(() =>
+        loadButton.onClick.AsObservable().Subscribe(async _ =>
         {
-            saveLoadUI.gameObject.SetActive(true); // SaveLoadUIを表示
             SaveLoadManager.IsSaving = false;
-            this.gameObject.SetActive(false);
+            await SceneController.LoadAsync("UISaveLoad");
         });
-        //閉じる
-        closeButton.onClick.AddListener(() => this.gameObject.SetActive(false));
 
-        //ゲーム終了
+        titleButton.onClick.AsObservable().Subscribe(async _ => { await GameManager.instance.ChangeScene("GameMain", "Title"); });
+
         quitButton.onClick.AddListener(QuitGame);
+
+        closeButton.onClick.AddListener(() => this.gameObject.SetActive(false));
     }
 
     private void QuitGame()
     {
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-#else
+        #else
         Application.Quit();
-#endif
+        #endif
     }
 }

@@ -11,21 +11,19 @@ public class SaveLoadUI : MonoBehaviour
 {
     [SerializeField] private Button maskButton;
     [SerializeField] private Button closeButton;
-
     [SerializeField] private Transform slotParent;
-
     [SerializeField] private GameObject slotPrefab;
     [SerializeField] GameObject imageSoliderPrefab;
-    
-    [SerializeField] private ConfirmOverwriteUI confirmOverwriteUI;
+    [SerializeField] private UtilityParamObject varParam;
 
-    //private bool isSaving = true; // セーブかロードかを判断するフラグ
     private List<GameObject> slotInstances = new List<GameObject>(); // 動的に生成されたスロットのインスタンス
 
     private int maxSlots = 3; // スロットの数（変更可能）
 
     private void Start()
     {
+        //confirmUIを取得
+
         GenerateSlots();// スロットの生成
 
         maskButton.onClick.AddListener(() => this.gameObject.SetActive(false));
@@ -49,40 +47,47 @@ public class SaveLoadUI : MonoBehaviour
             slotInstances.Add(slotInstance); // インスタンスをリストに追加
             SaveSlotView saveSlotView = slotInstance.GetComponent<SaveSlotView>();
             int capturedIndex = i;// ローカル変数を使用してスロット番号をキャプチャ
-            
-            saveSlotView.GetComponent<Button>().onClick.AddListener(() => OnSlotButtonClick(capturedIndex));
+            saveSlotView.GetComponent<Button>().OnClickAsObservable().Subscribe(_ =>
+            {
+                OnSlotButtonClick(capturedIndex);
+            });
         }
 
         closeButton.transform.SetAsLastSibling();
     }
 
-    private void OnSlotButtonClick(int slot)
+    private async void  OnSlotButtonClick(int slot)
     {
+        // セーブ処理
         if (SaveLoadManager.IsSaving)
         {
-            if (SaveLoadManager.HasSaveData(slot))
+            if (!SaveLoadManager.HasSaveData(slot))
             {
-                // 上書き確認UIを表示
-                confirmOverwriteUI.Show(() =>
-                {
-                    GameMain.instance.SaveGame(slot); //Show()の引数に上書きセーブ処理を渡す
-                });
+                GameManager.instance.SaveGame(slot);
+                UpdateSlotUI();
             }
             else
             {
-                GameMain.instance.SaveGame(slot);// セーブ処理
+                await SceneController.LoadAsync("UIConfirm");
+
+                // OKまたはCancelボタンがクリックされるのを待機
+                await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
+
+                if (varParam.IsConfirm == true)
+                {
+                    GameManager.instance.SaveGame(slot);
+                    UpdateSlotUI();
+                }
             }
         }
-        else
+        else // ロード処理
         {
-            GameManager.instance.ChangeScene("Title", "GameMain"); // ロード処理
+            await GameManager.instance.ChangeScene("Title", "GameMain");
+            SaveLoadManager.SelectSlot = slot;
         }
-
-        // UIを更新して表示する
-        UpdateSlotUI();
     }
 
-    private void UpdateSlotUI()
+    public void UpdateSlotUI()
     {
         Debug.Log("UpdateSlotUI");
         for (int i = 0; i < maxSlots; i++)
@@ -104,7 +109,6 @@ public class SaveLoadUI : MonoBehaviour
             {
                 saveSlotView.SlotText.text = "空きスロット"; // セーブデータが無い場合
                 saveSlotView.PlayerImage.sprite = null;
-                //ShowSoldierList(new List<SoliderController>(), saveSlotView.SoldierListField);
             }
         }
     }

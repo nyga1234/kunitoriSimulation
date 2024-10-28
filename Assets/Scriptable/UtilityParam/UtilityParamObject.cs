@@ -13,4 +13,7 @@ public class UtilityParamObject : ScriptableObject
     public List<SoldierController> soldierList2;
     public List<SoldierController> soldierList3;
     public List<SoldierController> soldierList4;
+
+    [SerializeField] private bool? isConfirm;
+    public bool? IsConfirm { get => isConfirm; set => isConfirm = value; }
 }

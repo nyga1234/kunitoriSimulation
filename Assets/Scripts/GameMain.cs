@@ -40,7 +40,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     [SerializeField] GameObject characterSearchMenu;
     public TerritoryGenerator territoryGenerator;
 
-    public List<SoldierController> allSoliderList;
+    //public List<SoldierController> allSoliderList;
     public CharacterController playerCharacter;
     
     public List<Territory> allTerritoryList;
@@ -57,7 +57,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
     [SerializeField] Territory plainTerritorPrefab;
     [SerializeField] Transform parent;
-    private List<Territory> initializeTerritoryList;
+    public List<Territory> initializeTerritoryList;
 
     //フェーズの管理
     public enum Phase
@@ -91,37 +91,17 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     //無所属勢力名
     private string noneInfluenceName = "NoneInfluence";
 
-    // 勢力に対応する画像ファイル名
-    private string blackFlagPath = "Flags/BlackFlag";
-    private string blueFlagPath = "Flags/BlueFlag";
-    private string pinkFlagPath = "Flags/PinkFlag";
-    private string purpleFlagPath = "Flags/PurpleFlag";
-    private string yellowFlagPath = "Flags/YellowFlag";
-    private string greyFlagPath = "Flags/GreyFlag";
-
-    // Resources.Loadを使用してスプライトを読み込む
-    Sprite blackInfluenceSprite;
-    Sprite blueInfluenceSprite;
-    Sprite pinkInfluenceSprite;
-    Sprite purplenfluenceSprite;
-    Sprite yellowfluenceSprite;
-    Sprite noneInfluenceSprite;
-
     private void Start()
     {
         Initialize();
-        //StartGame();
 
-
-        if (!SaveLoadManager.HasSaveData(0))
+        if (SaveLoadManager.SelectSlot < 0)
         {
-            Debug.Log("ゲームを最初から開始します");
             StartGame();
         }
         else
         {
-            Debug.Log("ゲームを途中から開始します");
-            LoadGame(1);
+            GameManager.instance.LoadGame(SaveLoadManager.SelectSlot);
         }
         SceneController.instance.Stack.Add("GameMain");
     }
@@ -141,6 +121,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
     private void Initialize()
     {
+        Debug.Log("Initialize");
         this.influenceList.Clear();
         this.characterList.Clear();
 
@@ -153,96 +134,15 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         {
             characterList.Add(Instantiate(character));
         }
-        //foreach (CharacterController character in characterList)
-        //{
-        //    character.Initialize();
-        //}
-
-        //CharacterController serugius = characterList.Find(c => c.characterId == 1);
-        //serugius.isLord = true;
-        //CharacterController victor = characterList.Find(c => c.characterId == 2);
-        //victor.isLord = true;
-        //CharacterController arisia = characterList.Find(c => c.characterId == 3);
-        //arisia.isLord = true;
-        //CharacterController rourenthius = characterList.Find(c => c.characterId == 4);
-        //rourenthius.isLord = true;
-        //CharacterController feodoora = characterList.Find(c => c.characterId == 25);
-        //feodoora.isLord = true;
-
-        //foreach (Influence influence in influenceList)
-        //{
-        //    influence.Initialize();
-        //}
-
-        ////勢力の生成
-        //// Resources.Loadを使用してスプライトを読み込む
-        //blackInfluenceSprite = Resources.Load<Sprite>(blackFlagPath);
-        //blueInfluenceSprite = Resources.Load<Sprite>(blueFlagPath);
-        //pinkInfluenceSprite = Resources.Load<Sprite>(pinkFlagPath);
-        //purplenfluenceSprite = Resources.Load<Sprite>(purpleFlagPath);
-        //yellowfluenceSprite = Resources.Load<Sprite>(yellowFlagPath);
-        //noneInfluenceSprite = Resources.Load<Sprite>(greyFlagPath);
-
-        ////無所属勢力の作成
-        //noneInfluence = new GameObject(noneInfluenceName).AddComponent<Influence>();
-        //noneInfluence.Init(noneInfluenceName, noneInfluenceSprite);
-        //influenceList.Add(noneInfluence);
-
-        ////領主リストの取得
-        //List<CharacterController> lordCharacterList = characterList.FindAll(character => character.isLord);
-
-        ////領主に応じた勢力を作成
-        //foreach (CharacterController character in lordCharacterList)
-        //{
-        //    if (character == victor)
-        //    {
-        //        CreateInfluence(character, blackInfluenceSprite);
-        //    }
-        //    else if (character == serugius)
-        //    {
-        //        CreateInfluence(character, blueInfluenceSprite);
-        //    }
-        //    else if (character == arisia)
-        //    {
-        //        CreateInfluence(character, pinkInfluenceSprite);
-        //    }
-        //    else if (character == rourenthius)
-        //    {
-        //        CreateInfluence(character, purplenfluenceSprite);
-        //    }
-        //    else if (character == feodoora)
-        //    {
-        //        CreateInfluence(character, yellowfluenceSprite);
-        //    }
-        //}
+        
 
         initializeTerritoryList = territoryGenerator.InitializeTerritory();
-        //territoryGenerator.GenerateTerritory(territoryGenerator.InitializeTerritory(), influenceList);
-        //allTerritoryList = territoryGenerator.Generate(influenceList);
     }
 
-    private void StartGame()
+    public void StartGame()
     {
-        //allTerritoryList = territoryGenerator.GenerateTerritory(initializeTerritoryList, influenceList);
-
-        //foreach (Influence influence in constParam.influenceList)
-        //{
-        //    Influence newInfluence = new Influence(influence);
-
-        //    this.influenceList.Add(newInfluence);
-
-        //    foreach (CharacterController character in influence.characterList)
-        //    {
-        //        CharacterController newCharacter = new CharacterController(character);
-
-        //        this.characterList.Add(newCharacter);
-        //    }
-        //}
-
+        Debug.Log("StartGame");
         
-
-        
-
         //領主
         CharacterController serugius = characterList.Find(c => c.characterId == 1);
         CharacterController victor = characterList.Find(c => c.characterId == 2);
@@ -281,20 +181,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         CharacterController tadeus = characterList.Find(c => c.characterId == 33);
         CharacterController siruvietto = characterList.Find(c => c.characterId == 34);
         CharacterController ruben = characterList.Find(c => c.characterId == 35);
-
-        ////給料%と忠誠を計算
-        //List<CharacterController> lordCharacterList = characterList.FindAll(character => character.influence.influenceName != "NoneInfluence");
-        //foreach (CharacterController character in lordCharacterList)
-        //{
-        //    //キャラクターの給料%を設定
-        //    character.CalcSalary();
-        //    //キャラクターの忠誠を設定
-        //    if (!character.isLord)
-        //    {
-        //        character.CalcLoyalty();
-        //    }
-        //}
-
 
         //キャラクターを勢力へ所属させる
         foreach (Influence influence in influenceList)
@@ -356,33 +242,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             }
         }
 
-        //Int型の兵士リスト
-        List<int> soliderIntList =  new List<int>() { 4, 4, 4, 4, 4, 3, 3, 3, 3, 3 };
-        List<int> soliderIntList2 = new List<int>() { 3, 3, 3, 3, 3, 2, 2, 2, 2, 2 };
-        List<int> soliderIntList3 = new List<int>() { 2, 2, 2, 2, 2, 1, 1, 1, 1, 1 };
-        List<int> soliderIntList4 = new List<int>() { 1, 1, 1, 1, 1 };
-
-        ////キャラクター毎に兵士を所属させる
-        //foreach (CharacterController character in characterList)
-        //{
-        //    if (character == serugius || character == victor || character == arisia || character == rourenthius || character == feodoora)
-        //    {
-        //        AssignSoldierListToCharacter(character, soliderIntList);
-        //    }
-        //    else if(character == eresuthia || character == peruseus || character == karisutaana || character == venethia || character == jovannni)
-        //    {
-        //        AssignSoldierListToCharacter(character, soliderIntList2);
-        //    }
-        //    else if (character == renius || character == amerieru || character == mariseruda || character == siguma || character == simon)
-        //    {
-        //        AssignSoldierListToCharacter(character, soliderIntList3);
-        //    }
-        //    else
-        //    {
-        //        AssignSoldierListToCharacter(character, soliderIntList4);
-        //    }
-        //}
-
         foreach (CharacterController character in characterList)
         {
             if (character == serugius || character == victor || character == arisia || character == rourenthius || character == feodoora)
@@ -415,34 +274,10 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             }
         }
 
-        //allTerritoryList = territoryGenerator.Generate(influenceList);
         allTerritoryList = territoryGenerator.GenerateTerritory(initializeTerritoryList, influenceList);
 
         phase = Phase.CharacterChoicePhase;
         PhaseCalc();
-    }
-
-    //public Influence CreateInfluence(CharacterController character, Sprite influenceImage)
-    //{
-    //    Influence newInfluence = new GameObject(character.name).AddComponent<Influence>();
-    //    newInfluence.Init(character.name, influenceImage);
-    //    influenceList.Add(newInfluence);
-    //    newInfluence.transform.SetParent(Influence, false);
-    //    return newInfluence;
-    //}
-
-    public void AssignSoldierListToCharacter(CharacterController character, List<int> soldierIDList)
-    {
-        //character.soliderList.Clear();
-        // 対応する兵士IDで兵士を初期化してリストに追加
-        foreach (int soldierID in soldierIDList)
-        {
-            //SoliderController soldier = Instantiate(soliderPrefab, Solider);
-            //soldier.Init(soldierID, CreateSoliderUniqueID());
-            //soldier.gameObject.SetActive(false);
-            //character.soliderList.Add(soldier);
-            //allSoliderList.Add(soldier);
-        }
     }
 
     public int CreateSoliderUniqueID()
@@ -1441,184 +1276,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
                 mapField.gameObject.SetActive(true);
             }
-        }
-    }
-
-    public void SaveGame(int slot)
-    {
-        GameState gameState = new GameState
-        {
-            turnCount = this.turnCount,
-            phase = this.phase,
-            step = this.step,
-            characters = new List<CharacterData>(),
-            playerCharacterId = playerCharacter.characterId,
-            influences = new List<InfluenceData>(),
-        };
-
-        // キャラクターデータの収集
-        foreach (var character in characterList)
-        {
-            CharacterData charData = new CharacterData
-            {
-                icon = character.icon,
-                name = character.name,
-                characterId = character.characterId,
-                force = character.force,
-                inteli = character.inteli,
-                tact = character.tact,
-                fame = character.fame,
-                ambition = character.ambition,
-                loyalty = character.loyalty,
-                salary = character.salary,
-                rank = character.rank,
-                gold = character.gold,
-                isLord = character.isLord,
-                isPlayerCharacter = character.isPlayerCharacter,
-                isAttackable = character.isAttackable,
-                isBattle = character.isBattle,
-
-                influenceName = character.influence != null ? character.influence.influenceName : "None",
-            };
-            // 兵士データの収集
-            foreach (var solider in character.soliderList)
-            {
-                SoliderData soliderData = new SoliderData
-                {
-                    soliderID = solider.soliderID,
-                    hp = solider.hp,
-                    df = solider.df,
-                    maxHP = solider.maxHP,
-                    at = solider.at,
-                    force = solider.force,
-                    icon = solider.icon,
-                    lv = solider.lv,
-                    experience = solider.experience,
-                    isAlive = solider.isAlive,
-                    uniqueID = solider.uniqueID
-                };
-                // 兵士データをキャラクターデータに追加
-                charData.soliders.Add(soliderData);
-            }
-
-            gameState.characters.Add(charData); 
-        }
-
-        // 勢力データの収集
-        foreach (var influence in influenceList)
-        {
-            InfluenceData influenceData = new InfluenceData
-            {
-                influenceName = influence.influenceName,
-                characterIds = influence.characterList.Select(c => c.characterId).ToList()
-            };
-            //領土データの収集
-            foreach (var territory in influence.territoryList)
-            {
-                TerritoryData territoryData = new TerritoryData
-                {
-                    attackTerritoryType = territory.attackTerritoryType,
-                    defenceTerritoryType = territory.defenceTerritoryType,
-                    position = territory.position,
-                    //influence = territory.influence,
-                    influenceName = territory.influence != null ? territory.influence.influenceName : null,
-                };
-                influenceData.territories.Add(territoryData);
-                //Debug.Log(territoryData.influenceName);
-            }
-            gameState.influences.Add(influenceData);
-        }
-
-        SaveLoadManager.SaveGame(gameState, slot);
-    }
-
-    public void LoadGame(int slot)
-    {
-        GameState gameState = SaveLoadManager.LoadGame(slot);
-        if (gameState != null)
-        {
-            this.turnCount = gameState.turnCount;
-            this.phase = gameState.phase;
-            this.step = gameState.step;
-
-            // キャラクターの復元
-            foreach (var charData in gameState.characters)
-            {
-                CharacterController character = characterList.Find(c => c.characterId == charData.characterId);
-
-                character.icon = charData.icon;
-                character.name = charData.name;
-                character.force = charData.force;
-                character.inteli = charData.inteli;
-                character.tact = charData.tact;
-                character.fame = charData.fame;
-                character.ambition = charData.ambition;
-                character.loyalty = charData.loyalty;
-                character.salary = charData.salary;
-                character.rank = charData.rank;
-                character.gold = charData.gold;
-                character.isLord = charData.isLord;
-                character.isPlayerCharacter = charData.isPlayerCharacter;
-                character.isAttackable = charData.isAttackable;
-                character.isBattle = charData.isBattle;
-                character.influence = influenceList.Find(i => i.influenceName == charData.influenceName);
-
-                // 兵士の復元
-                foreach (var soliderData in charData.soliders)
-                {
-                    SoldierController newSoldier = Instantiate(constParam.soldierList.Find(c => c.soliderID == soliderData.soliderID));
-                    //constParam.soldierList
-                    //SoldierController solider = Instantiate(soliderPrefab, Solider);
-                    //solider.Init(soliderData.soliderID, soliderData.uniqueID);
-                    newSoldier.hp = soliderData.hp;
-                    newSoldier.df = soliderData.df;
-                    newSoldier.maxHP = soliderData.maxHP;
-                    newSoldier.at = soliderData.at;
-                    newSoldier.force = soliderData.force;
-                    newSoldier.icon = soliderData.icon;
-                    newSoldier.lv = soliderData.lv;
-                    newSoldier.experience = soliderData.experience;
-                    newSoldier.isAlive = soliderData.isAlive;
-
-                    character.soliderList.Add(newSoldier);
-                    allSoliderList.Add(newSoldier);
-                }
-
-            }
-            //プレイヤーキャラクターの復元
-            playerCharacter = characterList.Find(x => x.characterId == gameState.playerCharacterId);
-
-            // 勢力の復元
-            foreach (var influenceData in gameState.influences)
-            {
-                Influence influence = influenceList.Find(i => i.influenceName == influenceData.influenceName);
-
-                //勢力にキャラクターを所属させる&&キャラクターを勢力に所属させる
-                foreach (int characterId in influenceData.characterIds)
-                {
-                    CharacterController character = characterList.Find(c => c.characterId == characterId);
-                    if (character != null)
-                    {
-                        character.SetInfluence(influence);
-                        influence.AddCharacter(character);
-                    }
-                }
-
-                //領土の復元
-                foreach (var territoryData in influenceData.territories)
-                {
-                    Territory territory = initializeTerritoryList.Find(t => t.position == territoryData.position);
-                    if (territory != null)
-                    {
-                        //Influence influ = influenceList.Find(i => i.influenceName == territoryData.influenceName);
-                        territoryGenerator.SetupTerritory(territory, territory.position, influenceList, territoryData.influenceName);
-                        allTerritoryList.Add(territory);
-                    }
-                }
-            }
-
-            // ゲームの状態を更新
-            PhaseCalc();
         }
     }
 }
