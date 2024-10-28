@@ -69,7 +69,7 @@ public class SaveLoadUI : MonoBehaviour
             else
             {
                 await SceneController.LoadAsync("UIConfirm");
-
+                varParam.ConfirmText = "セーブデータを上書きしますか？";
                 // OKまたはCancelボタンがクリックされるのを待機
                 await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
 

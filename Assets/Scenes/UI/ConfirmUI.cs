@@ -2,9 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using UniRx;
+using TMPro;
 
 public class ConfirmUI : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI confirmText;
+
     [SerializeField] private Button okButton;
     [SerializeField] private Button cancelButton;
 
@@ -12,6 +15,7 @@ public class ConfirmUI : MonoBehaviour
 
     private void Start()
     {
+        confirmText.text = varParam.ConfirmText;
         varParam.IsConfirm = null;
 
         okButton.OnClickAsObservable().Subscribe(async _ =>
@@ -19,7 +23,6 @@ public class ConfirmUI : MonoBehaviour
             varParam.IsConfirm = true;
             await  OnPressClose();
         });
-
 
         cancelButton.onClick.AsObservable().Subscribe(async _ =>
         {

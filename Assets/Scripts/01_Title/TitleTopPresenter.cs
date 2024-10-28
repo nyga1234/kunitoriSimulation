@@ -48,7 +48,7 @@ public class TitleTopPresenter : MonoBehaviour
     private async void GameStart()
     {
         //await SceneController.LoadAsync(nameof(SaveLoadUI));
-        
+        SaveLoadManager.SelectSlot = -1;
         await GameManager.instance.ChangeScene("Title", "GameMain");
     }
 

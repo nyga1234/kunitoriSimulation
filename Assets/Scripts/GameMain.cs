@@ -39,8 +39,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     [SerializeField] GameObject characterIndexMenu;
     [SerializeField] GameObject characterSearchMenu;
     public TerritoryGenerator territoryGenerator;
-
-    //public List<SoldierController> allSoliderList;
     public CharacterController playerCharacter;
     
     public List<Territory> allTerritoryList;
@@ -53,7 +51,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     public int territoryCouont;
     public Influence uniteInfluence; //統一した勢力
     public bool uniteCountryFlag = false;
-    private int soliderUniqueId = 0;
 
     [SerializeField] Territory plainTerritorPrefab;
     [SerializeField] Transform parent;
@@ -103,6 +100,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         {
             GameManager.instance.LoadGame(SaveLoadManager.SelectSlot);
         }
+
         SceneController.instance.Stack.Add("GameMain");
     }
 
@@ -135,7 +133,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             characterList.Add(Instantiate(character));
         }
         
-
         initializeTerritoryList = territoryGenerator.InitializeTerritory();
     }
 
@@ -242,6 +239,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             }
         }
 
+        //キャラクターへ兵士を割り当て
         foreach (CharacterController character in characterList)
         {
             if (character == serugius || character == victor || character == arisia || character == rourenthius || character == feodoora)
@@ -278,11 +276,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
         phase = Phase.CharacterChoicePhase;
         PhaseCalc();
-    }
-
-    public int CreateSoliderUniqueID()
-    {
-        return soliderUniqueId++;
     }
 
     public void PhaseCalc()
@@ -328,7 +321,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
     void CharacterChoicePhase()
     {
-
         titleFieldUI.ShowCharacterChoiceText();
         mapField.SetActive(true);
 
@@ -337,11 +329,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
     void SetupPhase()
     {
-        //StartCoroutine(loadingUI.MoveSlider());
-        
-        //yield return StartCoroutine(uiFade.Fade(true));
-        //yield return StartCoroutine(uiFade.Fade(false));
-
         turnCount++;
 
         //全てのキャラクターを攻撃可能に設定
@@ -541,12 +528,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             {
                 otherCharacter.soliderList.Add(Instantiate(constParam.soldierList.Find(c => c.soliderID == 1)));
                 otherCharacter.gold -= 2;
-                //SoliderController solider = Instantiate(soliderPrefab);
-                //solider.Init(1, CreateSoliderUniqueID());
-                //solider.gameObject.SetActive(false);
-                //otherCharacter.soliderList.Add(solider);
-                //allSoliderList.Add(solider);
-                //otherCharacter.gold -= 2;
             }
             //兵士訓練
             //領主の場合
