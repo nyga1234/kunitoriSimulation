@@ -42,6 +42,35 @@ public class TerritoryUIOnMouse : MonoBehaviour
         btn.onClick.AddListener(TaskOnClick); // クリック時にTaskOnClickメソッドを呼び出す
     }
 
+    private void Update()
+    {
+        if (GameMain.instance.playerCharacter == null)
+        {
+            return;
+        }
+        else if (GameMain.instance.playerCharacter.influence != GameMain.instance.noneInfluence)
+        {
+            foreach (Territory roopTerritory in GameMain.instance.allTerritoryList)
+            {
+                if (roopTerritory.influence == GameMain.instance.playerCharacter.influence)
+                {
+                    roopTerritory.ShowHomeTerritory(true);
+                }
+                else
+                {
+                    roopTerritory.ShowHomeTerritory(false);
+                }
+            }
+        }
+        else
+        {
+            foreach (Territory roopTerritory in GameMain.instance.allTerritoryList)
+            {
+                roopTerritory.ShowHomeTerritory(false);
+            }
+        }
+    }
+
     void TaskOnClick()
     {
         if (yesNoUI.IsYes()) // もしyesNoUIが"Yes"に設定されている場合
@@ -49,6 +78,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
             if (GameMain.instance.step == GameMain.Step.Enter)
             {
                 GameMain.instance.noneInfluence.RemoveCharacter(GameMain.instance.playerCharacter);
+                Debug.Log(territoryManager.territory.influence);
                 territoryManager.territory.influence.AddCharacter(GameMain.instance.playerCharacter);
 
                 mapField.gameObject.SetActive(false);
@@ -231,35 +261,6 @@ public class TerritoryUIOnMouse : MonoBehaviour
                         }
                     }
                 }
-            }
-        }
-    }
-
-    private void Update()
-    {
-        if (GameMain.instance.playerCharacter == null)
-        {
-            return;
-        }
-        else if (GameMain.instance.playerCharacter.influence != GameMain.instance.noneInfluence)
-        {
-            foreach (Territory roopTerritory in GameMain.instance.allTerritoryList)
-            {
-                if (roopTerritory.influence == GameMain.instance.playerCharacter.influence)
-                {
-                    roopTerritory.ShowHomeTerritory(true);
-                }
-                else
-                {
-                    roopTerritory.ShowHomeTerritory(false);
-                }
-            }
-        }
-        else
-        {
-            foreach (Territory roopTerritory in GameMain.instance.allTerritoryList)
-            {
-                roopTerritory.ShowHomeTerritory(false);
             }
         }
     }

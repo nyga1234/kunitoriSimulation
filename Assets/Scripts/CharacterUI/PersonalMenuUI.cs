@@ -30,11 +30,22 @@ public class PersonalMenuUI : MonoBehaviour
 
     [SerializeField] Transform SoliderListField;
     [SerializeField] GameObject personalSolidefPrefab;
-    //[SerializeField] SoliderController personalSolidefPrefab;
+
+    [SerializeField] GameObject enterButton;
+    [SerializeField] GameObject vagabondButton;
 
     public void ShowPersonalMenuUI(CharacterController character)
     {
         gameObject.SetActive(true);
+
+        //if (character.influence.influenceName == "NoneInfluence")
+        //{
+        //    enterButton.SetActive(true);
+        //}
+        //else if (character.isLord == false)
+        //{
+        //    vagabondButton.SetActive(true);
+        //}
 
         recruitText.color = Color.white; // 白色に変更
         trainingText.color = Color.white; // 白色に変更

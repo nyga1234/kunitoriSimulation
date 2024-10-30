@@ -359,7 +359,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         {
             if (influence != noneInfluence)
             {
-                int territoryIncome = 30;
+                int territoryIncome = 15;
                 int influenceIncome = 0;//’l‚ğ‰Šú‰»
                 influenceIncome = influence.territoryList.Count * territoryIncome;
                 foreach (CharacterController character in influence.characterList)
