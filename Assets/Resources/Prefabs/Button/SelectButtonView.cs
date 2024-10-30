@@ -36,12 +36,12 @@ public class SelectButtonView : MonoBehaviour
             eventTrigger.triggers.Add(entry);
         }
 
-        //{ /* Deselect */
-        //    EventTrigger.Entry entry = new EventTrigger.Entry();
-        //    entry.eventID = EventTriggerType.Deselect;
-        //    entry.callback.AddListener(OnDeselectEvent);
-        //    eventTrigger.triggers.Add(entry);
-        //}
+        { /* Deselect */
+            EventTrigger.Entry entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.Deselect;
+            entry.callback.AddListener(OnDeselectEvent);
+            eventTrigger.triggers.Add(entry);
+        }
 
         { /* Enter */
             EventTrigger.Entry entry = new EventTrigger.Entry();
@@ -104,33 +104,28 @@ public class SelectButtonView : MonoBehaviour
                 consumptionMoneyUI.ShowConsumptionText(2);
                 break;
             case "Enter":
-                if (GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
+                if (GameMain.instance.playerCharacter.influence != GameMain.instance.noneInfluence)
                 {
-                    titleFieldUI.ShowEnterText();
-                    consumptionMoneyUI.ShowConsumptionText(0);
+                    return;
                 }
+                titleFieldUI.ShowEnterText();
+                consumptionMoneyUI.ShowConsumptionText(0);
                 break;
             case "Vagabond":
                 if (GameMain.instance.playerCharacter.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
                 {
                     return;
                 }
-                else
-                {
-                    titleFieldUI.ShowVagabondText();
-                    consumptionMoneyUI.ShowConsumptionText(0);
-                }
+                titleFieldUI.ShowVagabondText();
+                consumptionMoneyUI.ShowConsumptionText(0);
                 break;
             case "Rebellion":
                 if (GameMain.instance.playerCharacter.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
                 {
                     return;
                 }
-                else
-                {
-                    titleFieldUI.ShowRebellionText();
-                    consumptionMoneyUI.ShowConsumptionText(0);
-                }
+                titleFieldUI.ShowRebellionText();
+                consumptionMoneyUI.ShowConsumptionText(0);
                 break;
             case "Attack":
                 if (GameMain.instance.playerCharacter.isLord)
@@ -163,15 +158,16 @@ public class SelectButtonView : MonoBehaviour
                 break;
         }
 
+        //ã§í èàóù
         SoundManager.instance.PlayCursorSE();
-        // UIÇÃîwåiêFÇäDêFÇ…ïœçX
         ChangeBackgroundColor(Color.gray);
     }
 
-    //private void OnDeselectEvent(BaseEventData baseEvent)
-    //{
-        
-    //}
+    private void OnDeselectEvent(BaseEventData baseEvent)
+    {
+        // UIÇÃîwåiêFÇå≥Ç…ñﬂÇ∑
+        ChangeBackgroundColor(originalColor);
+    }
 
     private void OnPointerEnterEvent(BaseEventData baseEvent)
     {
@@ -191,9 +187,6 @@ public class SelectButtonView : MonoBehaviour
         }
 
         EventSystem.current.SetSelectedGameObject(null);
-
-        // UIÇÃîwåiêFÇå≥Ç…ñﬂÇ∑
-        ChangeBackgroundColor(originalColor);
     }
 
     //îwåiêFÇïœçX
