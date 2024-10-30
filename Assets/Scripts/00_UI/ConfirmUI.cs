@@ -29,7 +29,7 @@ public class ConfirmUI : MonoBehaviour
             varParam.IsConfirm = false;
             await OnPressClose();
         });
-
+        Debug.Log("ConfirmUIStart");
         SceneController.instance.Stack.Add("UIConfirm");
     }
 
