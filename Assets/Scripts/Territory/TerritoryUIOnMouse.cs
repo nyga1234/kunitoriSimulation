@@ -9,8 +9,6 @@ using Cysharp.Threading.Tasks;
 public class TerritoryUIOnMouse : MonoBehaviour
 {
     [SerializeField] TerritoryManager territoryManager;
-    public Button yesButton; // Buttonを参照するための変数
-
     [SerializeField] Cursor cursor;
     [SerializeField] TitleFieldUI titleFieldUI;
     [SerializeField] YesNoUI yesNoUI;
@@ -27,17 +25,6 @@ public class TerritoryUIOnMouse : MonoBehaviour
     [SerializeField] GameObject backToCharaMenuButton;
     [SerializeField] GameObject backToMapFieldButton;
 
-    //public Influence influence;
-    //public Territory territory;
-
-    List<Influence> influenceList = new List<Influence>();
-    List<Influence> blueInfluenceList = new List<Influence>();
-    List<Influence> redInfluenceList = new List<Influence>();
-    List<Influence> noneInfluenceList = new List<Influence>();
-
-    private bool isSoundPlayed = false; // 音が再生されたかどうかを示すフラグ
-    Territory beforeTerritory = null;
-
     Territory onPointEnterTerritory;
 
     private Button _button;
@@ -52,9 +39,6 @@ public class TerritoryUIOnMouse : MonoBehaviour
 
     private void Start()
     {
-        Button btn = yesButton.GetComponent<Button>(); // Buttonコンポーネントを取得
-        btn.onClick.AddListener(TaskOnClick); // クリック時にTaskOnClickメソッドを呼び出す
-
         _button.OnClickAsObservable().Subscribe(_ =>
         {
             OnPointerClickTerritory();
@@ -67,7 +51,8 @@ public class TerritoryUIOnMouse : MonoBehaviour
         {
             return;
         }
-        else if (GameMain.instance.playerCharacter.influence != GameMain.instance.noneInfluence)
+
+        if (GameMain.instance.playerCharacter.influence != GameMain.instance.noneInfluence)
         {
             foreach (Territory roopTerritory in GameMain.instance.allTerritoryList)
             {
@@ -90,111 +75,70 @@ public class TerritoryUIOnMouse : MonoBehaviour
         }
     }
 
-    void TaskOnClick()
-    {
-        if (yesNoUI.IsYes()) // もしyesNoUIが"Yes"に設定されている場合
-        {
-            if (GameMain.instance.step == GameMain.Step.Enter)
-            {
-                GameMain.instance.noneInfluence.RemoveCharacter(GameMain.instance.playerCharacter);
-                Debug.Log(territoryManager.territory.influence);
-                territoryManager.territory.influence.AddCharacter(GameMain.instance.playerCharacter);
+    //public void OnPointerEnterTerritory()
+    //{
+    //    if (!yesNoUI.IsYesNoVisible())
+    //    {
+    //        if (GameMain.instance.step == GameMain.Step.Information || GameMain.instance.step == GameMain.Step.Attack || GameMain.instance.step == GameMain.Step.Choice || GameMain.instance.step == GameMain.Step.Enter)
+    //        {
+    //            if (!yesNoUI.gameObject.activeSelf)
+    //            {
+    //                cursor.gameObject.SetActive(true);
+    //            }
 
-                mapField.gameObject.SetActive(false);
-                cursor.gameObject.SetActive(false);
-                influenceOnMapUI.HideInfluenceOnMapUI();
+    //            SoundManager.instance.PlayMapOnCursorSE();
+    //            cursor.SetPosition(transform as RectTransform); // カーソルをアンカーポジションに移動
 
-                GameMain.instance.ShowPersonalUI(GameMain.instance.playerCharacter);
-                dialogueUI.ShowEnterInfluenceUI();
-            }
+    //            Territory influenceTerritory = this.GetComponent<Territory>();
 
-        }
-    }
+    //            if (beforeTerritory != influenceTerritory)
+    //            {
+    //                isSoundPlayed = false;
+    //                beforeTerritory = influenceTerritory;
+    //            }
+    //            else
+    //            {
+    //                isSoundPlayed = true;
+    //            }
 
-    IEnumerator WaitForAttackBattle()
-    {
-        yesNoUI.ShowAttackYesNoUI();
-        //yesNoUIが非表示になるまで待機
-        yield return new WaitUntil(() => !yesNoUI.IsYesNoVisible());
+    //            influenceOnMapUI.ShowInfluenceOnMapUI(influenceTerritory.influence, influenceTerritory);
+    //        }
 
-        if (yesNoUI.IsYes())
-        {
-            // 勢力情報非表示
-            influenceOnMapUI.HideInfluenceOnMapUI();
-            mapField.gameObject.SetActive(false);
-            cursor.gameObject.SetActive(false);
+    //        onPointEnterTerritory = this.GetComponent<Territory>();
 
-            int attackSoliderHPSum = 0;
-            foreach (SoldierController solider in GameMain.instance.playerCharacter.soliderList)
-            {
-                attackSoliderHPSum += solider.hp;
-            }
-
-            Debug.Log(territoryManager.territory.influence.influenceName);
-            Debug.Log(territoryManager.influence.influenceName);
-            Debug.Log(territoryManager.territory.influence.influenceName);
-            CharacterController defenceCharacter = GameMain.instance.SelectDefenceCharacter(attackSoliderHPSum);
-
-            battleUI.ShowBattleUI(GameMain.instance.playerCharacter, defenceCharacter, territoryManager.territory);
-            battleManager.StartBattle(GameMain.instance.playerCharacter, defenceCharacter);
-        }
-    }
-
-    
+    //    }
+    //}
 
     public void OnPointerEnterTerritory()
     {
-        if (!yesNoUI.IsYesNoVisible())
+        switch (GameMain.instance.step)
         {
-            if (GameMain.instance.step == GameMain.Step.Information || GameMain.instance.step == GameMain.Step.Attack || GameMain.instance.step == GameMain.Step.Choice || GameMain.instance.step == GameMain.Step.Enter)
-            {
-                if (!yesNoUI.gameObject.activeSelf)
-                {
-                    cursor.gameObject.SetActive(true);
-                }
+            case GameMain.Step.Information:
+            case GameMain.Step.Attack:
+            case GameMain.Step.Choice:
+            case GameMain.Step.Enter:
+                cursor.gameObject.SetActive(true);
+                cursor.SetPosition(transform as RectTransform); // カーソルをアンカーポジションに移動
 
                 SoundManager.instance.PlayMapOnCursorSE();
-                //if (isSoundPlayed == false)
-                //{
-                //    if (beforeTerritory != null)
-                //    {
-                //        SoundManager.instance.PlayMapOnCursorSE();
-                //        isSoundPlayed = true;
-                //    }
-                //}
-                cursor.SetPosition(transform as RectTransform); // カーソルをアンカーポジションに移動
-                //cursor.SetPosition(transform);
-
+                
                 Territory influenceTerritory = this.GetComponent<Territory>();
-
-                if (beforeTerritory != influenceTerritory)
-                {
-                    isSoundPlayed = false;
-                    beforeTerritory = influenceTerritory;
-                }
-                else
-                {
-                    isSoundPlayed = true;
-                }
-
                 influenceOnMapUI.ShowInfluenceOnMapUI(influenceTerritory.influence, influenceTerritory);
-            }
-            
-            onPointEnterTerritory = this.GetComponent<Territory>();
-
+                break;
         }
+
+        onPointEnterTerritory = this.GetComponent<Territory>();
     }
 
     public async void OnPointerClickTerritory()
     {
-        SoundManager.instance.PlayClickSE();
-
         switch (GameMain.instance.step)
         {
             //情報ステップ || キャラクター選択ステップ
             case GameMain.Step.Information:
             case GameMain.Step.Choice:
-                
+                SoundManager.instance.PlayClickSE();
+
                 //クリックした領土を設定
                 territoryManager.territory = onPointEnterTerritory;
 
@@ -210,6 +154,8 @@ public class TerritoryUIOnMouse : MonoBehaviour
 
             //仕官ステップ
             case GameMain.Step.Enter:
+                SoundManager.instance.PlayClickSE();
+
                 if (onPointEnterTerritory.influence == GameMain.instance.noneInfluence)
                 {
                     TitleFieldUI.instance.titleFieldText.text = "      空き領土です";
@@ -220,7 +166,6 @@ public class TerritoryUIOnMouse : MonoBehaviour
                     //クリックした領土を設定
                     territoryManager.territory = onPointEnterTerritory;
                     cursor.gameObject.SetActive(false);
-                    //yesNoUI.ShowEnterUI();
 
                     await SceneController.LoadAsync("UIConfirm");
                     varParam.ConfirmText = "仕官しますか？";
@@ -230,7 +175,6 @@ public class TerritoryUIOnMouse : MonoBehaviour
                     if (varParam.IsConfirm == true)
                     {
                         GameMain.instance.noneInfluence.RemoveCharacter(GameMain.instance.playerCharacter);
-                        Debug.Log(territoryManager.territory.influence);
                         territoryManager.territory.influence.AddCharacter(GameMain.instance.playerCharacter);
 
                         mapField.gameObject.SetActive(false);
@@ -245,9 +189,10 @@ public class TerritoryUIOnMouse : MonoBehaviour
 
             //侵攻ステップ
             case GameMain.Step.Attack:
+                SoundManager.instance.PlayClickSE();
+
                 territoryManager.territory = onPointEnterTerritory;//クリックした領土を設定
-                //クリックした勢力を設定（CharacterUIOnClickで防衛側のキャラを取得するために設定）
-                territoryManager.influence = onPointEnterTerritory.influence;
+                territoryManager.influence = onPointEnterTerritory.influence;//クリックした勢力を設定
 
                 if (territoryManager.influence == GameMain.instance.playerCharacter.influence)
                 {
@@ -281,9 +226,6 @@ public class TerritoryUIOnMouse : MonoBehaviour
                     }
                     else
                     {
-                        Debug.Log(onPointEnterTerritory.influence.influenceName);
-                        Debug.Log(territoryManager.influence.influenceName);
-                        Debug.Log(territoryManager.territory.influence.influenceName);
                         StartCoroutine(WaitForAttackBattle()); ;
                     }
                 }
@@ -291,104 +233,34 @@ public class TerritoryUIOnMouse : MonoBehaviour
         }
     }
 
-    //public void OnPointerClickTerritory()
-    //{
-    //    if (Input.GetMouseButtonUp(0))
-    //    {
-    //        if (!yesNoUI.IsYesNoVisible())
-    //        {
-    //            if (onPointEnterTerritory != null)
-    //            {
-    //                //情報ステップ
-    //                if (/*Input.GetMouseButtonUp(0) && */GameMain.instance.step == GameMain.Step.Information || /*Input.GetMouseButtonDown(0) && */GameMain.instance.step == GameMain.Step.Choice)
-    //                {
-    //                    SoundManager.instance.PlayClickSE();
-    //                    //クリックした領土を設定
-    //                    territoryManager.territory = onPointEnterTerritory;
+    IEnumerator WaitForAttackBattle()
+    {
+        yesNoUI.ShowAttackYesNoUI();
+        //yesNoUIが非表示になるまで待機
+        yield return new WaitUntil(() => !yesNoUI.IsYesNoVisible());
 
-    //                    // Mapと勢力情報を非表示
-    //                    mapField.gameObject.SetActive(false);
-    //                    cursor.gameObject.SetActive(false);
-    //                    influenceOnMapUI.HideInfluenceOnMapUI();
+        if (yesNoUI.IsYes())
+        {
+            // 勢力情報非表示
+            influenceOnMapUI.HideInfluenceOnMapUI();
+            mapField.gameObject.SetActive(false);
+            cursor.gameObject.SetActive(false);
 
-    //                    //キャラクター情報を表示
-    //                    characterIndexMenu.SetActive(true);
-    //                    characterIndexUI.ShowCharacterIndexUI(onPointEnterTerritory.influence.characterList);
-    //                }
-    //                //仕官ステップ
-    //                else if (GameMain.instance.step == GameMain.Step.Enter)
-    //                {
-    //                    if (/*Input.GetMouseButtonDown(0) && */!yesNoUI.gameObject.activeSelf)
-    //                    {
-    //                        if (onPointEnterTerritory.influence == GameMain.instance.noneInfluence)
-    //                        {
-    //                            TitleFieldUI.instance.titleFieldText.text = "      空き領土です";
-    //                        }
-    //                        else
-    //                        {
-    //                            //クリックした領土を設定
-    //                            territoryManager.territory = onPointEnterTerritory;
-    //                            cursor.gameObject.SetActive(false);
-    //                            yesNoUI.ShowEnterUI();
-    //                        }
-    //                    }
-    //                    if (yesNoUI.gameObject.activeSelf)
-    //                    {
-    //                        TaskOnClick();
-    //                    }
-    //                }
-    //                //侵攻ステップ
-    //                else if (/*Input.GetMouseButtonDown(0) && */GameMain.instance.step == GameMain.Step.Attack)
-    //                {
-    //                    //クリックした領土を設定
-    //                    territoryManager.territory = onPointEnterTerritory;
-    //                    //クリックした勢力を設定（CharacterUIOnClickで防衛側のキャラを取得するために設定）
-    //                    territoryManager.influence = onPointEnterTerritory.influence;
+            int attackSoliderHPSum = 0;
+            foreach (SoldierController solider in GameMain.instance.playerCharacter.soliderList)
+            {
+                attackSoliderHPSum += solider.hp;
+            }
 
-    //                    if (territoryManager.influence == GameMain.instance.playerCharacter.influence)
-    //                    {
-    //                        titleFieldUI.titleFieldText.text = "     自国領土です";
-    //                        return;
-    //                    }
-    //                    else if (territoryManager.influence == GameMain.instance.noneInfluence)
-    //                    {
-    //                        titleFieldUI.titleFieldText.text = "     空き領土です";
-    //                        return;
-    //                    }
-    //                    else if (GameMain.instance.playerCharacter.influence.IsAttackableTerritory(this.onPointEnterTerritory) == false)
-    //                    {
-    //                        titleFieldUI.titleFieldText.text = "     隣接していません";
-    //                        return;
-    //                    }
-    //                    else
-    //                    {
-    //                        if (GameMain.instance.playerCharacter.isLord == true)
-    //                        {
-    //                            SoundManager.instance.PlayClickSE();
-    //                            titleFieldUI.titleFieldText.text = "     侵攻させる部隊を選択してください";
+            Debug.Log(territoryManager.territory.influence.influenceName);
+            Debug.Log(territoryManager.influence.influenceName);
+            Debug.Log(territoryManager.territory.influence.influenceName);
+            CharacterController defenceCharacter = GameMain.instance.SelectDefenceCharacter(attackSoliderHPSum);
 
-    //                            // 勢力情報を非表示にする
-    //                            influenceOnMapUI.HideInfluenceOnMapUI();
-    //                            mapField.gameObject.SetActive(false);
-    //                            cursor.gameObject.SetActive(false);
-
-    //                            //侵攻キャラクター選択画面へ
-    //                            characterIndexMenu.SetActive(true);
-    //                            characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
-    //                        }
-    //                        else
-    //                        {
-    //                            Debug.Log(onPointEnterTerritory.influence.influenceName);
-    //                            Debug.Log(territoryManager.influence.influenceName);
-    //                            Debug.Log(territoryManager.territory.influence.influenceName);
-    //                            StartCoroutine(WaitForAttackBattle()); ;
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
+            battleUI.ShowBattleUI(GameMain.instance.playerCharacter, defenceCharacter, territoryManager.territory);
+            battleManager.StartBattle(GameMain.instance.playerCharacter, defenceCharacter);
+        }
+    }
 
     public void InfluenceCalcSum(Influence influence)
     {

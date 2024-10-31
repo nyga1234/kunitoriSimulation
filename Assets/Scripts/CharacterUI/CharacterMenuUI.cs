@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UniRx;
 
 public class CharacterMenuUI : MonoBehaviour
 {
@@ -32,6 +33,17 @@ public class CharacterMenuUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI goldSumText;
     [SerializeField] TextMeshProUGUI forceSumText;
     [SerializeField] TextMeshProUGUI soliderSumText;
+
+    [SerializeField]
+    private CommandOnClick commandClick;
+
+    [SerializeField]
+    private SelectButtonView informationButton;
+
+    private void Start()
+    {
+        informationButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickInformation());
+    }
 
     public void ShowCharacterMenuUI(CharacterController character, Influence influence)
     {

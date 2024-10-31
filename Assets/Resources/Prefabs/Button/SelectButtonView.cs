@@ -1,9 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using DG.Tweening;
-using DG.Tweening.Core.Easing;
-using Unity.VisualScripting;
 
 [RequireComponent(typeof(Button))]
 [RequireComponent(typeof(EventTrigger))]
@@ -28,6 +25,13 @@ public class SelectButtonView : MonoBehaviour
 
         _button = GetComponent<Button>();
         EventTrigger eventTrigger = gameObject.GetComponent<EventTrigger>();
+
+        { /* On Click */
+            _button.onClick.AddListener(() => {
+                SoundManager.instance.PlayClickSE();
+                EventSystem.current.SetSelectedGameObject(null);
+            });
+        }
 
         { /* Select */
             EventTrigger.Entry entry = new EventTrigger.Entry();
@@ -55,14 +59,6 @@ public class SelectButtonView : MonoBehaviour
             entry.eventID = EventTriggerType.PointerExit;
             entry.callback.AddListener(OnPointerExitEvent);
             eventTrigger.triggers.Add(entry);
-        }
-
-        {/* On Click */
-            _button.onClick.AddListener(() =>
-            {
-                EventSystem.current.SetSelectedGameObject(null);
-            });
-
         }
     }
 

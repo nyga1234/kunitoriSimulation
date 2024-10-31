@@ -46,20 +46,12 @@ public class CommandOnClick : MonoBehaviour
 
     public void OnPointerClickInformation()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            SoundManager.instance.PlayClickSE();
-            GameMain.instance.step = Step.Information;
+        GameMain.instance.step = Step.Information;
 
-            characterMenuUI.HideCharacterMenuUI();
-            characterDetailUI.HideCharacterDetailUI();
+        characterMenuUI.HideCharacterMenuUI();
+        characterDetailUI.HideCharacterDetailUI();
 
-            mapField.gameObject.SetActive(true);
-            //backToCharaMenuButton.gameObject.SetActive(true);
-
-            // クリックされたら背景色を元に戻す
-            ChangeBackgroundColor(originalColor);
-        }
+        mapField.gameObject.SetActive(true);
     }
 
     public void OnPointerClickPersonalInformation()
