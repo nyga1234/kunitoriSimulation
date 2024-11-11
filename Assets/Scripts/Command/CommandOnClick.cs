@@ -6,10 +6,12 @@ using UnityEngine.UI;
 using System;
 using static GameMain;
 using UnityEngine.EventSystems;
+using Cysharp.Threading.Tasks;
 
 public class CommandOnClick : MonoBehaviour
 {
     [SerializeField] UtilityParamObject constParam;
+    [SerializeField] UtilityParamObject varParam;
     [SerializeField] YesNoUI yesNoUI;
     [SerializeField] DialogueUI dialogueUI;
     [SerializeField] CharacterMenuUI characterMenuUI;
@@ -22,13 +24,9 @@ public class CommandOnClick : MonoBehaviour
     [SerializeField] CharacterDetailUI characterDetailUI;
     [SerializeField] InfluenceUI influenceUI;
     [SerializeField] GameObject mapField;
-    [SerializeField] GameObject backToCharaMenuButton;
-    [SerializeField] GameObject backToPersonalMenuButton;
     [SerializeField] GameObject functionUI;
 
     public GameMain gameManager;
-
-    [SerializeField] SoldierController soliderPrefab;
 
     public bool clickedFlag = false;
 
@@ -65,7 +63,6 @@ public class CommandOnClick : MonoBehaviour
             influenceUI.HideInfluenceUI();
 
             mapField.gameObject.SetActive(true);
-            //backToPersonalMenuButton.gameObject.SetActive(true);
 
             // クリックされたら背景色を元に戻す
             ChangeBackgroundColor(originalColor);
@@ -92,129 +89,97 @@ public class CommandOnClick : MonoBehaviour
 
     public void OnPointerClickAppointment()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            SoundManager.instance.PlayClickSE();
-            GameMain.instance.step = Step.Appointment;
+        GameMain.instance.step = Step.Appointment;
 
-            characterMenuUI.HideCharacterMenuUI();
-            characterDetailUI.HideCharacterDetailUI();
+        characterMenuUI.HideCharacterMenuUI();
+        characterDetailUI.HideCharacterDetailUI();
 
-            TitleFieldUI.instance.titleFieldText.text = "      昇格したいキャラクターをクリック";
-            characterIndexMenu.SetActive(true);
-            characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
-        }
+        TitleFieldUI.instance.titleFieldText.text = "      昇格したいキャラクターをクリック";
+        characterIndexMenu.SetActive(true);
+        characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
     }
 
     public void OnPointerClickSearch()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (gameManager.playerCharacter.gold >= 9)
         {
             switch (gameManager.playerCharacter.influence.territoryList.Count)
             {
                 case 1:
                 case 2:
-                    if (gameManager.playerCharacter.gold >= 9)
+                    if (gameManager.playerCharacter.influence.characterList.Count <= 2)
                     {
-                        if (gameManager.playerCharacter.influence.characterList.Count <= 2)
-                        {
-                            CharacterSearch();
-                        }
-                        else
-                        {
-                            TitleFieldUI.instance.titleFieldText.text = "      配下の将数が上限です";
-                        }
+                        CharacterSearch();
                     }
                     else
                     {
-                        TitleFieldUI.instance.titleFieldText.text = "      資金が足りません";
+                        TitleFieldUI.instance.titleFieldText.text = "      配下の将数が上限です";
                     }
                     break;
                 case 3:
-                case 4: 
+                case 4:
                 case 5:
                 case 6:
-                    if (gameManager.playerCharacter.gold >= 9)
+                    if (gameManager.playerCharacter.influence.characterList.Count <= 3)
                     {
-                        if (gameManager.playerCharacter.influence.characterList.Count <= 3)
-                        {
-                            CharacterSearch();
-                        }
-                        else
-                        {
-                            TitleFieldUI.instance.titleFieldText.text = "      配下の将数が上限です";
-                        }
+                        CharacterSearch();
                     }
                     else
                     {
-                        TitleFieldUI.instance.titleFieldText.text = "      資金が足りません";
+                        TitleFieldUI.instance.titleFieldText.text = "      配下の将数が上限です";
                     }
                     break;
                 case 7:
                 case 8:
                 case 9:
                 case 10:
-                    if (gameManager.playerCharacter.gold >= 9)
+                    if (gameManager.playerCharacter.influence.characterList.Count <= 4)
                     {
-                        if (gameManager.playerCharacter.influence.characterList.Count <= 4)
-                        {
-                            CharacterSearch();
-                        }
-                        else
-                        {
-                            TitleFieldUI.instance.titleFieldText.text = "      配下の将数が上限です";
-                        }
+                        CharacterSearch();
                     }
                     else
                     {
-                        TitleFieldUI.instance.titleFieldText.text = "      資金が足りません";
+                        TitleFieldUI.instance.titleFieldText.text = "      配下の将数が上限です";
                     }
                     break;
                 case 11:
                 case 12:
                 case 13:
                 case 14:
-                    if (gameManager.playerCharacter.gold >= 9)
+                    if (gameManager.playerCharacter.influence.characterList.Count <= 5)
                     {
-                        if (gameManager.playerCharacter.influence.characterList.Count <= 5)
-                        {
-                            CharacterSearch();
-                        }
-                        else
-                        {
-                            TitleFieldUI.instance.titleFieldText.text = "      配下の将数が上限です";
-                        }
+                        CharacterSearch();
                     }
                     else
                     {
-                        TitleFieldUI.instance.titleFieldText.text = "      資金が足りません";
+                        TitleFieldUI.instance.titleFieldText.text = "      配下の将数が上限です";
                     }
                     break;
             }
+        }
+        else
+        {
+            TitleFieldUI.instance.titleFieldText.text = "      資金が足りません";
         }
     }
 
     public void OnPointerClickBanishment()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (GameMain.instance.playerCharacter.influence.characterList.Count != 1)
         {
-            if (GameMain.instance.playerCharacter.influence.characterList.Count != 1)
-            {
-                SoundManager.instance.PlayClickSE();
-                GameMain.instance.step = Step.Banishment;
+            GameMain.instance.step = Step.Banishment;
 
-                characterMenuUI.HideCharacterMenuUI();
-                characterDetailUI.HideCharacterDetailUI();
+            characterMenuUI.HideCharacterMenuUI();
+            characterDetailUI.HideCharacterDetailUI();
 
-                TitleFieldUI.instance.titleFieldText.text = "      クリックで追放";
-                characterIndexMenu.SetActive(true);
-                characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
-            }
-            else
-            {
-                TitleFieldUI.instance.titleFieldText.text = "      領主は追放できません";
-                return;
-            }
+            TitleFieldUI.instance.titleFieldText.text = "      クリックで追放";
+            characterIndexMenu.SetActive(true);
+            characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
+        }
+        else
+        {
+            TitleFieldUI.instance.titleFieldText.text = "      領主は追放できません";
+            return;
         }
     }
 
@@ -229,16 +194,6 @@ public class CommandOnClick : MonoBehaviour
                 gameManager.playerCharacter.gold -= 2;
                 personalMenuUI.ShowPersonalMenuUI(gameManager.playerCharacter);
                 influenceUI.ShowInfluenceUI(gameManager.playerCharacter.influence);
-
-                //SoundManager.instance.PlayRecruitSE();
-                //SoliderController solider = Instantiate(soliderPrefab);
-                //solider.Init(1, GameMain.instance.CreateSoliderUniqueID());
-                //solider.gameObject.SetActive(false);
-                //gameManager.playerCharacter.soliderList.Add(solider);
-                //gameManager.allSoliderList.Add(solider);
-                //gameManager.playerCharacter.gold -= 2;
-                //personalMenuUI.ShowPersonalMenuUI(gameManager.playerCharacter);
-                //influenceUI.ShowInfluenceUI(gameManager.playerCharacter.influence);
             }
             else if (gameManager.playerCharacter.soliderList.Count >= 10)
             {
@@ -374,32 +329,17 @@ public class CommandOnClick : MonoBehaviour
 
     public void OnPointerClickFunction()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            functionUI.SetActive(true);
-        }
+        functionUI.SetActive(true);
     }
 
-    public void OnPointerClickLordEnd()
+    public async void OnPointerClickLordEnd()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            clickedFlag = true;
-            StartCoroutine(WaitForLordEnd());
-        }
-    }
+        await SceneController.LoadAsync("UIConfirm");
+        varParam.ConfirmText = "ターンを終了しますか？";
+        // OKまたはCancelボタンがクリックされるのを待機
+        await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
 
-    IEnumerator WaitForLordEnd()
-    {
-        yesNoUI.ShowEndYesNoUI();
-        //yesNoUIが非表示になるまで待機
-        yield return new WaitUntil(() => !yesNoUI.IsYesNoVisible());
-        clickedFlag = false;
-
-        //背景色を元に戻す
-        ChangeBackgroundColor(originalColor);
-
-        if (yesNoUI.IsYes())
+        if (varParam.IsConfirm == true)
         {
             GameMain.instance.step = Step.End;
 
@@ -502,7 +442,6 @@ public class CommandOnClick : MonoBehaviour
 
     public void CharacterSearch()
     {
-        SoundManager.instance.PlayClickSE();
         GameMain.instance.step = Step.Search;
 
         gameManager.playerCharacter.gold -= 9;

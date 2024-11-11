@@ -161,6 +161,7 @@ public class SelectButtonView : MonoBehaviour
 
     private void OnDeselectEvent(BaseEventData baseEvent)
     {
+        //Debug.Log("OnDeselectEvent");
         // UIÇÃîwåiêFÇå≥Ç…ñﬂÇ∑
         ChangeBackgroundColor(originalColor);
     }
@@ -177,6 +178,7 @@ public class SelectButtonView : MonoBehaviour
 
     private void OnPointerExitEvent(BaseEventData baseEvent)
     {
+        //Debug.Log("OnPointerExitEvent");
         if (_button.interactable == false)
         {
             return;
