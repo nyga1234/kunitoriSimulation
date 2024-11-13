@@ -26,31 +26,12 @@ public class CommandOnClick : MonoBehaviour
     [SerializeField] GameObject mapField;
     [SerializeField] GameObject functionUI;
 
+    //CharacterMenuUI
     public void OnPointerClickInformation()
     {
         GameMain.instance.step = Step.Information;
 
         characterMenuUI.HideCharacterMenuUI();
-        characterDetailUI.HideCharacterDetailUI();
-
-        mapField.gameObject.SetActive(true);
-    }
-
-    public void OnPointerClickPersonalInformation()
-    {
-        GameMain.instance.step = Step.Information;
-
-        personalMenuUI.HidePersonalMenuUI();
-        influenceUI.HideInfluenceUI();
-
-        mapField.gameObject.SetActive(true);
-    }
-
-    public void OnPointerClickBattleInformation()
-    {
-        GameMain.instance.step = Step.Information;
-
-        battleMenuUI.HideBattleMenuUI();
         characterDetailUI.HideCharacterDetailUI();
 
         mapField.gameObject.SetActive(true);
@@ -152,6 +133,37 @@ public class CommandOnClick : MonoBehaviour
         }
     }
 
+    public async void OnPointerClickLordEnd()
+    {
+        await SceneController.LoadAsync("UIConfirm");
+        varParam.ConfirmText = "ターンを終了しますか？";
+        // OKまたはCancelボタンがクリックされるのを待機
+        await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
+
+        if (varParam.IsConfirm == true)
+        {
+            GameMain.instance.step = Step.End;
+
+            characterMenuUI.HideCharacterMenuUI();
+            characterDetailUI.HideCharacterDetailUI();
+
+            //GameMainのフェーズを進める
+            GameMain.instance.phase = Phase.OtherLordPhase;
+            GameMain.instance.PhaseCalc();
+        }
+    }
+
+    //PersonalMenuUI
+    public void OnPointerClickPersonalInformation()
+    {
+        GameMain.instance.step = Step.Information;
+
+        personalMenuUI.HidePersonalMenuUI();
+        influenceUI.HideInfluenceUI();
+
+        mapField.gameObject.SetActive(true);
+    }
+
     public void OnPointerClickSoliderRecruit()
     {
         if (GameMain.instance.playerCharacter.soliderList.Count < 10 && GameMain.instance.playerCharacter.gold >= 2)
@@ -173,6 +185,24 @@ public class CommandOnClick : MonoBehaviour
         }
     }
 
+    public void OnPointerClickEnter()
+    {
+        if (GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
+        {
+            GameMain.instance.step = Step.Enter;
+
+            personalMenuUI.HidePersonalMenuUI();
+            influenceUI.HideInfluenceUI();
+
+            TitleFieldUI.instance.titleFieldText.text = "      仕官先を選択";
+            mapField.gameObject.SetActive(true);
+        }
+        else
+        {
+            return;
+        }
+    }
+
     public void OnPointerClickSoliderTraining()
     {
         if (GameMain.instance.playerCharacter.gold >= 2)
@@ -189,24 +219,6 @@ public class CommandOnClick : MonoBehaviour
         else
         {
             TitleFieldUI.instance.titleFieldText.text = "      資金が足りません";
-            return;
-        }
-    }
-
-    public void OnPointerClickEnter()
-    {
-        if (GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
-        {
-            GameMain.instance.step = Step.Enter;
-
-            personalMenuUI.HidePersonalMenuUI();
-            influenceUI.HideInfluenceUI();
-
-            TitleFieldUI.instance.titleFieldText.text = "      仕官先を選択";
-            mapField.gameObject.SetActive(true);
-        }
-        else
-        {
             return;
         }
     }
@@ -235,6 +247,37 @@ public class CommandOnClick : MonoBehaviour
                 varParam.DialogueText = "所属勢力を去りました";
             }
         }
+    }
+
+    public async void OnPointerClickPersonalEnd()
+    {
+        await SceneController.LoadAsync("UIConfirm");
+        varParam.ConfirmText = "ターンを終了しますか？";
+        // OKまたはCancelボタンがクリックされるのを待機
+        await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
+
+        if (varParam.IsConfirm == true)
+        {
+            GameMain.instance.step = Step.End;
+
+            personalMenuUI.HidePersonalMenuUI();
+            influenceUI.HideInfluenceUI();
+
+            //GameMainのフェーズを進める
+            GameMain.instance.phase = Phase.OtherPersonalPhase;
+            GameMain.instance.PhaseCalc();
+        }
+    }
+
+    //BattleMenuUI
+    public void OnPointerClickBattleInformation()
+    {
+        GameMain.instance.step = Step.Information;
+
+        battleMenuUI.HideBattleMenuUI();
+        characterDetailUI.HideCharacterDetailUI();
+
+        mapField.gameObject.SetActive(true);
     }
 
     public void OnPointerClickRebellion()
@@ -270,51 +313,6 @@ public class CommandOnClick : MonoBehaviour
         }
     }
 
-    public void OnPointerClickFunction()
-    {
-        functionUI.SetActive(true);
-    }
-
-    public async void OnPointerClickLordEnd()
-    {
-        await SceneController.LoadAsync("UIConfirm");
-        varParam.ConfirmText = "ターンを終了しますか？";
-        // OKまたはCancelボタンがクリックされるのを待機
-        await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
-
-        if (varParam.IsConfirm == true)
-        {
-            GameMain.instance.step = Step.End;
-
-            characterMenuUI.HideCharacterMenuUI();
-            characterDetailUI.HideCharacterDetailUI();
-
-            //GameMainのフェーズを進める
-            GameMain.instance.phase = Phase.OtherLordPhase;
-            GameMain.instance.PhaseCalc();
-        }
-    }
-
-    public async void OnPointerClickPersonalEnd()
-    {
-        await SceneController.LoadAsync("UIConfirm");
-        varParam.ConfirmText = "ターンを終了しますか？";
-        // OKまたはCancelボタンがクリックされるのを待機
-        await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
-
-        if (varParam.IsConfirm == true)
-        {
-            GameMain.instance.step = Step.End;
-
-            personalMenuUI.HidePersonalMenuUI();
-            influenceUI.HideInfluenceUI();
-
-            //GameMainのフェーズを進める
-            GameMain.instance.phase = Phase.OtherPersonalPhase;
-            GameMain.instance.PhaseCalc();
-        }
-    }
-
     public async void OnPointerClickBattleEnd()
     {
         await SceneController.LoadAsync("UIConfirm");
@@ -344,6 +342,12 @@ public class CommandOnClick : MonoBehaviour
                 GameMain.instance.OtherBattlePhase(playerNextCharacter);
             }
         }
+    }
+
+    //共通処理
+    public void OnPointerClickFunction()
+    {
+        functionUI.SetActive(true);
     }
 
     public void CharacterSearch()

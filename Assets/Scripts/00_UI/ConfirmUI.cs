@@ -20,12 +20,14 @@ public class ConfirmUI : MonoBehaviour
 
         okButton.OnClickAsObservable().Subscribe(async _ =>
         {
+            SoundManager.instance.PlayYesSE();
             varParam.IsConfirm = true;
             await  OnPressClose();
         });
 
         cancelButton.onClick.AsObservable().Subscribe(async _ =>
         {
+            SoundManager.instance.PlayCancelSE();
             varParam.IsConfirm = false;
             await OnPressClose();
         });

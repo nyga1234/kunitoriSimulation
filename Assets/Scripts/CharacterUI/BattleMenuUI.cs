@@ -13,8 +13,6 @@ public class BattleMenuUI : MonoBehaviour
 
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
 
-    [SerializeField] BattleMenuCommandUI battleMenuCommandUI;
-
     [SerializeField] TextMeshProUGUI moneyText;
 
     [SerializeField] Image lordImage;
@@ -27,6 +25,8 @@ public class BattleMenuUI : MonoBehaviour
     [SerializeField] Image character4Image;
     [SerializeField] Image character5Image;
     [SerializeField] Image character6Image;
+
+    [SerializeField] TextMeshProUGUI attackText;
 
     [SerializeField] TextMeshProUGUI rankText;
     [SerializeField] TextMeshProUGUI charaNameText;
@@ -56,7 +56,17 @@ public class BattleMenuUI : MonoBehaviour
     public void ShowBattleMenuUI(CharacterController character, Influence influence)
     {
         gameObject.SetActive(true);
-        battleMenuCommandUI.ShowBattleMenuCommandUI();
+
+        attackText.color = Color.white; // îíêFÇ…ïœçX
+        if (GameMain.instance.playerCharacter.gold < 3)
+        {
+            attackText.color = new Color32(122, 122, 122, 255);
+        }
+
+        if (GameMain.instance.playerCharacter.isLord == false && GameMain.instance.playerCharacter.isAttackable == false)
+        {
+            attackText.color = new Color32(122, 122, 122, 255);
+        }
 
         moneyText.text = "éëã‡ " + character.gold.ToString();
 
