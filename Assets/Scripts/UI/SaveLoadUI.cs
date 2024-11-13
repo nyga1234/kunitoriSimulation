@@ -82,8 +82,17 @@ public class SaveLoadUI : MonoBehaviour
         }
         else // ロード処理
         {
-            await GameManager.instance.ChangeScene("Title", "GameMain");
-            SaveLoadManager.SelectSlot = slot;
+            if (SaveLoadManager.HasSaveData(slot))
+            {
+                await GameManager.instance.ChangeScene("Title", "GameMain");
+                SaveLoadManager.SelectSlot = slot;
+            }
+            else
+            {
+                await SceneController.LoadAsync("UIDialogue");
+                varParam.DialogueText = "選択したスロットにはセーブデータが存在しません";
+                return;
+            }
         }
     }
 

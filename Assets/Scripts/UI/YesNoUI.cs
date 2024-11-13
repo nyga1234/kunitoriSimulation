@@ -63,14 +63,14 @@ public class YesNoUI : MonoBehaviour
         YesNoText.text = "í«ï˙ÇµÇ‹Ç∑Ç©ÅH";
     }
 
-    public void ShowVagabondYesNoUI()
-    {
-        SoundManager.instance.PlalyYesNoUISE();
-        isYesNoVisible = true;
-        Yes = false;
-        this.gameObject.SetActive(true);
-        YesNoText.text = "ê®óÕÇãéÇËÇ‹Ç∑Ç©ÅH";
-    }
+    //public void ShowVagabondYesNoUI()
+    //{
+    //    SoundManager.instance.PlalyYesNoUISE();
+    //    isYesNoVisible = true;
+    //    Yes = false;
+    //    this.gameObject.SetActive(true);
+    //    YesNoText.text = "ê®óÕÇãéÇËÇ‹Ç∑Ç©ÅH";
+    //}
 
     public void ShowAttackYesNoUI()
     {

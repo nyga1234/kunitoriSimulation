@@ -5,15 +5,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using static GameMain;
-using UnityEngine.EventSystems;
 using Cysharp.Threading.Tasks;
 
 public class CommandOnClick : MonoBehaviour
 {
+    [Header("Param")]
     [SerializeField] UtilityParamObject constParam;
     [SerializeField] UtilityParamObject varParam;
-    [SerializeField] YesNoUI yesNoUI;
-    [SerializeField] DialogueUI dialogueUI;
+
+    [Header("UI")]
     [SerializeField] CharacterMenuUI characterMenuUI;
     [SerializeField] PersonalMenuUI personalMenuUI;
     [SerializeField] BattleMenuUI battleMenuUI;
@@ -25,22 +25,6 @@ public class CommandOnClick : MonoBehaviour
     [SerializeField] InfluenceUI influenceUI;
     [SerializeField] GameObject mapField;
     [SerializeField] GameObject functionUI;
-
-    public GameMain gameManager;
-
-    public bool clickedFlag = false;
-
-    private Color originalColor; // 元の背景色を保持する変数
-
-    void Start()
-    {
-        Image image = GetComponent<Image>();
-        if (image != null)
-        {
-            // 元の背景色を保持
-            originalColor = image.color;
-        }
-    }
 
     public void OnPointerClickInformation()
     {
@@ -54,37 +38,22 @@ public class CommandOnClick : MonoBehaviour
 
     public void OnPointerClickPersonalInformation()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            SoundManager.instance.PlayClickSE();
-            GameMain.instance.step = Step.Information;
+        GameMain.instance.step = Step.Information;
 
-            personalMenuUI.HidePersonalMenuUI();
-            influenceUI.HideInfluenceUI();
+        personalMenuUI.HidePersonalMenuUI();
+        influenceUI.HideInfluenceUI();
 
-            mapField.gameObject.SetActive(true);
-
-            // クリックされたら背景色を元に戻す
-            ChangeBackgroundColor(originalColor);
-        }
+        mapField.gameObject.SetActive(true);
     }
 
     public void OnPointerClickBattleInformation()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            SoundManager.instance.PlayClickSE();
-            GameMain.instance.step = Step.Information;
+        GameMain.instance.step = Step.Information;
 
-            battleMenuUI.HideBattleMenuUI();
-            characterDetailUI.HideCharacterDetailUI();
+        battleMenuUI.HideBattleMenuUI();
+        characterDetailUI.HideCharacterDetailUI();
 
-            mapField.gameObject.SetActive(true);
-            //backToPersonalMenuButton.gameObject.SetActive(true);
-
-            // クリックされたら背景色を元に戻す
-            ChangeBackgroundColor(originalColor);
-        }
+        mapField.gameObject.SetActive(true);
     }
 
     public void OnPointerClickAppointment()
@@ -101,13 +70,13 @@ public class CommandOnClick : MonoBehaviour
 
     public void OnPointerClickSearch()
     {
-        if (gameManager.playerCharacter.gold >= 9)
+        if (GameMain.instance.playerCharacter.gold >= 9)
         {
-            switch (gameManager.playerCharacter.influence.territoryList.Count)
+            switch (GameMain.instance.playerCharacter.influence.territoryList.Count)
             {
                 case 1:
                 case 2:
-                    if (gameManager.playerCharacter.influence.characterList.Count <= 2)
+                    if (GameMain.instance.playerCharacter.influence.characterList.Count <= 2)
                     {
                         CharacterSearch();
                     }
@@ -120,7 +89,7 @@ public class CommandOnClick : MonoBehaviour
                 case 4:
                 case 5:
                 case 6:
-                    if (gameManager.playerCharacter.influence.characterList.Count <= 3)
+                    if (GameMain.instance.playerCharacter.influence.characterList.Count <= 3)
                     {
                         CharacterSearch();
                     }
@@ -133,7 +102,7 @@ public class CommandOnClick : MonoBehaviour
                 case 8:
                 case 9:
                 case 10:
-                    if (gameManager.playerCharacter.influence.characterList.Count <= 4)
+                    if (GameMain.instance.playerCharacter.influence.characterList.Count <= 4)
                     {
                         CharacterSearch();
                     }
@@ -146,7 +115,7 @@ public class CommandOnClick : MonoBehaviour
                 case 12:
                 case 13:
                 case 14:
-                    if (gameManager.playerCharacter.influence.characterList.Count <= 5)
+                    if (GameMain.instance.playerCharacter.influence.characterList.Count <= 5)
                     {
                         CharacterSearch();
                     }
@@ -185,49 +154,42 @@ public class CommandOnClick : MonoBehaviour
 
     public void OnPointerClickSoliderRecruit()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (GameMain.instance.playerCharacter.soliderList.Count < 10 && GameMain.instance.playerCharacter.gold >= 2)
         {
-            if (gameManager.playerCharacter.soliderList.Count < 10 && gameManager.playerCharacter.gold >= 2)
-            {
-                SoundManager.instance.PlayRecruitSE();
-                gameManager.playerCharacter.soliderList.Add(Instantiate(constParam.soldierList.Find(c => c.soliderID == 1)));
-                gameManager.playerCharacter.gold -= 2;
-                personalMenuUI.ShowPersonalMenuUI(gameManager.playerCharacter);
-                influenceUI.ShowInfluenceUI(gameManager.playerCharacter.influence);
-            }
-            else if (gameManager.playerCharacter.soliderList.Count >= 10)
-            {
-                TitleFieldUI.instance.titleFieldText.text = "      雇用可能な兵士は10人までです";
-                return;
-            }
-            else if (gameManager.playerCharacter.gold < 2)
-            {
-                TitleFieldUI.instance.titleFieldText.text = "      資金が足りません";
-                return;
-            }
+            GameMain.instance.playerCharacter.soliderList.Add(Instantiate(constParam.soldierList.Find(c => c.soliderID == 1)));
+            GameMain.instance.playerCharacter.gold -= 2;
+            personalMenuUI.ShowPersonalMenuUI(GameMain.instance.playerCharacter);
+            influenceUI.ShowInfluenceUI(GameMain.instance.playerCharacter.influence);
+        }
+        else if (GameMain.instance.playerCharacter.soliderList.Count >= 10)
+        {
+            TitleFieldUI.instance.titleFieldText.text = "      雇用可能な兵士は10人までです";
+            return;
+        }
+        else if (GameMain.instance.playerCharacter.gold < 2)
+        {
+            TitleFieldUI.instance.titleFieldText.text = "      資金が足りません";
+            return;
         }
     }
 
     public void OnPointerClickSoliderTraining()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (GameMain.instance.playerCharacter.gold >= 2)
         {
-            if (gameManager.playerCharacter.gold >= 2)
+            //SoundManager.instance.PlayTrainingSE();
+            foreach (SoldierController solider in GameMain.instance.playerCharacter.soliderList)
             {
-                SoundManager.instance.PlayTrainingSE();
-                foreach (SoldierController solider in gameManager.playerCharacter.soliderList)
-                {
-                    solider.Training(solider);
-                }
-                gameManager.playerCharacter.gold -= 2;
-                personalMenuUI.ShowPersonalMenuUI(gameManager.playerCharacter);
-                influenceUI.ShowInfluenceUI(gameManager.playerCharacter.influence);
+                solider.Training(solider);
             }
-            else
-            {
-                TitleFieldUI.instance.titleFieldText.text = "      資金が足りません";
-                return;
-            }
+            GameMain.instance.playerCharacter.gold -= 2;
+            personalMenuUI.ShowPersonalMenuUI(GameMain.instance.playerCharacter);
+            influenceUI.ShowInfluenceUI(GameMain.instance.playerCharacter.influence);
+        }
+        else
+        {
+            TitleFieldUI.instance.titleFieldText.text = "      資金が足りません";
+            return;
         }
     }
 
@@ -235,64 +197,49 @@ public class CommandOnClick : MonoBehaviour
     {
         if (GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
         {
-            if (Input.GetMouseButtonUp(0))
+            GameMain.instance.step = Step.Enter;
+
+            personalMenuUI.HidePersonalMenuUI();
+            influenceUI.HideInfluenceUI();
+
+            TitleFieldUI.instance.titleFieldText.text = "      仕官先を選択";
+            mapField.gameObject.SetActive(true);
+        }
+        else
+        {
+            return;
+        }
+    }
+
+    public async void OnPointerClickVagabond()
+    {
+        if (GameMain.instance.playerCharacter.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
+        {
+            return;
+        }
+        else
+        {
+            await SceneController.LoadAsync("UIConfirm");
+            varParam.ConfirmText = "所属勢力を去りますか？";
+            // OKまたはCancelボタンがクリックされるのを待機
+            await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
+
+            if (varParam.IsConfirm == true)
             {
-                SoundManager.instance.PlayClickSE();
-                GameMain.instance.step = Step.Enter;
+                //所属勢力を去る
+                GameMain.instance.LeaveInfluence(GameMain.instance.playerCharacter);
 
-                personalMenuUI.HidePersonalMenuUI();
-                influenceUI.HideInfluenceUI();
+                GameMain.instance.ShowPersonalUI(GameMain.instance.playerCharacter);
 
-                TitleFieldUI.instance.titleFieldText.text = "      仕官先を選択";
-                mapField.gameObject.SetActive(true);
-
-                // クリックされたら背景色を元に戻す
-                ChangeBackgroundColor(originalColor);
+                await SceneController.LoadAsync("UIDialogue");
+                varParam.DialogueText = "所属勢力を去りました";
             }
-        }
-        else
-        {
-            return;
-        }
-    }
-
-    public void OnPointerClickVagabond()
-    {
-        if(gameManager.playerCharacter.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
-        {
-            return;
-        }
-        else
-        {
-            clickedFlag = true;
-            StartCoroutine(WaitForVagabond());
-        }
-    }
-
-    IEnumerator WaitForVagabond()
-    {
-        yesNoUI.ShowVagabondYesNoUI();
-        //yesNoUIが非表示になるまで待機
-        yield return new WaitUntil(() => !yesNoUI.IsYesNoVisible());
-        clickedFlag = false;
-
-        //背景色を元に戻す
-        ChangeBackgroundColor(originalColor);
-
-        if (yesNoUI.IsYes())
-        {
-            //所属勢力を去る
-            GameMain.instance.LeaveInfluence(GameMain.instance.playerCharacter);
-
-            GameMain.instance.ShowPersonalUI(GameMain.instance.playerCharacter);
-
-            dialogueUI.ShowSuccessVagabondUI();
         }
     }
 
     public void OnPointerClickRebellion()
     {
-        if (gameManager.playerCharacter.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
+        if (GameMain.instance.playerCharacter.isLord == true || GameMain.instance.playerCharacter.influence == GameMain.instance.noneInfluence)
         {
             return;
         }
@@ -300,30 +247,26 @@ public class CommandOnClick : MonoBehaviour
 
     public void OnPointerClickAttack()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (GameMain.instance.playerCharacter.isLord == false && GameMain.instance.playerCharacter.isAttackable == false)
         {
-            if (GameMain.instance.playerCharacter.isLord == false && GameMain.instance.playerCharacter.isAttackable == false)
-            {
-                TitleFieldUI.instance.titleFieldText.text = "      侵攻済みです";
-                return;
-            }
+            TitleFieldUI.instance.titleFieldText.text = "      侵攻済みです";
+            return;
+        }
 
 
-            if (GameMain.instance.playerCharacter.gold >= 3)
-            {
-                SoundManager.instance.PlayClickSE();
-                GameMain.instance.step = Step.Attack;
+        if (GameMain.instance.playerCharacter.gold >= 3)
+        {
+            GameMain.instance.step = Step.Attack;
 
-                battleMenuUI.HideBattleMenuUI();
-                characterDetailUI.HideCharacterDetailUI();
+            battleMenuUI.HideBattleMenuUI();
+            characterDetailUI.HideCharacterDetailUI();
 
-                mapField.gameObject.SetActive(true);
-            }
-            else
-            {
-                TitleFieldUI.instance.titleFieldText.text = "      資金が足りません";
-                return;
-            }
+            mapField.gameObject.SetActive(true);
+        }
+        else
+        {
+            TitleFieldUI.instance.titleFieldText.text = "      資金が足りません";
+            return;
         }
     }
 
@@ -347,31 +290,19 @@ public class CommandOnClick : MonoBehaviour
             characterDetailUI.HideCharacterDetailUI();
 
             //GameMainのフェーズを進める
-            gameManager.phase = Phase.OtherLordPhase;
-            gameManager.PhaseCalc();
+            GameMain.instance.phase = Phase.OtherLordPhase;
+            GameMain.instance.PhaseCalc();
         }
     }
 
-    public void OnPointerClickPersonalEnd()
+    public async void OnPointerClickPersonalEnd()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            clickedFlag = true;
-            StartCoroutine(WaifForPersonalEnd());
-        }
-    }
+        await SceneController.LoadAsync("UIConfirm");
+        varParam.ConfirmText = "ターンを終了しますか？";
+        // OKまたはCancelボタンがクリックされるのを待機
+        await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
 
-    IEnumerator WaifForPersonalEnd()
-    {
-        yesNoUI.ShowEndYesNoUI();
-        //yesNoUIが非表示になるまで待機
-        yield return new WaitUntil(() => !yesNoUI.IsYesNoVisible());
-        clickedFlag = false;
-
-        //背景色を元に戻す
-        ChangeBackgroundColor(originalColor);
-
-        if (yesNoUI.IsYes())
+        if (varParam.IsConfirm == true)
         {
             GameMain.instance.step = Step.End;
 
@@ -379,47 +310,32 @@ public class CommandOnClick : MonoBehaviour
             influenceUI.HideInfluenceUI();
 
             //GameMainのフェーズを進める
-            gameManager.phase = Phase.OtherPersonalPhase;
-            gameManager.PhaseCalc();
+            GameMain.instance.phase = Phase.OtherPersonalPhase;
+            GameMain.instance.PhaseCalc();
         }
     }
 
-    public void OnPointerClickBattleEnd()
+    public async void OnPointerClickBattleEnd()
     {
-        if (Input.GetMouseButtonUp(0))
-        {
-            clickedFlag = true;
-            StartCoroutine(WaitForBattleEnd());
-        }
-    }
+        await SceneController.LoadAsync("UIConfirm");
+        varParam.ConfirmText = "ターンを終了しますか？";
+        // OKまたはCancelボタンがクリックされるのを待機
+        await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
 
-    IEnumerator WaitForBattleEnd()
-    {
-        yesNoUI.ShowEndYesNoUI();
-        //yesNoUIが非表示になるまで待機
-        yield return new WaitUntil(() => !yesNoUI.IsYesNoVisible());
-        clickedFlag = false;
-
-        //背景色を元に戻す
-        ChangeBackgroundColor(originalColor);
-
-        if (yesNoUI.IsYes())
+        if (varParam.IsConfirm == true)
         {
             GameMain.instance.step = Step.End;
 
             battleMenuUI.HideBattleMenuUI();
             characterDetailUI.HideCharacterDetailUI();
 
-            // クリックされたら背景色を元に戻す
-            ChangeBackgroundColor(originalColor);
-
             bool isPlayerLast = GameMain.instance.characterList.LastOrDefault() == GameMain.instance.playerCharacter;
             if (isPlayerLast)
             {
                 Debug.Log("プレイヤーは最後です。");
                 //プレイヤー領主フェーズへ進める
-                gameManager.phase = Phase.PlayerLordPhase;
-                gameManager.PhaseCalc();
+                GameMain.instance.phase = Phase.PlayerLordPhase;
+                GameMain.instance.PhaseCalc();
             }
             else
             {
@@ -430,21 +346,11 @@ public class CommandOnClick : MonoBehaviour
         }
     }
 
-    //背景色を変更
-    private void ChangeBackgroundColor(Color color)
-    {
-        Image image = GetComponent<Image>();
-        if (image != null)
-        {
-            image.color = color;
-        }
-    }
-
     public void CharacterSearch()
     {
         GameMain.instance.step = Step.Search;
 
-        gameManager.playerCharacter.gold -= 9;
+        GameMain.instance.playerCharacter.gold -= 9;
         characterMenuUI.HideCharacterMenuUI();
         characterDetailUI.HideCharacterDetailUI();
 

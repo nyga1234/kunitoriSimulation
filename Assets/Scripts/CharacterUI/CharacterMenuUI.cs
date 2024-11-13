@@ -10,52 +10,58 @@ using DG.Tweening.Core.Easing;
 public class CharacterMenuUI : MonoBehaviour
 {
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
+    [SerializeField] private CommandOnClick commandClick;
 
-    [SerializeField] TextMeshProUGUI moneyText;
-    [SerializeField] TextMeshProUGUI rankText;
+    [System.Serializable]
+    private class ImageGroup
+    {
+        public Image lordImage;
+        public Sprite charaUI;
+        public Image character1Image;
+        public Image character2Image;
+        public Image character3Image;
+        public Image character4Image;
+        public Image character5Image;
+        public Image character6Image;
+    }
 
-    [SerializeField] TextMeshProUGUI searchText;
-    [SerializeField] TextMeshProUGUI banishmentText;
+    [System.Serializable]
+    private class ButtonGroup
+    {
+        public SelectButtonView informationButton;
+        public SelectButtonView appointmentButton;
+        public SelectButtonView searchButton;
+        public SelectButtonView banishmentButton;
+        public SelectButtonView functionButton;
+        public SelectButtonView endButton;
+    }
 
-    [SerializeField] Image lordImage;
-    [SerializeField] Sprite charaUI;
-    [SerializeField] Image character1Image;
-    [SerializeField] Image character2Image;
-    [SerializeField] Image character3Image;
-    [SerializeField] Image character4Image;
-    [SerializeField] Image character5Image;
-    [SerializeField] Image character6Image;
+    [System.Serializable]
+    private class TextGroup
+    {
+        public TextMeshProUGUI moneyText;
+        public TextMeshProUGUI rankText;
+        public TextMeshProUGUI searchText;
+        public TextMeshProUGUI banishmentText;
+        public TextMeshProUGUI charaNameText;
+        public TextMeshProUGUI territorySumText;
+        public TextMeshProUGUI goldSumText;
+        public TextMeshProUGUI forceSumText;
+        public TextMeshProUGUI soliderSumText;
+    }
 
-    [SerializeField] TextMeshProUGUI charaNameText;
-    [SerializeField] TextMeshProUGUI territorySumText;
-    [SerializeField] TextMeshProUGUI goldSumText;
-    [SerializeField] TextMeshProUGUI forceSumText;
-    [SerializeField] TextMeshProUGUI soliderSumText;
-
-    [SerializeField]
-    private CommandOnClick commandClick;
-
-    [SerializeField]
-    private SelectButtonView informationButton;
-    [SerializeField]
-    private SelectButtonView appointmentButton;
-    [SerializeField]
-    private SelectButtonView searchButton;
-    [SerializeField]
-    private SelectButtonView banishmentButton;
-    [SerializeField]
-    private SelectButtonView functionButton;
-    [SerializeField]
-    private SelectButtonView endButton;
+    [SerializeField] private ImageGroup images;
+    [SerializeField] private ButtonGroup buttons;
+    [SerializeField] private TextGroup texts;
 
     private void Start()
     {
-        informationButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickInformation());
-        appointmentButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickAppointment());
-        searchButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickSearch());
-        banishmentButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickBanishment());
-        functionButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickFunction());
-        endButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickLordEnd());
+        buttons.informationButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickInformation());
+        buttons.appointmentButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickAppointment());
+        buttons.searchButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickSearch());
+        buttons.banishmentButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickBanishment());
+        buttons.functionButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickFunction());
+        buttons.endButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickLordEnd());
     }
 
     public void ShowCharacterMenuUI(CharacterController character, Influence influence)
@@ -64,13 +70,13 @@ public class CharacterMenuUI : MonoBehaviour
 
         Initialize();
 
-        moneyText.text = "資金 " + character.gold.ToString();
-        rankText.text = character.rank.ToString();
+        texts.moneyText.text = "資金 " + character.gold.ToString();
+        texts.rankText.text = character.rank.ToString();
         
         SearchTextChange();
         BanishmentTextChange();
 
-        lordImage.sprite = character.icon;//領主画像の設定
+        images.lordImage.sprite = character.icon;//領主画像の設定
 
         List<CharacterController> noPlayerCharacterList = character.influence.characterList.FindAll(x => !x.isPlayerCharacter);
         for (int i = 0; i < noPlayerCharacterList.Count; i++)
@@ -83,17 +89,17 @@ public class CharacterMenuUI : MonoBehaviour
         }
 
         territoryUIOnMouse.InfluenceCalcSum(influence);
-        charaNameText.text = character.name;
-        territorySumText.text = "[領地数] " + influence.territorySum.ToString();
-        goldSumText.text = "[資金計]" + influence.goldSum.ToString();
-        forceSumText.text = "[総戦力] " + influence.forceSum.ToString();
-        soliderSumText.text = "[兵士数] " + influence.soliderSum.ToString();
+        texts.charaNameText.text = character.name;
+        texts.territorySumText.text = "[領地数] " + influence.territorySum.ToString();
+        texts.goldSumText.text = "[資金計]" + influence.goldSum.ToString();
+        texts.forceSumText.text = "[総戦力] " + influence.forceSum.ToString();
+        texts.soliderSumText.text = "[兵士数] " + influence.soliderSum.ToString();
     }
 
     private void Initialize()
     {
-        searchText.color = Color.white; // 白色に変更
-        banishmentText.color = Color.white; // 白色に変更
+        texts.searchText.color = Color.white; // 白色に変更
+        texts.banishmentText.color = Color.white; // 白色に変更
         InitializeImage();//領主配下画像の初期設定
     }
 
@@ -102,7 +108,7 @@ public class CharacterMenuUI : MonoBehaviour
         for (int i = 1; i <= 6; i++)
         {
             Image characterImage = GetCharacterImage(i);
-            characterImage.sprite = charaUI;
+            characterImage.sprite = images.charaUI;
         }
     }
 
@@ -115,7 +121,7 @@ public class CharacterMenuUI : MonoBehaviour
             case 2:
                 if (GameMain.instance.playerCharacter.influence.characterList.Count >= 3 || GameMain.instance.playerCharacter.gold < 9)
                 {
-                    searchText.color = new Color32(122, 122, 122, 255);//非表示
+                    texts.searchText.color = new Color32(122, 122, 122, 255);//非表示
                 }
                 break;
             case 3:
@@ -124,7 +130,7 @@ public class CharacterMenuUI : MonoBehaviour
             case 6:
                 if (GameMain.instance.playerCharacter.influence.characterList.Count >= 4 || GameMain.instance.playerCharacter.gold < 9)
                 {
-                    searchText.color = new Color32(122, 122, 122, 255);//非表示
+                    texts.searchText.color = new Color32(122, 122, 122, 255);//非表示
                 }
                 break;
             case 7:
@@ -133,7 +139,7 @@ public class CharacterMenuUI : MonoBehaviour
             case 10:
                 if (GameMain.instance.playerCharacter.influence.characterList.Count >= 5 || GameMain.instance.playerCharacter.gold < 9)
                 {
-                    searchText.color = new Color32(122, 122, 122, 255);//非表示
+                    texts.searchText.color = new Color32(122, 122, 122, 255);//非表示
                 }
                 break;
             case 11:
@@ -142,7 +148,7 @@ public class CharacterMenuUI : MonoBehaviour
             case 14:
                 if (GameMain.instance.playerCharacter.influence.characterList.Count >= 6 || GameMain.instance.playerCharacter.gold < 9)
                 {
-                    searchText.color = new Color32(122, 122, 122, 255);//非表示
+                    texts.searchText.color = new Color32(122, 122, 122, 255);//非表示
                 }
                 break;
         }
@@ -152,7 +158,7 @@ public class CharacterMenuUI : MonoBehaviour
     {
         if (GameMain.instance.playerCharacter.influence.characterList.Count == 1)
         {
-            banishmentText.color = new Color32(122, 122, 122, 255);
+            texts.banishmentText.color = new Color32(122, 122, 122, 255);
         }
     }
 
@@ -161,12 +167,12 @@ public class CharacterMenuUI : MonoBehaviour
     {
         switch (index)
         {
-            case 1: return character1Image;
-            case 2: return character2Image;
-            case 3: return character3Image;
-            case 4: return character4Image;
-            case 5: return character5Image;
-            case 6: return character6Image;
+            case 1: return images.character1Image;
+            case 2: return images.character2Image;
+            case 3: return images.character3Image;
+            case 4: return images.character4Image;
+            case 5: return images.character5Image;
+            case 6: return images.character6Image;
             default: return null;
         }
     }

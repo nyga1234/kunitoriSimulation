@@ -16,7 +16,9 @@ public class UtilityParamObject : ScriptableObject
 
     [SerializeField] private bool? isConfirm;
     [SerializeField] private string confirmText;
+    [SerializeField] private string dialogueText;
 
     public bool? IsConfirm { get => isConfirm; set => isConfirm = value; }
     public string ConfirmText { get => confirmText; set => confirmText = value; }
+    public string DialogueText { get => dialogueText; set => dialogueText = value; }
 }

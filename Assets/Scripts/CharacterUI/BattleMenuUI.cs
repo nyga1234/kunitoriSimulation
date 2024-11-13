@@ -4,10 +4,13 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UniRx;
 
 public class BattleMenuUI : MonoBehaviour
 {
-    //[SerializeField] InflueneceManager influeneceManager;
+    [Header("Command Settings")]
+    [SerializeField] private CommandOnClick commandClick;
+
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
 
     [SerializeField] BattleMenuCommandUI battleMenuCommandUI;
@@ -31,6 +34,24 @@ public class BattleMenuUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI goldSumText;
     [SerializeField] TextMeshProUGUI forceSumText;
     [SerializeField] TextMeshProUGUI soliderSumText;
+
+    [System.Serializable]
+    private class ButtonGroup
+    {
+        public SelectButtonView informationButton;
+        public SelectButtonView attackButton;
+        public SelectButtonView functionButton;
+        public SelectButtonView endButton;
+    }
+    [SerializeField] private ButtonGroup buttons;
+
+    private void Start()
+    {
+        buttons.informationButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickBattleInformation());
+        buttons.attackButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickAttack());
+        buttons.functionButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickFunction());
+        buttons.endButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickBattleEnd());
+    }
 
     public void ShowBattleMenuUI(CharacterController character, Influence influence)
     {

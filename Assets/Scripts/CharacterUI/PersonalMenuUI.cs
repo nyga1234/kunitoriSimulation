@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
+using UniRx;
 
 public class PersonalMenuUI : MonoBehaviour
 {
+    [Header("Command Settings")]
+    [SerializeField] private CommandOnClick commandClick;
+
+    [Header("Text")]
     [SerializeField] TextMeshProUGUI moneyText;
-
-    [SerializeField] Image characterImage;
-
     [SerializeField] TextMeshProUGUI rankText;
     [SerializeField] TextMeshProUGUI characterNameText;
-
     [SerializeField] TextMeshProUGUI goldText;
     [SerializeField] TextMeshProUGUI forceText;
     [SerializeField] TextMeshProUGUI inteliText;
@@ -28,24 +28,38 @@ public class PersonalMenuUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI vagabondText;
     [SerializeField] TextMeshProUGUI rebellionText;
 
+    [SerializeField] Image characterImage;    
+
     [SerializeField] Transform SoliderListField;
     [SerializeField] GameObject personalSolidefPrefab;
 
-    [SerializeField] GameObject enterButton;
-    [SerializeField] GameObject vagabondButton;
+    [System.Serializable]
+    private class ButtonGroup
+    {
+        public SelectButtonView informationButton;
+        public SelectButtonView recruitButton;
+        public SelectButtonView trainingButton;
+        public SelectButtonView enterButton;
+        public SelectButtonView vagabond;
+        public SelectButtonView function;
+        public SelectButtonView end;
+    }
+    [SerializeField] private ButtonGroup buttons;
+
+    private void Start()
+    {
+        buttons.informationButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickPersonalInformation());
+        buttons.recruitButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickSoliderRecruit());
+        buttons.trainingButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickSoliderTraining());
+        buttons.enterButton.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickEnter());
+        buttons.vagabond.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickVagabond());
+        buttons.function.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickFunction());
+        buttons.end.Button.onClick.AsObservable().Subscribe(_ => commandClick.OnPointerClickPersonalEnd());
+    }
 
     public void ShowPersonalMenuUI(CharacterController character)
     {
         gameObject.SetActive(true);
-
-        //if (character.influence.influenceName == "NoneInfluence")
-        //{
-        //    enterButton.SetActive(true);
-        //}
-        //else if (character.isLord == false)
-        //{
-        //    vagabondButton.SetActive(true);
-        //}
 
         recruitText.color = Color.white; // 白色に変更
         trainingText.color = Color.white; // 白色に変更
@@ -120,8 +134,6 @@ public class PersonalMenuUI : MonoBehaviour
             solider.icon, 
             solider.hp.ToString(),
             solider.lv.ToString());
-        //SoliderController personalSolider = Instantiate(personalSolidefPrefab, field, false);
-        //personalSolider.ShowPersonalSoliderUI(solider);
     }
 
     public void HidePersonalMenuUI()
