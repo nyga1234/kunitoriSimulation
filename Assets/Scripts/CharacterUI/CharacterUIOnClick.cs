@@ -9,7 +9,6 @@ public class CharacterUIOnClick : MonoBehaviour
 {
     public GameMain gameManager;
     public BattleManager battleManager;
-    //public InflueneceManager influenceManager;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] TerritoryManager territoryManager;
 

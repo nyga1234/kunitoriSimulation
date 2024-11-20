@@ -24,10 +24,6 @@ public class CharacterUIOnMouse : MonoBehaviour
     public void OnPointerEnterCharacter()
     {
         characterDetailUI.ShowCharacterDetailUI(characterController);
-        //if (characterController != null && characterDetailUI != null)
-        //{
-        //    characterDetailUI.ShowCharacterDetailUI(characterController);
-        //}
             // UI‚Ì”wŒiF‚ğŠDF‚É•ÏX
             ChangeBackgroundColor(Color.gray);
     }
