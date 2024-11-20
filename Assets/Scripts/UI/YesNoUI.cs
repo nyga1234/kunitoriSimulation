@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class YesNoUI : MonoBehaviour
 {
-    //[SerializeField] InflueneceManager influeneceManager;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] GameObject mapField;
 
@@ -18,14 +17,14 @@ public class YesNoUI : MonoBehaviour
     private bool Yes = false;
     private bool isYesNoVisible = false;
 
-    public void ShowEnterUI()
-    {
-        SoundManager.instance.PlalyYesNoUISE();
-        isYesNoVisible = true;
-        Yes = false;
-        this.gameObject.SetActive(true);
-        YesNoText.text = "仕官しますか？";
-    }
+    //public void ShowEnterUI()
+    //{
+    //    SoundManager.instance.PlalyYesNoUISE();
+    //    isYesNoVisible = true;
+    //    Yes = false;
+    //    this.gameObject.SetActive(true);
+    //    YesNoText.text = "仕官しますか？";
+    //}
 
     public void ShowCharacterSelectUI()
     {

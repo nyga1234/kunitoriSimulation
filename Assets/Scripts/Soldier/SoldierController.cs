@@ -5,9 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Object/Soldier Param", fileName = "Soldier")]
 public class SoldierController : ScriptableObject
 {
-    //public SoliderModel soliderModel;
-    //public CharacterController character;
-
     [Header("Initial Set Value")]
     public int soliderID;
     public Sprite icon;
@@ -22,11 +19,6 @@ public class SoldierController : ScriptableObject
     public int experience;
     public bool isAlive;
     public int uniqueID;
-
-    //public void Init(int soliderId, int soliderUniqueId)
-    //{
-    //    soliderModel = new SoliderModel(soliderId, soliderUniqueId);
-    //}
 
     void Damage(int damage)
     {
