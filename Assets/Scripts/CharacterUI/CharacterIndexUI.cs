@@ -26,7 +26,8 @@ public class CharacterIndexUI : MonoBehaviour
             if (i == 0)
             {
                 character1UI.ShowCharacterUI(characterList[i]);
-                CharacterUIOnMouse onMouseComponent = character1UI.GetComponent<CharacterUIOnMouse>();
+                //CharacterUIOnMouse onMouseComponent = character1UI.GetComponent<CharacterUIOnMouse>();
+                SelectCharacterUI onMouseComponent = character1UI.GetComponent<SelectCharacterUI>();
                 CharacterUIOnClick onClickComponent = character1UI.GetComponent<CharacterUIOnClick>();
                 if (onMouseComponent != null || onClickComponent != null)
                 {
@@ -37,7 +38,8 @@ public class CharacterIndexUI : MonoBehaviour
             else if (i == 1)
             {
                 character2UI.ShowCharacterUI(characterList[i]);
-                CharacterUIOnMouse onMouseComponent2 = character2UI.GetComponent<CharacterUIOnMouse>();
+                //CharacterUIOnMouse onMouseComponent2 = character2UI.GetComponent<CharacterUIOnMouse>();
+                SelectCharacterUI onMouseComponent2 = character2UI.GetComponent<SelectCharacterUI>();
                 CharacterUIOnClick onClickComponent2 = character2UI.GetComponent<CharacterUIOnClick>();
                 if (onMouseComponent2 != null || onClickComponent2 != null)
                 {
@@ -48,7 +50,8 @@ public class CharacterIndexUI : MonoBehaviour
             else if (i == 2)
             {
                 character3UI.ShowCharacterUI(characterList[i]);
-                CharacterUIOnMouse onMouseComponent3 = character3UI.GetComponent<CharacterUIOnMouse>();
+                //CharacterUIOnMouse onMouseComponent3 = character3UI.GetComponent<CharacterUIOnMouse>();
+                SelectCharacterUI onMouseComponent3 = character3UI.GetComponent<SelectCharacterUI>();
                 CharacterUIOnClick onClickComponent3 = character3UI.GetComponent<CharacterUIOnClick>();
                 if (onMouseComponent3 != null || onClickComponent3 != null)
                 {
@@ -59,7 +62,8 @@ public class CharacterIndexUI : MonoBehaviour
             else if (i == 3)
             {
                 character4UI.ShowCharacterUI(characterList[i]);
-                CharacterUIOnMouse onMouseComponent4 = character4UI.GetComponent<CharacterUIOnMouse>();
+                //CharacterUIOnMouse onMouseComponent4 = character4UI.GetComponent<CharacterUIOnMouse>();
+                SelectCharacterUI onMouseComponent4 = character4UI.GetComponent<SelectCharacterUI>();
                 CharacterUIOnClick onClickComponent4 = character4UI.GetComponent<CharacterUIOnClick>();
                 if (onMouseComponent4 != null || onClickComponent4 != null)
                 {
@@ -70,7 +74,8 @@ public class CharacterIndexUI : MonoBehaviour
             else if (i == 4)
             {
                 character5UI.ShowCharacterUI(characterList[i]);
-                CharacterUIOnMouse onMouseComponent5 = character5UI.GetComponent<CharacterUIOnMouse>();
+                //CharacterUIOnMouse onMouseComponent5 = character5UI.GetComponent<CharacterUIOnMouse>();
+                SelectCharacterUI onMouseComponent5 = character5UI.GetComponent<SelectCharacterUI>();
                 CharacterUIOnClick onClickComponent5 = character5UI.GetComponent<CharacterUIOnClick>();
                 if (onMouseComponent5 != null || onClickComponent5 != null)
                 {
@@ -81,7 +86,8 @@ public class CharacterIndexUI : MonoBehaviour
             else if (i == 5)
             {
                 character6UI.ShowCharacterUI(characterList[i]);
-                CharacterUIOnMouse onMouseComponent6 = character6UI.GetComponent<CharacterUIOnMouse>();
+                //CharacterUIOnMouse onMouseComponent6 = character6UI.GetComponent<CharacterUIOnMouse>();
+                SelectCharacterUI onMouseComponent6 = character6UI.GetComponent<SelectCharacterUI>();
                 CharacterUIOnClick onClickComponent6 = character6UI.GetComponent<CharacterUIOnClick>();
                 if (onMouseComponent6 != null || onClickComponent6 != null)
                 {

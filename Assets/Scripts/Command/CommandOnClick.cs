@@ -20,7 +20,7 @@ public class CommandOnClick : MonoBehaviour
     [SerializeField] GameObject characterIndexMenu;
     [SerializeField] GameObject characterSearchMenu;
     [SerializeField] CharacterIndexUI characterIndexUI;
-    [SerializeField] CharacterSearchUI characterSearchUI;
+    //[SerializeField] CharacterSearchUI characterSearchUI;
     [SerializeField] CharacterDetailUI characterDetailUI;
     [SerializeField] InfluenceUI influenceUI;
     [SerializeField] GameObject mapField;

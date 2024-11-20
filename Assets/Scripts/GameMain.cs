@@ -28,7 +28,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     [SerializeField] AbandonUI abandonUI;
     [SerializeField] AttackedCharacterUI attackedCharacterUI;
     [SerializeField] LandformInformationUI landformInformationUI;
-    [SerializeField] CharacterSearchUI characterSearchUI;
+    //[SerializeField] CharacterSearchUI characterSearchUI;
     [SerializeField] DetailUI detailsUI;
     [SerializeField] CharacterDetailUI characterDetailUI;
     [SerializeField] InfluenceUI influenceUI;

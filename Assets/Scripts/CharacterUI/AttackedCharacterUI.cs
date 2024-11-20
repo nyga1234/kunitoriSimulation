@@ -58,7 +58,8 @@ public class AttackedCharacterUI : MonoBehaviour
             CharacterSalaryText.text = character.salary.ToString();
         }
 
-        CharacterUIOnMouse onMouseComponent = this.gameObject.GetComponent<CharacterUIOnMouse>();
+        //CharacterUIOnMouse onMouseComponent = this.gameObject.GetComponent<CharacterUIOnMouse>();
+        SelectCharacterUI onMouseComponent = this.gameObject.GetComponent<SelectCharacterUI>();
         if (onMouseComponent != null)
         {
             onMouseComponent.SetCharacterController(character);
