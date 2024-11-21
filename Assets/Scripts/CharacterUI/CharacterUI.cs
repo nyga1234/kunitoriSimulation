@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Character1UI : MonoBehaviour
+public class CharacterUI : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI CharacterNameText;//ñºëO
     [SerializeField] TextMeshProUGUI CharacterForceText;//êÌì¨

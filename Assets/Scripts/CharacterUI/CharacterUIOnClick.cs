@@ -48,7 +48,7 @@ public class CharacterUIOnClick : MonoBehaviour
         }
         else
         {
-            characterIndexUI.ShowCharacterIndexUI(territoryManager.territory.influence.characterList);
+            //characterIndexUI.ShowCharacterIndexUI(territoryManager.territory.influence.characterList);
         }
     }
 
@@ -75,7 +75,7 @@ public class CharacterUIOnClick : MonoBehaviour
         }
         else
         {
-            characterIndexUI.ShowCharacterIndexUI(characterIndexUI.indexCharacterList);
+            //characterIndexUI.ShowCharacterIndexUI(characterIndexUI.indexCharacterList);
         }
     }
 
@@ -101,7 +101,7 @@ public class CharacterUIOnClick : MonoBehaviour
         }
         else
         {
-            characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
+            //characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
         }
     }
 
@@ -128,7 +128,7 @@ public class CharacterUIOnClick : MonoBehaviour
         }
         else
         {
-            characterIndexUI.ShowCharacterIndexUI(territoryManager.territory.influence.characterList);
+            //characterIndexUI.ShowCharacterIndexUI(territoryManager.territory.influence.characterList);
         }
     }
 
@@ -156,7 +156,7 @@ public class CharacterUIOnClick : MonoBehaviour
         }
         else
         {
-            characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
+            //characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
         }
     }
 
@@ -217,6 +217,7 @@ public class CharacterUIOnClick : MonoBehaviour
                 // キャラクターリストを身分の高い順にソート
                 clickedCharacter.influence.SortCharacterByRank(clickedCharacter.influence.characterList);
                 //UI更新
+                characterIndexUI.HideCharacterIndexUI();
                 characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
                 characterDetailUI.ShowCharacterDetailUI(clickedCharacter);
             }

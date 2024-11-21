@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Button))]
 [RequireComponent(typeof(EventTrigger))]
@@ -31,38 +32,30 @@ public class SelectCharacterUI : MonoBehaviour
         { /* On Click */
             _button.onClick.AddListener(() =>
             {
+                Debug.Log("クリックされました");
+                // クリック後もこのボタンを選択状態にする
+                //EventSystem.current.SetSelectedGameObject(gameObject);
                 //SoundManager.instance.PlayClickSE();
-                EventSystem.current.SetSelectedGameObject(null);
+                //EventSystem.current.SetSelectedGameObject(null);
             });
         }
 
-        { /* Select */
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.Select;
-            entry.callback.AddListener(OnSelectEvent);
-            eventTrigger.triggers.Add(entry);
-        }
+        // EventTriggerの登録処理を共通化
+        AddEvent(eventTrigger, EventTriggerType.Select, OnSelectEvent);
+        AddEvent(eventTrigger, EventTriggerType.Deselect, OnDeselectEvent);
+        AddEvent(eventTrigger, EventTriggerType.PointerEnter, OnPointerEnterEvent);
+        AddEvent(eventTrigger, EventTriggerType.PointerExit, OnPointerExitEvent);
+    }
 
-        { /* Deselect */
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.Deselect;
-            entry.callback.AddListener(OnDeselectEvent);
-            eventTrigger.triggers.Add(entry);
-        }
-
-        { /* Enter */
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerEnter;
-            entry.callback.AddListener(OnPointerEnterEvent);
-            eventTrigger.triggers.Add(entry);
-        }
-
-        { /* Exit */
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerExit;
-            entry.callback.AddListener(OnPointerExitEvent);
-            eventTrigger.triggers.Add(entry);
-        }
+    // 共通化されたEventTrigger登録メソッド
+    private void AddEvent(EventTrigger eventTrigger, EventTriggerType eventType, UnityAction<BaseEventData> callback)
+    {
+        EventTrigger.Entry entry = new EventTrigger.Entry
+        {
+            eventID = eventType
+        };
+        entry.callback.AddListener(callback);
+        eventTrigger.triggers.Add(entry);
     }
 
     private void OnSelectEvent(BaseEventData baseEvent)
@@ -74,7 +67,7 @@ public class SelectCharacterUI : MonoBehaviour
 
     private void OnDeselectEvent(BaseEventData baseEvent)
     {
-        //Debug.Log("OnDeselectEvent");
+        Debug.Log("OnDeselectEvent");
         // UIの背景色を元に戻す
         ChangeBackgroundColor(originalColor);
     }
@@ -91,13 +84,13 @@ public class SelectCharacterUI : MonoBehaviour
 
     private void OnPointerExitEvent(BaseEventData baseEvent)
     {
-        //Debug.Log("OnPointerExitEvent");
+        Debug.Log("OnPointerExitEvent");
         if (_button.interactable == false)
         {
             return;
         }
 
-        EventSystem.current.SetSelectedGameObject(null);
+        //EventSystem.current.SetSelectedGameObject(null);
     }
 
     //背景色を変更
