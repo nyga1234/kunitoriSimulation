@@ -29,13 +29,13 @@ public class DialogueUI : MonoBehaviour
         dialogueText.text = "çÃópÇ≥ÇÍÇ‹ÇµÇΩ";
     }
 
-    public void ShowSuccessAppointmentUI()
-    {
-        SoundManager.instance.PlayDialogueSE();
-        this.gameObject.SetActive(true);
-        isDialogueVisible = true;
-        dialogueText.text = "ìoópÇ…ê¨å˜ÇµÇ‹ÇµÇΩ";
-    }
+    //public void ShowSuccessAppointmentUI()
+    //{
+    //    SoundManager.instance.PlayDialogueSE();
+    //    this.gameObject.SetActive(true);
+    //    isDialogueVisible = true;
+    //    dialogueText.text = "ìoópÇ…ê¨å˜ÇµÇ‹ÇµÇΩ";
+    //}
 
     public void ShowEmployedUI(CharacterController lordCharacter)
     {
@@ -45,13 +45,13 @@ public class DialogueUI : MonoBehaviour
         dialogueText.text = lordCharacter.name + "åRÇ÷â¡ì¸ÇµÇ‹ÇµÇΩ";
     }
 
-    public void ShowSuccessBanishmentUI()
-    {
-        SoundManager.instance.PlayDialogueSE();
-        this.gameObject.SetActive(true);
-        isDialogueVisible = true;
-        dialogueText.text = "í«ï˙Ç…ê¨å˜ÇµÇ‹ÇµÇΩ";
-    }
+    //public void ShowSuccessBanishmentUI()
+    //{
+    //    SoundManager.instance.PlayDialogueSE();
+    //    this.gameObject.SetActive(true);
+    //    isDialogueVisible = true;
+    //    dialogueText.text = "í«ï˙Ç…ê¨å˜ÇµÇ‹ÇµÇΩ";
+    //}
 
     public void ShowSuccessVagabondUI()
     {

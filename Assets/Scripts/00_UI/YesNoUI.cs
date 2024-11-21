@@ -26,23 +26,23 @@ public class YesNoUI : MonoBehaviour
     //    YesNoText.text = "仕官しますか？";
     //}
 
-    public void ShowCharacterSelectUI()
-    {
-        SoundManager.instance.PlalyYesNoUISE();
-        isYesNoVisible = true;
-        Yes = false;
-        this.gameObject.SetActive(true);
-        YesNoText.text = "このキャラクターでプレイしますか？";
-    }
+    //public void ShowCharacterSelectUI()
+    //{
+    //    SoundManager.instance.PlalyYesNoUISE();
+    //    isYesNoVisible = true;
+    //    Yes = false;
+    //    this.gameObject.SetActive(true);
+    //    YesNoText.text = "このキャラクターでプレイしますか？";
+    //}
 
-    public void ShowSearchYesNoUI()
-    {
-        SoundManager.instance.PlalyYesNoUISE();
-        isYesNoVisible = true;
-        Yes = false;
-        this.gameObject.SetActive(true);
-        YesNoText.text = "登用しますか？";
-    }
+    //public void ShowSearchYesNoUI()
+    //{
+    //    SoundManager.instance.PlalyYesNoUISE();
+    //    isYesNoVisible = true;
+    //    Yes = false;
+    //    this.gameObject.SetActive(true);
+    //    YesNoText.text = "登用しますか？";
+    //}
 
     public void ShowEmployedYesNoUI(CharacterController lordCharacter)
     {
@@ -53,14 +53,14 @@ public class YesNoUI : MonoBehaviour
         YesNoText.text = lordCharacter.name + "軍から加入依頼です。加入しますか？";
     }
 
-    public void ShowBanishmentYesNoUI()
-    {
-        SoundManager.instance.PlalyYesNoUISE();
-        isYesNoVisible = true;
-        Yes = false;
-        this.gameObject.SetActive(true);
-        YesNoText.text = "追放しますか？";
-    }
+    //public void ShowBanishmentYesNoUI()
+    //{
+    //    SoundManager.instance.PlalyYesNoUISE();
+    //    isYesNoVisible = true;
+    //    Yes = false;
+    //    this.gameObject.SetActive(true);
+    //    YesNoText.text = "追放しますか？";
+    //}
 
     //public void ShowVagabondYesNoUI()
     //{
@@ -80,14 +80,14 @@ public class YesNoUI : MonoBehaviour
         YesNoText.text = "侵攻しますか？";
     }
 
-    public void ShowBattleCharacterSelectYesNoUI()
-    {
-        SoundManager.instance.PlalyYesNoUISE();
-        isYesNoVisible = true;
-        Yes = false;
-        this.gameObject.SetActive(true);
-        YesNoText.text = "よろしいですか？";
-    }
+    //public void ShowBattleCharacterSelectYesNoUI()
+    //{
+    //    SoundManager.instance.PlalyYesNoUISE();
+    //    isYesNoVisible = true;
+    //    Yes = false;
+    //    this.gameObject.SetActive(true);
+    //    YesNoText.text = "よろしいですか？";
+    //}
 
     public void ShowAbandonYesNoUI()
     {

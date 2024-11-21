@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.Events;
 
 [RequireComponent(typeof(Button))]
 [RequireComponent(typeof(EventTrigger))]
@@ -33,22 +32,21 @@ public class SelectCharacterUI : MonoBehaviour
             _button.onClick.AddListener(() =>
             {
                 Debug.Log("クリックされました");
-                // クリック後もこのボタンを選択状態にする
-                //EventSystem.current.SetSelectedGameObject(gameObject);
                 //SoundManager.instance.PlayClickSE();
                 //EventSystem.current.SetSelectedGameObject(null);
             });
         }
 
-        // EventTriggerの登録処理を共通化
         AddEvent(eventTrigger, EventTriggerType.Select, OnSelectEvent);
-        AddEvent(eventTrigger, EventTriggerType.Deselect, OnDeselectEvent);
         AddEvent(eventTrigger, EventTriggerType.PointerEnter, OnPointerEnterEvent);
         AddEvent(eventTrigger, EventTriggerType.PointerExit, OnPointerExitEvent);
+        AddEvent(eventTrigger, EventTriggerType.Deselect, OnDeselectEvent);
     }
 
-    // 共通化されたEventTrigger登録メソッド
-    private void AddEvent(EventTrigger eventTrigger, EventTriggerType eventType, UnityAction<BaseEventData> callback)
+    /// <summary>
+    /// EventTriggerにイベントを登録する共通処理
+    /// </summary>
+    private void AddEvent(EventTrigger eventTrigger, EventTriggerType eventType, UnityEngine.Events.UnityAction<BaseEventData> callback)
     {
         EventTrigger.Entry entry = new EventTrigger.Entry
         {
@@ -60,6 +58,7 @@ public class SelectCharacterUI : MonoBehaviour
 
     private void OnSelectEvent(BaseEventData baseEvent)
     {
+        Debug.Log("OnSelectEvent");
         SoundManager.instance.PlayCursorSE();
         ChangeBackgroundColor(Color.gray);
         characterDetailUI.ShowCharacterDetailUI(characterController);
@@ -69,7 +68,7 @@ public class SelectCharacterUI : MonoBehaviour
     {
         Debug.Log("OnDeselectEvent");
         // UIの背景色を元に戻す
-        ChangeBackgroundColor(originalColor);
+        ChangeBackgroundColor(Color.black);
     }
 
     private void OnPointerEnterEvent(BaseEventData baseEvent)
@@ -96,6 +95,7 @@ public class SelectCharacterUI : MonoBehaviour
     //背景色を変更
     private void ChangeBackgroundColor(Color color)
     {
+        Debug.Log($"背景色を変更{color}");
         Image image = GetComponent<Image>();
         if (image != null)
         {

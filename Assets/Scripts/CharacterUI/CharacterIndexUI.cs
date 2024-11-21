@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UniRx;
 
 public class CharacterIndexUI : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class CharacterIndexUI : MonoBehaviour
     [SerializeField] private GameObject characterUI;
     [SerializeField] Transform CharacterUIField;
 
+    [SerializeField] CharacterUIOnClick charaOnClick;
+
     private List<GameObject> slotInstances = new List<GameObject>(); // 動的に生成されたスロットのインスタンス
 
     public void ShowCharacterIndexUI(List<CharacterController> characterList)
@@ -24,18 +27,24 @@ public class CharacterIndexUI : MonoBehaviour
 
         for (int i = 0; i < characterList.Count; i++)
         {
-            GameObject slotInstance = Instantiate(characterUI, CharacterUIField); // スロットPrefabを生成
-            slotInstances.Add(slotInstance); // インスタンスをリストに追加
+            // スロットのインスタンスを生成
+            GameObject slotInstance = Instantiate(characterUI, CharacterUIField);
+            slotInstances.Add(slotInstance);
             slotInstance.gameObject.SetActive(true);
+
+            // ボタンイベントを設定
+            var character = characterList[i];
+            slotInstance.GetComponent<Button>().OnClickAsObservable().Subscribe(_ =>
+            {
+                OnSlotButtonClick(character);
+            });
+
+            // キャラクター情報の表示
             CharacterUI characterSlot = slotInstance.GetComponent<CharacterUI>();
             characterSlot.ShowCharacterUI(characterList[i]);
+
             SelectCharacterUI onMouseComponent = characterSlot.GetComponent<SelectCharacterUI>();
-            CharacterUIOnClick onClickComponent = characterSlot.GetComponent<CharacterUIOnClick>();
-            if (onMouseComponent != null || onClickComponent != null)
-            {
-                onMouseComponent.SetCharacterController(characterList[i]);
-                onClickComponent.SetCharacterController(characterList[i]);
-            }
+            onMouseComponent.SetCharacterController(characterList[i]);
         }
     }
 
@@ -49,5 +58,10 @@ public class CharacterIndexUI : MonoBehaviour
         attackedCharacterUI.HideCharacterUI();
         abandonUI.HideAbandonUI();
         landformInformationUI.HideLandformInformationUI();
+    }
+
+    private void OnSlotButtonClick(CharacterController character)
+    {
+        charaOnClick.OnPointerClickCharacter(character);
     }
 }
