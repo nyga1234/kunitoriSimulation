@@ -11,7 +11,6 @@ public class TerritoryUIOnMouse : MonoBehaviour
     [SerializeField] TerritoryManager territoryManager;
     [SerializeField] Cursor cursor;
     [SerializeField] TitleFieldUI titleFieldUI;
-    [SerializeField] YesNoUI yesNoUI;
     [SerializeField] DialogueUI dialogueUI;
     [SerializeField] InfluenceUI influenceUI;
     [SerializeField] InfluenceOnMapUI influenceOnMapUI;
@@ -74,40 +73,6 @@ public class TerritoryUIOnMouse : MonoBehaviour
             }
         }
     }
-
-    //public void OnPointerEnterTerritory()
-    //{
-    //    if (!yesNoUI.IsYesNoVisible())
-    //    {
-    //        if (GameMain.instance.step == GameMain.Step.Information || GameMain.instance.step == GameMain.Step.Attack || GameMain.instance.step == GameMain.Step.Choice || GameMain.instance.step == GameMain.Step.Enter)
-    //        {
-    //            if (!yesNoUI.gameObject.activeSelf)
-    //            {
-    //                cursor.gameObject.SetActive(true);
-    //            }
-
-    //            SoundManager.instance.PlayMapOnCursorSE();
-    //            cursor.SetPosition(transform as RectTransform); // カーソルをアンカーポジションに移動
-
-    //            Territory influenceTerritory = this.GetComponent<Territory>();
-
-    //            if (beforeTerritory != influenceTerritory)
-    //            {
-    //                isSoundPlayed = false;
-    //                beforeTerritory = influenceTerritory;
-    //            }
-    //            else
-    //            {
-    //                isSoundPlayed = true;
-    //            }
-
-    //            influenceOnMapUI.ShowInfluenceOnMapUI(influenceTerritory.influence, influenceTerritory);
-    //        }
-
-    //        onPointEnterTerritory = this.GetComponent<Territory>();
-
-    //    }
-    //}
 
     public void OnPointerEnterTerritory()
     {
@@ -226,20 +191,21 @@ public class TerritoryUIOnMouse : MonoBehaviour
                     }
                     else
                     {
-                        StartCoroutine(WaitForAttackBattle()); ;
+                        AttackBattle();
                     }
                 }
                 break;
         }
     }
 
-    IEnumerator WaitForAttackBattle()
+    private async void AttackBattle()
     {
-        yesNoUI.ShowAttackYesNoUI();
-        //yesNoUIが非表示になるまで待機
-        yield return new WaitUntil(() => !yesNoUI.IsYesNoVisible());
+        await SceneController.LoadAsync("UIConfirm");
+        varParam.ConfirmText = "侵攻しますか？";
+        // OKまたはCancelボタンがクリックされるのを待機
+        await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
 
-        if (yesNoUI.IsYes())
+        if (varParam.IsConfirm == true)
         {
             // 勢力情報非表示
             influenceOnMapUI.HideInfluenceOnMapUI();
@@ -252,9 +218,6 @@ public class TerritoryUIOnMouse : MonoBehaviour
                 attackSoliderHPSum += solider.hp;
             }
 
-            Debug.Log(territoryManager.territory.influence.influenceName);
-            Debug.Log(territoryManager.influence.influenceName);
-            Debug.Log(territoryManager.territory.influence.influenceName);
             CharacterController defenceCharacter = GameMain.instance.SelectDefenceCharacter(attackSoliderHPSum);
 
             battleUI.ShowBattleUI(GameMain.instance.playerCharacter, defenceCharacter, territoryManager.territory);

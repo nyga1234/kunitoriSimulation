@@ -14,6 +14,8 @@ public class UIDialogue : MonoBehaviour
 
     private void Start()
     {
+        SoundManager.instance.PlayDialogueSE();
+
         diaText.text = varParam.DialogueText;
 
         pushButton.OnClickAsObservable().Subscribe(async _ =>

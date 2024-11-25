@@ -4,9 +4,11 @@ using UnityEngine;
 using System.Linq;
 using Random = UnityEngine.Random;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 public class GameMain : SingletonMonoBehaviour<GameMain>
 {
+    [SerializeField] private UtilityParamObject varParam;
     [SerializeField] UtilityParamObject constParam;
     public List<CharacterController> characterList;
     public List<Influence> influenceList;
@@ -16,7 +18,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     [SerializeField] SoldierController soliderPrefab;
     [SerializeField] TitleFieldUI titleFieldUI;
     [SerializeField] DialogueUI dialogueUI;
-    [SerializeField] YesNoUI yesNoUI;
     [SerializeField] BattleManager battleManager;
     [SerializeField] TerritoryManager territoryManager;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
@@ -28,7 +29,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     [SerializeField] AbandonUI abandonUI;
     [SerializeField] AttackedCharacterUI attackedCharacterUI;
     [SerializeField] LandformInformationUI landformInformationUI;
-    //[SerializeField] CharacterSearchUI characterSearchUI;
     [SerializeField] DetailUI detailsUI;
     [SerializeField] CharacterDetailUI characterDetailUI;
     [SerializeField] InfluenceUI influenceUI;
@@ -111,7 +111,9 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
     private void Update()
     {
-        if (!yesNoUI.gameObject.activeSelf && !dialogueUI.gameObject.activeSelf)
+        if (!dialogueUI.gameObject.activeSelf &&
+            !SceneController.instance.Stack.Contains("UIConfirm") &&
+            !SceneController.instance.Stack.Contains("UIDialogue"))
         {
             MouseDown1ToBack();
         }
@@ -278,7 +280,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         PhaseCalc();
     }
 
-    public void PhaseCalc()
+    public async void PhaseCalc()
     {
         switch (phase)
         {
@@ -294,7 +296,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 break;
 
             case Phase.OtherLordPhase:
-                StartCoroutine(OtherLordPhase());
+                await OtherLordPhase();
                 break;
 
             case Phase.PlayerPersonalPhase:
@@ -398,7 +400,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         }
     }
 
-    IEnumerator OtherLordPhase()
+    private async UniTask OtherLordPhase()
     {
         Debug.Log("他キャラクターの領主フェーズです。");
 
@@ -419,7 +421,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 case 2:
                     while (lordCharacter.influence.characterList.Count <= 2 && lordCharacter.gold >= 9 && noneInfluence.characterList.Count != 0)
                     {
-                        yield return StartCoroutine(NoneRandomCharacterAddInfluence(lordCharacter));
+                        await NoneCharacterAddInfluence(lordCharacter);
                     }
                     break;
                 case 3:
@@ -428,16 +430,16 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 case 6:
                     while (lordCharacter.influence.characterList.Count <= 3 && lordCharacter.gold >= 9 && noneInfluence.characterList.Count != 0)
                     {
-                        yield return StartCoroutine(NoneRandomCharacterAddInfluence(lordCharacter));
+                        await NoneCharacterAddInfluence(lordCharacter);
                     }
                     break;
                 case 7:
-                case 8:  
+                case 8:
                 case 9:
                 case 10:
                     while (lordCharacter.influence.characterList.Count <= 4 && lordCharacter.gold >= 9 && noneInfluence.characterList.Count != 0)
                     {
-                        yield return StartCoroutine(NoneRandomCharacterAddInfluence(lordCharacter));
+                        await NoneCharacterAddInfluence(lordCharacter);
                     }
                     break;
                 case 11:
@@ -447,10 +449,11 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 case 15:
                     while (lordCharacter.influence.characterList.Count <= 5 && lordCharacter.gold >= 9 && noneInfluence.characterList.Count != 0)
                     {
-                        yield return StartCoroutine(NoneRandomCharacterAddInfluence(lordCharacter));
+                        await NoneCharacterAddInfluence(lordCharacter);
                     }
                     break;
             }
+
             int beforeRank = (int)playerCharacter.rank;
             //名声の高い順に身分を設定
             lordCharacter.influence.SetRankByFame();
@@ -458,18 +461,16 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
             if (afterRank > beforeRank)
             {
-                Debug.Log("昇格しました");
-                dialogueUI.ShowElavationRankUI(playerCharacter);
-                yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
+                await SceneController.LoadAsync("UIDialogue");
+                varParam.DialogueText = playerCharacter.rank + "に昇格しました";
             }
             else if (afterRank < beforeRank)
             {
-                Debug.Log("降格しました");
-                dialogueUI.ShowDemotionRankUI(playerCharacter);
-                yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
+                await SceneController.LoadAsync("UIDialogue");
+                varParam.DialogueText = playerCharacter.rank + "に降格しました";
             }
 
-            yield return new WaitForSeconds(0.125f);
+            await UniTask.Delay(125); // 125msの待機
             characterTurnUI.HideCharacterTurnUI();
         }
         mapField.SetActive(false);
@@ -1053,11 +1054,9 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         return territoryList[randomIndex];
     }
 
-    public IEnumerator NoneRandomCharacterAddInfluence(CharacterController lordCharacter)
+    private async UniTask NoneCharacterAddInfluence(CharacterController lordCharacter)
     {
-        //Noneに所属するキャラクターリストの取得
-        //noneInfluenceCharacters = noneInfluence.characterList;
-
+        Debug.Log("NoneCharacterAddInfluence");
         //無所属のランダムなキャラクターを取得
         System.Random random = new System.Random();
         CharacterController randomNoneCharacter = noneInfluence.characterList[random.Next(noneInfluence.characterList.Count)];
@@ -1066,21 +1065,21 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         {
             characterTurnUI.HideCharacterTurnUI();
             influenceUI.ShowInfluenceUI(lordCharacter.influence);
-            
-            yesNoUI.ShowEmployedYesNoUI(lordCharacter);
-            //yesNoUIが非表示になるまで待機
-            yield return new WaitUntil(() => !yesNoUI.IsYesNoVisible());
 
-            if (yesNoUI.IsYes())
+            await SceneController.LoadAsync("UIConfirm");
+            varParam.ConfirmText = "軍から加入依頼です。加入しますか？";
+            // OKまたはCancelボタンがクリックされるのを待機
+            await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
+
+            if (varParam.IsConfirm == true)
             {
                 //プレイヤーキャラクターを勢力へ所属
                 randomNoneCharacter.influence.RemoveCharacter(randomNoneCharacter);
                 lordCharacter.influence.AddCharacter(randomNoneCharacter);
                 lordCharacter.gold -= 9;
 
-                dialogueUI.ShowEmployedUI(lordCharacter);
-                yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
-                influenceUI.HideInfluenceUI();
+                await SceneController.LoadAsync("UIDialogue");
+                varParam.DialogueText = lordCharacter.name + "軍へ加入しました";
             }
         }
         else
@@ -1090,11 +1089,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             lordCharacter.influence.AddCharacter(randomNoneCharacter);
             lordCharacter.gold -= 9;
         }
-
-        // 処理が終了したことを呼び出し元に通知する
-        yield return null;
-        //Noneに所属するキャラクターリストの更新
-        //noneInfluenceCharacters = noneInfluence.characterList;
     }
 
     public void LeaveInfluence(CharacterController leaveCharacter)

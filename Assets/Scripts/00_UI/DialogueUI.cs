@@ -37,13 +37,13 @@ public class DialogueUI : MonoBehaviour
     //    dialogueText.text = "ìoópÇ…ê¨å˜ÇµÇ‹ÇµÇΩ";
     //}
 
-    public void ShowEmployedUI(CharacterController lordCharacter)
-    {
-        SoundManager.instance.PlayDialogueSE();
-        this.gameObject.SetActive(true);
-        isDialogueVisible = true;
-        dialogueText.text = lordCharacter.name + "åRÇ÷â¡ì¸ÇµÇ‹ÇµÇΩ";
-    }
+    //public void ShowEmployedUI(CharacterController lordCharacter)
+    //{
+    //    SoundManager.instance.PlayDialogueSE();
+    //    this.gameObject.SetActive(true);
+    //    isDialogueVisible = true;
+    //    dialogueText.text = lordCharacter.name + "åRÇ÷â¡ì¸ÇµÇ‹ÇµÇΩ";
+    //}
 
     //public void ShowSuccessBanishmentUI()
     //{
@@ -61,21 +61,21 @@ public class DialogueUI : MonoBehaviour
         dialogueText.text = "ê®óÕÇãéÇËÇ‹ÇµÇΩ";
     }
 
-    public void ShowElavationRankUI(CharacterController character)
-    {
-        SoundManager.instance.PlayDialogueSE();
-        this.gameObject.SetActive(true);
-        isDialogueVisible = true;
-        dialogueText.text = character.rank + "Ç…è∏äiÇµÇ‹ÇµÇΩ";
-    }
+    //public void ShowElavationRankUI(CharacterController character)
+    //{
+    //    SoundManager.instance.PlayDialogueSE();
+    //    this.gameObject.SetActive(true);
+    //    isDialogueVisible = true;
+    //    dialogueText.text = character.rank + "Ç…è∏äiÇµÇ‹ÇµÇΩ";
+    //}
 
-    public void ShowDemotionRankUI(CharacterController character)
-    {
-        SoundManager.instance.PlayDialogueSE();
-        this.gameObject.SetActive(true);
-        isDialogueVisible = true;
-        dialogueText.text = character.rank + "Ç…ç~äiÇµÇ‹ÇµÇΩ";
-    }
+    //public void ShowDemotionRankUI(CharacterController character)
+    //{
+    //    SoundManager.instance.PlayDialogueSE();
+    //    this.gameObject.SetActive(true);
+    //    isDialogueVisible = true;
+    //    dialogueText.text = character.rank + "Ç…ç~äiÇµÇ‹ÇµÇΩ";
+    //}
 
     public void ShowAttackedUI()
     {
