@@ -1,19 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Button))]
+[RequireComponent(typeof(EventTrigger))]
 public class AbandonUI : MonoBehaviour
 {
+    private Button _button;
+    public Button Button => _button;
+
     private Color originalColor; // å≥ÇÃîwåiêFÇï€éùÇ∑ÇÈïœêî
 
     [SerializeField] GameObject characterIndexMenu;
     [SerializeField] CharacterIndexUI characterIndexUI;
     [SerializeField] CharacterDetailUI characterDetailUI;
-    [SerializeField] YesNoUI yesNoUI;
     [SerializeField] BattleManager battleManager;
 
-    private bool clickedFlag = false;
+    [SerializeField] private UtilityParamObject varParam;
 
     public void ShowAbandonUI()
     {
@@ -34,50 +38,66 @@ public class AbandonUI : MonoBehaviour
             // å≥ÇÃîwåiêFÇï€éù
             originalColor = image.color;
         }
+
+        _button = GetComponent<Button>();
+        EventTrigger eventTrigger = gameObject.GetComponent<EventTrigger>();
+
+        { /* On Click */
+            _button.onClick.AddListener(() => {
+                //SoundManager.instance.PlayClickSE();
+                StartAbandonBattle();
+            });
+        }
+
+        AddEvent(eventTrigger, EventTriggerType.Select, OnSelectEvent);
+        AddEvent(eventTrigger, EventTriggerType.PointerEnter, OnPointerEnterEvent);
+        AddEvent(eventTrigger, EventTriggerType.PointerExit, OnPointerExitEvent);
+        AddEvent(eventTrigger, EventTriggerType.Deselect, OnDeselectEvent);
     }
 
-    public void OnPointerEnterAbandon()
+    private void AddEvent(EventTrigger eventTrigger, EventTriggerType eventType, UnityEngine.Events.UnityAction<BaseEventData> callback)
     {
-        // UIÇÃîwåiêFÇäDêFÇ…ïœçX
+        EventTrigger.Entry entry = new EventTrigger.Entry
+        {
+            eventID = eventType
+        };
+        entry.callback.AddListener(callback);
+        eventTrigger.triggers.Add(entry);
+    }
+
+    private void OnSelectEvent(BaseEventData baseEvent)
+    {
+        Debug.Log("OnSelectEvent");
+        SoundManager.instance.PlayCursorSE();
         ChangeBackgroundColor(Color.gray);
     }
 
-    public void OnPointerExit()
+    private void OnDeselectEvent(BaseEventData baseEvent)
     {
-        if (clickedFlag == false)
-        {
-            // UIÇÃîwåiêFÇå≥Ç…ñﬂÇ∑
-            ChangeBackgroundColor(originalColor);
-        }
-    }
-
-    public void OnPointerClickAbandon()
-    {
-        if (Input.GetMouseButtonUp(0))
-        {
-            clickedFlag = true;
-            StartCoroutine(WaitForAbandon());
-        }       
-    }
-
-    IEnumerator WaitForAbandon()
-    {
-        yesNoUI.ShowAbandonYesNoUI();
-        //yesNoUIÇ™îÒï\é¶Ç…Ç»ÇÈÇ‹Ç≈ë“ã@
-        yield return new WaitUntil(() => !yesNoUI.IsYesNoVisible());
-        clickedFlag = false;
-
+        Debug.Log("OnDeselectEvent");
         // UIÇÃîwåiêFÇå≥Ç…ñﬂÇ∑
-        ChangeBackgroundColor(originalColor);
+        ChangeBackgroundColor(Color.black);
+    }
 
-        if (yesNoUI.IsYes())
+    private void OnPointerEnterEvent(BaseEventData baseEvent)
+    {
+        if (_button.interactable == false)
         {
-            characterIndexMenu.gameObject.SetActive(false);
-            characterIndexUI.HideCharacterIndexUI();
-            characterDetailUI.gameObject.SetActive(false);
-
-            battleManager.AbandonBattle();
+            return;
         }
+
+        _button.Select();
+    }
+
+    private void OnPointerExitEvent(BaseEventData baseEvent)
+    {
+        Debug.Log("OnPointerExitEvent");
+        if (_button.interactable == false)
+        {
+            return;
+        }
+
+        //EventSystem.current.SetSelectedGameObject(null);
     }
 
     //îwåiêFÇïœçX
@@ -87,6 +107,23 @@ public class AbandonUI : MonoBehaviour
         if (image != null)
         {
             image.color = color;
+        }
+    }
+
+    private async void StartAbandonBattle()
+    {
+        await SceneController.LoadAsync("UIConfirm");
+        varParam.ConfirmText = "êÌì¨Çï˙ä¸ÇµÇ‹Ç∑Ç©ÅH";
+        // OKÇ‹ÇΩÇÕCancelÉ{É^ÉìÇ™ÉNÉäÉbÉNÇ≥ÇÍÇÈÇÃÇë“ã@
+        await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
+
+        if (varParam.IsConfirm == true)
+        {
+            characterIndexMenu.gameObject.SetActive(false);
+            characterIndexUI.HideCharacterIndexUI();
+            characterDetailUI.gameObject.SetActive(false);
+
+            battleManager.AbandonBattle();
         }
     }
 }

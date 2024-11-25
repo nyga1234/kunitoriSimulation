@@ -89,23 +89,23 @@ public class YesNoUI : MonoBehaviour
     //    YesNoText.text = "よろしいですか？";
     //}
 
-    public void ShowAbandonYesNoUI()
-    {
-        SoundManager.instance.PlalyYesNoUISE();
-        isYesNoVisible = true;
-        Yes = false;
-        this.gameObject.SetActive(true);
-        YesNoText.text = "戦闘を放棄しますか？";
-    }
+    //public void ShowAbandonYesNoUI()
+    //{
+    //    SoundManager.instance.PlalyYesNoUISE();
+    //    isYesNoVisible = true;
+    //    Yes = false;
+    //    this.gameObject.SetActive(true);
+    //    YesNoText.text = "戦闘を放棄しますか？";
+    //}
 
-    public void ShowEndYesNoUI()
-    {
-        SoundManager.instance.PlalyYesNoUISE();
-        isYesNoVisible = true;
-        Yes = false;
-        this.gameObject.SetActive(true);
-        YesNoText.text = "終了しますか？";
-    }
+    //public void ShowEndYesNoUI()
+    //{
+    //    SoundManager.instance.PlalyYesNoUISE();
+    //    isYesNoVisible = true;
+    //    Yes = false;
+    //    this.gameObject.SetActive(true);
+    //    YesNoText.text = "終了しますか？";
+    //}
 
     public void YesButton()
     {

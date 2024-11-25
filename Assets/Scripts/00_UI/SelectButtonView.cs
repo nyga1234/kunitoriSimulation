@@ -33,33 +33,20 @@ public class SelectButtonView : MonoBehaviour
             });
         }
 
-        { /* Select */
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.Select;
-            entry.callback.AddListener(OnSelectEvent);
-            eventTrigger.triggers.Add(entry);
-        }
+        AddEvent(eventTrigger, EventTriggerType.Select, OnSelectEvent);
+        AddEvent(eventTrigger, EventTriggerType.PointerEnter, OnPointerEnterEvent);
+        AddEvent(eventTrigger, EventTriggerType.PointerExit, OnPointerExitEvent);
+        AddEvent(eventTrigger, EventTriggerType.Deselect, OnDeselectEvent);
+    }
 
-        { /* Deselect */
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.Deselect;
-            entry.callback.AddListener(OnDeselectEvent);
-            eventTrigger.triggers.Add(entry);
-        }
-
-        { /* Enter */
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerEnter;
-            entry.callback.AddListener(OnPointerEnterEvent);
-            eventTrigger.triggers.Add(entry);
-        }
-
-        { /* Exit */
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerExit;
-            entry.callback.AddListener(OnPointerExitEvent);
-            eventTrigger.triggers.Add(entry);
-        }
+    private void AddEvent(EventTrigger eventTrigger, EventTriggerType eventType, UnityEngine.Events.UnityAction<BaseEventData> callback)
+    {
+        EventTrigger.Entry entry = new EventTrigger.Entry
+        {
+            eventID = eventType
+        };
+        entry.callback.AddListener(callback);
+        eventTrigger.triggers.Add(entry);
     }
 
     private void OnSelectEvent(BaseEventData baseEvent)
