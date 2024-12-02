@@ -304,7 +304,8 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 break;
 
             case Phase.OtherPersonalPhase:
-                StartCoroutine(OtherPersonalPhase());
+                //StartCoroutine(OtherPersonalPhase());
+                await OtherPersonalPhase();
                 break;
 
             case Phase.BattlePhase:
@@ -479,6 +480,43 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         PhaseCalc();
     }
 
+    private async UniTask NoneCharacterAddInfluence(CharacterController lordCharacter)
+    {
+        Debug.Log("NoneCharacterAddInfluence");
+        //無所属のランダムなキャラクターを取得
+        System.Random random = new System.Random();
+        CharacterController randomNoneCharacter = noneInfluence.characterList[random.Next(noneInfluence.characterList.Count)];
+
+        if (randomNoneCharacter == playerCharacter)
+        {
+            characterTurnUI.HideCharacterTurnUI();
+            influenceUI.ShowInfluenceUI(lordCharacter.influence);
+
+            await SceneController.LoadAsync("UIConfirm");
+            varParam.ConfirmText = "軍から加入依頼です。加入しますか？";
+            // OKまたはCancelボタンがクリックされるのを待機
+            await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
+
+            if (varParam.IsConfirm == true)
+            {
+                //プレイヤーキャラクターを勢力へ所属
+                randomNoneCharacter.influence.RemoveCharacter(randomNoneCharacter);
+                lordCharacter.influence.AddCharacter(randomNoneCharacter);
+                lordCharacter.gold -= 9;
+
+                await SceneController.LoadAsync("UIDialogue");
+                varParam.DialogueText = lordCharacter.name + "軍へ加入しました";
+            }
+        }
+        else
+        {
+            //ランダムキャラクターを勢力へ所属
+            randomNoneCharacter.influence.RemoveCharacter(randomNoneCharacter);
+            lordCharacter.influence.AddCharacter(randomNoneCharacter);
+            lordCharacter.gold -= 9;
+        }
+    }
+
     void PlayerPersonalPhase()
     {
         Debug.Log("プレイヤー個人フェーズです。");
@@ -486,7 +524,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         ShowPersonalUI(playerCharacter);
     }
 
-    IEnumerator OtherPersonalPhase()
+    private async UniTask OtherPersonalPhase()
     {
         Debug.Log("他キャラクターの個人フェーズです。");
 
@@ -494,7 +532,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
         mapField.SetActive(true);
         List<CharacterController> otherCharacterList = characterList.FindAll(x => !x.isPlayerCharacter);
-        
+
         foreach (CharacterController otherCharacter in otherCharacterList)
         {
             characterTurnUI.ShowCharacterTurnUI(otherCharacter);
@@ -509,16 +547,14 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 // ランダムな値が所定の確率以下であれば所属勢力を去る
                 if (randomValue < leaveProbability)
                 {
-                    // 所属勢力を去る処理をここに書く
                     Debug.Log(otherCharacter.name + "は所属勢力を去ります");
-                    if (otherCharacter.influence == playerCharacter.influence)
+                    if (otherCharacter.influence == playerCharacter.influence && playerCharacter.isLord == true)
                     {
-                        if (playerCharacter.isLord == true)
-                        {
-                            dialogueUI.ShowLeaveInfluenceUI(otherCharacter);
-                        }
+                        await SceneController.LoadAsync("UIDialogue");
+                        varParam.DialogueText = otherCharacter.name + "が勢力を去りました";
+
                         // ダイアログが閉じられるまで待機
-                        yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
+                        await UniTask.WaitUntil(() => varParam.IsDialogue.HasValue);
                     }
                     LeaveInfluence(otherCharacter);
                 }
@@ -556,7 +592,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 }
             }
 
-            yield return new WaitForSeconds(0.125f);
+            await UniTask.Delay(125); // 125msの待機
             characterTurnUI.HideCharacterTurnUI();
         }
 
@@ -971,7 +1007,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     public IEnumerator BlinkTerritory(float blinkTime, CharacterController attackerChara, CharacterController defenderChara, Territory territory)
     {
         float addTime = 0f;
-        //SpriteRenderer territorySpriteRenderer = territory.GetComponent<SpriteRenderer>();
         Image territoryImage = territory.GetComponent<Image>();
 
         while (addTime < blinkTime)
@@ -981,18 +1016,10 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             yield return new WaitForSeconds(0.1f);
             addTime += 0.1f;
 
-            //territorySpriteRenderer.sprite = attackerChara.influence.influenceImage;
-            //yield return new WaitForSeconds(0.1f);
-            //addTime += 0.1f;
-
             // 領土に防御勢力の画像を設定
             territoryImage.sprite = defenderChara.influence.influenceImage;
             yield return new WaitForSeconds(0.1f);
             addTime += 0.1f;
-
-            //territorySpriteRenderer.sprite = defenderChara.influence.influenceImage;
-            //yield return new WaitForSeconds(0.1f);
-            //addTime += 0.1f;
         }
 
         //最終的に攻撃側勢力の画像を設定
@@ -1052,43 +1079,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
         // 選択されたランダムな領土を返す
         return territoryList[randomIndex];
-    }
-
-    private async UniTask NoneCharacterAddInfluence(CharacterController lordCharacter)
-    {
-        Debug.Log("NoneCharacterAddInfluence");
-        //無所属のランダムなキャラクターを取得
-        System.Random random = new System.Random();
-        CharacterController randomNoneCharacter = noneInfluence.characterList[random.Next(noneInfluence.characterList.Count)];
-
-        if (randomNoneCharacter == playerCharacter)
-        {
-            characterTurnUI.HideCharacterTurnUI();
-            influenceUI.ShowInfluenceUI(lordCharacter.influence);
-
-            await SceneController.LoadAsync("UIConfirm");
-            varParam.ConfirmText = "軍から加入依頼です。加入しますか？";
-            // OKまたはCancelボタンがクリックされるのを待機
-            await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
-
-            if (varParam.IsConfirm == true)
-            {
-                //プレイヤーキャラクターを勢力へ所属
-                randomNoneCharacter.influence.RemoveCharacter(randomNoneCharacter);
-                lordCharacter.influence.AddCharacter(randomNoneCharacter);
-                lordCharacter.gold -= 9;
-
-                await SceneController.LoadAsync("UIDialogue");
-                varParam.DialogueText = lordCharacter.name + "軍へ加入しました";
-            }
-        }
-        else
-        {
-            //ランダムキャラクターを勢力へ所属
-            randomNoneCharacter.influence.RemoveCharacter(randomNoneCharacter);
-            lordCharacter.influence.AddCharacter(randomNoneCharacter);
-            lordCharacter.gold -= 9;
-        }
     }
 
     public void LeaveInfluence(CharacterController leaveCharacter)

@@ -14,12 +14,15 @@ public class UIDialogue : MonoBehaviour
 
     private void Start()
     {
+        varParam.IsDialogue = null;
+
         SoundManager.instance.PlayDialogueSE();
 
         diaText.text = varParam.DialogueText;
 
         pushButton.OnClickAsObservable().Subscribe(async _ =>
         {
+            varParam.IsDialogue = true;
             await OnPressClose();
         });
 

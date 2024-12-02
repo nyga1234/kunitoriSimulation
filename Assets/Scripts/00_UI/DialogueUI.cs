@@ -12,14 +12,14 @@ public class DialogueUI : MonoBehaviour
 
     private bool isDialogueVisible = false;
 
-    public void ShowLeaveInfluenceUI(CharacterController character)
-    {
-        SoundManager.instance.PlayDialogueSE();
-        // ダイアログを表示する処理
-        this.gameObject.SetActive(true);
-        isDialogueVisible = true;
-        dialogueText.text = character.name + "が勢力を去りました";
-    }
+    //public void ShowLeaveInfluenceUI(CharacterController character)
+    //{
+    //    SoundManager.instance.PlayDialogueSE();
+    //    // ダイアログを表示する処理
+    //    this.gameObject.SetActive(true);
+    //    isDialogueVisible = true;
+    //    dialogueText.text = character.name + "が勢力を去りました";
+    //}
 
     public void ShowEnterInfluenceUI()
     {
