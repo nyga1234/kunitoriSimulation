@@ -147,7 +147,8 @@ public class TerritoryUIOnMouse : MonoBehaviour
                         influenceOnMapUI.HideInfluenceOnMapUI();
 
                         GameMain.instance.ShowPersonalUI(GameMain.instance.playerCharacter);
-                        dialogueUI.ShowEnterInfluenceUI();
+                        await SceneController.LoadAsync("UIDialogue");
+                        varParam.DialogueText = "採用されました";
                     }
                 }
                 break;

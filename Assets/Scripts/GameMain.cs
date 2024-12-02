@@ -5,6 +5,7 @@ using System.Linq;
 using Random = UnityEngine.Random;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
+using System;
 
 public class GameMain : SingletonMonoBehaviour<GameMain>
 {
@@ -304,7 +305,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 break;
 
             case Phase.OtherPersonalPhase:
-                //StartCoroutine(OtherPersonalPhase());
                 await OtherPersonalPhase();
                 break;
 
@@ -694,7 +694,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         }
     }
 
-    public void LordsOrderBattle(CharacterController character)
+    private void LordsOrderBattle(CharacterController character)
     {
       //侵攻する領土を決める
                 //characterの勢力に隣接するランダムな領土を侵攻対象とする
@@ -747,6 +747,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             System.Random random3 = new System.Random();
             CharacterController randomAttackCharacter = attackableCharacterList[random3.Next(attackableCharacterList.Count)];
             StopAllCoroutines();
+            //await BattlePrepare(randomAttackCharacter, soliderHPMax);
             StartCoroutine(BattlePrepare(randomAttackCharacter, soliderHPMax));
         }
         //相手よりも強いキャラがいない場合
@@ -776,12 +777,13 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             }
 
             StopAllCoroutines();
+            //await BattlePrepare(strongestCharacter, soliderStrongestHPSum);
             StartCoroutine(BattlePrepare(strongestCharacter, soliderStrongestHPSum));
         }
     }
 
     public IEnumerator BattlePrepare(CharacterController attackCharacter, int attackSoliderHPSum)
-    {   
+    {
         CharacterController defenderCharacter;
 
         battleManager.isBattleEnd = false;
@@ -799,6 +801,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             yield return new WaitForSeconds(2);
 
             dialogueUI.ShowAttackedUI();
+
             yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
 
             mapField.SetActive(false);
@@ -845,7 +848,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                     yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
 
                     battleUI.ShowBattleUI(attackCharacter, playerCharacter, territoryManager.territory);
-                    battleManager.StartBattle(attackCharacter, playerCharacter);                    
+                    battleManager.StartBattle(attackCharacter, playerCharacter);
                 }
                 else
                 {
@@ -913,6 +916,159 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             }
         }
     }
+
+    //private async UniTask BattlePrepare(CharacterController attackCharacter, int attackSoliderHPSum)
+    //{
+    //    CharacterController defenderCharacter;
+
+    //    battleManager.isBattleEnd = false;
+    //    defenceFlag = false;
+
+    //    //侵攻された領土がプレイヤー勢力　かつ　プレイヤーが領主の場合
+    //    if (territoryManager.territory.influence == playerCharacter.influence && playerCharacter.isLord == true)
+    //    {
+    //        defenceFlag = true;
+
+    //        battleManager.attackerCharacter = attackCharacter;
+
+    //        TitleFieldUI.instance.titleFieldText.text = "      敵軍の侵攻を受けました";
+    //        StartCoroutine(ShowAttackedTerritory(attackCharacter));
+    //        //yield return new WaitForSeconds(2);
+    //        await UniTask.Delay(2000);
+
+    //        //dialogueUI.ShowAttackedUI();
+    //        await SceneController.LoadAsync("UIDialogue");
+    //        varParam.DialogueText = "防衛部隊を選択してください";
+
+    //        // ダイアログが閉じられるまで待機
+    //        //yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
+    //        await UniTask.WaitUntil(() => varParam.IsDialogue.HasValue);
+
+    //        mapField.SetActive(false);
+    //        cursor.gameObject.SetActive(false);
+
+    //        TitleFieldUI.instance.titleFieldText.text = "      防衛部隊を選択してください";
+    //        characterIndexMenu.SetActive(true);
+    //        characterIndexUI.ShowCharacterIndexUI(territoryManager.territory.influence.characterList);
+    //        attackedCharacterUI.ShowAttackedCharacterUI(battleManager.attackerCharacter);
+    //        abandonUI.ShowAbandonUI();
+    //        landformInformationUI.ShowLandformInformationUI();
+    //    }
+    //    //プレイヤーが領主ではない場合
+    //    else
+    //    {
+    //        //防衛側で戦闘可能なキャラクターがいる場合
+    //        bool canAttack = territoryManager.territory.influence.characterList.Exists(c => c.isAttackable);
+    //        if (canAttack)
+    //        {
+    //            //侵攻側よりも強いキャラを防御キャラに選択 /　強いキャラがいない場合は一番強いキャラを防御キャラに選択
+    //            defenderCharacter = SelectDefenceCharacter(attackSoliderHPSum);
+
+    //            if (attackCharacter == playerCharacter)
+    //            {
+    //                TitleFieldUI.instance.titleFieldText.text = "      出撃命令が下りました";
+
+    //                StartCoroutine(ShowAttackedTerritory(attackCharacter));
+    //                //yield return new WaitForSeconds(2);
+    //                await UniTask.Delay(2000);
+
+    //                //dialogueUI.ShowBattleOrderUI();
+    //                await SceneController.LoadAsync("UIDialogue");
+    //                varParam.DialogueText = "戦闘を開始します";
+
+    //                //yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
+    //                await UniTask.WaitUntil(() => varParam.IsDialogue.HasValue);
+
+    //                battleUI.ShowBattleUI(playerCharacter, defenderCharacter, territoryManager.territory);
+    //                battleManager.StartBattle(playerCharacter, defenderCharacter);
+    //            }
+    //            else if (defenderCharacter == playerCharacter)
+    //            {
+    //                TitleFieldUI.instance.titleFieldText.text = "      出撃命令が下りました";
+
+    //                StartCoroutine(ShowAttackedTerritory(attackCharacter));
+    //                //yield return new WaitForSeconds(2);
+    //                await UniTask.Delay(2000);
+
+    //                //dialogueUI.ShowBattleOrderUI();
+    //                await SceneController.LoadAsync("UIDialogue");
+    //                varParam.DialogueText = "戦闘を開始します";
+
+    //                //yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
+    //                await UniTask.WaitUntil(() => varParam.IsDialogue.HasValue);
+
+    //                battleUI.ShowBattleUI(attackCharacter, playerCharacter, territoryManager.territory);
+    //                battleManager.StartBattle(attackCharacter, playerCharacter);
+    //            }
+    //            else
+    //            {
+    //                //戦闘前の画面表示
+    //                if (attackCharacter.influence == playerCharacter.influence || defenderCharacter.influence == playerCharacter.influence)
+    //                {
+    //                    TitleFieldUI.instance.titleFieldText.text = "      味方 VS 敵　戦闘！";
+    //                }
+    //                else
+    //                {
+    //                    TitleFieldUI.instance.titleFieldText.text = "      敵 VS 敵　戦闘！";
+    //                }
+    //                mapField.SetActive(true);
+    //                cursor.gameObject.SetActive(true);
+
+    //                // カーソルの位置を設定
+    //                RectTransform territoryRectTransform = territoryManager.territory.GetComponent<RectTransform>();
+    //                cursor.SetPosition(territoryRectTransform);
+    //                //cursor.transform.position = territoryManager.territory.position;
+
+    //                vsImageUI.SetPosition(territoryRectTransform);
+    //                //vsImageUI.transform.position = influenceManager.territory.position;
+
+    //                battleDetailUI.ShowBattleDetailUI(attackCharacter, defenderCharacter);
+    //                StartCoroutine(BlinkCursor(1.0f));
+    //                //yield return new WaitForSeconds(1.0f);
+    //                await UniTask.Delay(1000);
+
+    //                //戦闘実施　戦闘中画面表示
+    //                battleManager.attackerCharacter = attackCharacter;
+    //                battleManager.defenderCharacter = defenderCharacter;
+    //                SoundManager.instance.PlayBattleSE();
+    //                while (battleManager.attackerRetreatFlag == false && battleManager.defenderRetreatFlag == false)
+    //                {
+    //                    battleManager.SoliderBattle(attackCharacter, defenderCharacter);
+    //                    battleManager.SoliderBattle(defenderCharacter, attackCharacter);
+    //                    battleManager.IsAliveCheckSolider(attackCharacter, defenderCharacter);
+    //                    battleManager.RetreatCheck(attackCharacter, defenderCharacter);
+    //                    battleManager.BattleEndCheck(attackCharacter, defenderCharacter);
+    //                    battleDetailUI.ShowBattleDetailUI(attackCharacter, defenderCharacter);
+    //                    vsImageUI.gameObject.SetActive(!vsImageUI.gameObject.activeSelf); // VSイメージの表示・非表示を切り替える
+    //                    //yield return new WaitForSeconds(0.05f);
+    //                    await UniTask.Delay(50);
+    //                }
+
+    //                //戦闘後の画面を表示                    
+    //                StartCoroutine(battleManager.ShowEndBattle());
+    //                //yield return new WaitForSeconds(battleManager.battleAfterWaitTime);
+    //                await UniTask.Delay(1500);
+
+    //                battleManager.CheckExtinct(defenderCharacter.influence);
+
+    //                //次の処理へ移行
+    //                battleManager.CheckAttackableCharacterInInfluence();
+    //            }
+    //        }
+    //        //戦闘可能なキャラクターがいない場合は無条件で勝利
+    //        else
+    //        {
+    //            Debug.Log("無条件で勝利");
+    //            attackCharacter.isAttackable = false;
+
+    //            territoryUIOnMouse.ChangeTerritoryByBattle(attackCharacter.influence);
+    //            battleManager.isBattleEnd = true;
+
+    //            //次の処理へ移行
+    //            battleManager.CheckAttackableCharacterInInfluence();
+    //        }
+    //    }
+    //}
 
     public CharacterController SelectDefenceCharacter(int attackSoliderHPSum)
     {

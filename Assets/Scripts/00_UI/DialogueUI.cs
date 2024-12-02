@@ -21,13 +21,13 @@ public class DialogueUI : MonoBehaviour
     //    dialogueText.text = character.name + "‚ª¨—Í‚ğ‹‚è‚Ü‚µ‚½";
     //}
 
-    public void ShowEnterInfluenceUI()
-    {
-        SoundManager.instance.PlayDialogueSE();
-        this.gameObject.SetActive(true);
-        isDialogueVisible = true;
-        dialogueText.text = "Ì—p‚³‚ê‚Ü‚µ‚½";
-    }
+    //public void ShowEnterInfluenceUI()
+    //{
+    //    SoundManager.instance.PlayDialogueSE();
+    //    this.gameObject.SetActive(true);
+    //    isDialogueVisible = true;
+    //    dialogueText.text = "Ì—p‚³‚ê‚Ü‚µ‚½";
+    //}
 
     //public void ShowSuccessAppointmentUI()
     //{
@@ -53,13 +53,13 @@ public class DialogueUI : MonoBehaviour
     //    dialogueText.text = "’Ç•ú‚É¬Œ÷‚µ‚Ü‚µ‚½";
     //}
 
-    public void ShowSuccessVagabondUI()
-    {
-        SoundManager.instance.PlayDialogueSE();
-        this.gameObject.SetActive(true);
-        isDialogueVisible = true;
-        dialogueText.text = "¨—Í‚ğ‹‚è‚Ü‚µ‚½";
-    }
+    //public void ShowSuccessVagabondUI()
+    //{
+    //    SoundManager.instance.PlayDialogueSE();
+    //    this.gameObject.SetActive(true);
+    //    isDialogueVisible = true;
+    //    dialogueText.text = "¨—Í‚ğ‹‚è‚Ü‚µ‚½";
+    //}
 
     //public void ShowElavationRankUI(CharacterController character)
     //{
