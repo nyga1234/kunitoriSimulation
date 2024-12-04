@@ -12,6 +12,7 @@ public class CharacterUIOnClick : MonoBehaviour
     [SerializeField] GameObject characterIndexMenu;
     [SerializeField] CharacterIndexUI characterIndexUI;
     [SerializeField] CharacterDetailUI characterDetailUI;
+    [SerializeField] BattleUI battleUI;
 
     [SerializeField] private UtilityParamObject varParam;
 
@@ -134,7 +135,16 @@ public class CharacterUIOnClick : MonoBehaviour
         {
             GameMain.instance.step = Step.Battle;
             HideAllCharacterUI();
-            battleManager.DefenceBattle(battleManager.attackerCharacter, character);
+            if (character == GameMain.instance.playerCharacter)
+            {
+                battleUI.ShowBattleUI(battleManager.attackerCharacter, character, territoryManager.territory);
+                battleManager.StartBattle(battleManager.attackerCharacter, character);
+            }
+            else
+            {
+                battleManager.DefenceBattle(battleManager.attackerCharacter, character);
+            }
+                
         }
     }
 
@@ -145,15 +155,24 @@ public class CharacterUIOnClick : MonoBehaviour
             GameMain.instance.step = Step.Battle;
             HideAllCharacterUI();
 
-            List<CharacterController> defenceList = territoryManager.influence.characterList.FindAll(c => c.isAttackable);
-            if (defenceList.Count > 0)
+            if (character == GameMain.instance.playerCharacter)
             {
-                defenceCharacter = defenceList[Random.Range(0, defenceList.Count)];
-                battleManager.AttackBattle(character, defenceCharacter);
+                battleUI.ShowBattleUI(character, defenceCharacter, territoryManager.territory);
+                battleManager.StartBattle(character, defenceCharacter);
             }
             else
             {
-                ShowTemporaryMessage("戦闘可能なキャラクターがいません");
+                battleManager.AttackBattle(character, defenceCharacter);
+                //List<CharacterController> defenceList = territoryManager.influence.characterList.FindAll(c => c.isAttackable);
+                //if (defenceList.Count > 0)
+                //{
+                //    defenceCharacter = defenceList[Random.Range(0, defenceList.Count)];
+                //    battleManager.AttackBattle(character, defenceCharacter);
+                //}
+                //else
+                //{
+                //    ShowTemporaryMessage("戦闘可能なキャラクターがいません");
+                //}
             }
         }
     }
