@@ -57,6 +57,14 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     [SerializeField] Transform parent;
     public List<Territory> initializeTerritoryList;
 
+    public GameObject CharacterIndexMenu { get => characterIndexMenu; set => characterIndexMenu = value; }
+    public CharacterIndexUI CharacterIndexUI { get => characterIndexUI; set => characterIndexUI = value; }
+    public CharacterDetailUI CharacterDetailUI { get => characterDetailUI; set => characterDetailUI = value; }
+    public GameObject MapField { get => mapField; set => mapField = value; }
+    public Cursor Cursor { get => cursor; set => cursor = value; }
+    public InfluenceOnMapUI InfluenceOnMapUI { get => influenceOnMapUI; set => influenceOnMapUI = value; }
+    public DialogueUI DialogueUI { get => dialogueUI; set => dialogueUI = value; }
+
     //フェーズの管理
     public enum Phase
     {
@@ -112,12 +120,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
     private void Update()
     {
-        if (!dialogueUI.gameObject.activeSelf &&
-            !SceneController.instance.Stack.Contains("UIConfirm") &&
-            !SceneController.instance.Stack.Contains("UIDialogue"))
-        {
-            MouseDown1ToBack();
-        }
     }
 
     private void Initialize()
@@ -867,10 +869,8 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                     // カーソルの位置を設定
                     RectTransform territoryRectTransform = territoryManager.territory.GetComponent<RectTransform>();
                     cursor.SetPosition(territoryRectTransform);
-                    //cursor.transform.position = territoryManager.territory.position;
 
                     vsImageUI.SetPosition(territoryRectTransform);
-                    //vsImageUI.transform.position = influenceManager.territory.position;
 
                     battleDetailUI.ShowBattleDetailUI(attackCharacter, defenderCharacter);
                     StartCoroutine(BlinkCursor(1.0f));
@@ -1312,91 +1312,5 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         TitleFieldUI.instance.titleFieldText.text = "      統一されました!!";
         mapField.SetActive(true);
         influenceUI.ShowInfluenceUI(influence);
-    }
-    
-    public void MouseDown1ToBack()
-    {
-        if (phase == Phase.CharacterChoicePhase)
-        {
-            if (Input.GetMouseButtonDown(1) && characterIndexMenu.gameObject.activeSelf)
-            {
-                SoundManager.instance.PlayCancelSE();
-                characterIndexMenu.gameObject.SetActive(false);
-                characterIndexUI.HideCharacterIndexUI();
-                characterDetailUI.gameObject.SetActive(false);
-
-                mapField.gameObject.SetActive(true);
-            }
-        }
-
-        if (phase == Phase.PlayerLordPhase)
-        {
-            if (Input.GetMouseButtonDown(1) && mapField.gameObject.activeSelf)
-            {
-                SoundManager.instance.PlayCancelSE();
-                mapField.gameObject.SetActive(false);
-                cursor.gameObject.SetActive(false);
-                influenceOnMapUI.HideInfluenceOnMapUI();
-                ShowLordUI(playerCharacter);
-            }
-            if (Input.GetMouseButtonDown(1) && characterIndexMenu.gameObject.activeSelf)
-            {
-                SoundManager.instance.PlayCancelSE();
-                characterIndexMenu.gameObject.SetActive(false);
-                characterIndexUI.HideCharacterIndexUI();
-                characterDetailUI.gameObject.SetActive(false);
-
-                if (step == Step.Search || step == Step.Appointment || step == Step.Banishment)
-                {
-                    ShowLordUI(playerCharacter);
-                }
-                else
-                {
-                    mapField.gameObject.SetActive(true);
-                }
-            }
-        }
-
-        if (phase == Phase.PlayerPersonalPhase)
-        {
-            if (Input.GetMouseButtonDown(1) && mapField.gameObject.activeSelf)
-            {
-                SoundManager.instance.PlayCancelSE();
-                mapField.gameObject.SetActive(false);
-                cursor.gameObject.SetActive(false);
-                influenceOnMapUI.HideInfluenceOnMapUI();
-                ShowPersonalUI(playerCharacter);
-            }
-            if (Input.GetMouseButtonDown(1) && characterIndexMenu.gameObject.activeSelf)
-            {
-                SoundManager.instance.PlayCancelSE();
-                characterIndexMenu.gameObject.SetActive(false);
-                characterIndexUI.HideCharacterIndexUI();
-                characterDetailUI.gameObject.SetActive(false);
-
-                mapField.gameObject.SetActive(true);
-            }
-        }
-
-        if (phase == Phase.PlayerBattlePhase)
-        {
-            if (Input.GetMouseButtonDown(1) && mapField.gameObject.activeSelf)
-            {
-                SoundManager.instance.PlayCancelSE();
-                mapField.gameObject.SetActive(false);
-                cursor.gameObject.SetActive(false);
-                influenceOnMapUI.HideInfluenceOnMapUI();
-                ShowBattleUI(playerCharacter);
-            }
-            if (Input.GetMouseButtonDown(1) && characterIndexMenu.gameObject.activeSelf)
-            {
-                SoundManager.instance.PlayCancelSE();
-                characterIndexMenu.gameObject.SetActive(false);
-                characterIndexUI.HideCharacterIndexUI();
-                characterDetailUI.gameObject.SetActive(false);
-
-                mapField.gameObject.SetActive(true);
-            }
-        }
     }
 }

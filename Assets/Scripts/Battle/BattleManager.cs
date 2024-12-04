@@ -8,12 +8,9 @@ public class BattleManager : MonoBehaviour
 {
     [SerializeField] Cursor cursor;
     [SerializeField] VSImageUI vsImageUI;
-    //[SerializeField] InflueneceManager influeneceManager;
     [SerializeField] TerritoryManager territoryManager;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] Transform AttackerSoliderField, DefenderSoliderField;
-    //[SerializeField] SoliderController attackSoliderPrefab;
-    //[SerializeField] SoliderController defenceSoliderPrefab;
     [SerializeField] GameObject attackSoliderPrefab;
     [SerializeField] GameObject defenceSoliderPrefab;
     [SerializeField] BattleDetailUI battleDetailUI;
@@ -80,8 +77,6 @@ public class BattleManager : MonoBehaviour
                 solider.icon,
                 solider.hp,
                 solider.maxHP);
-            //SoliderController battleSolider = Instantiate(attackSoliderPrefab, field, false);
-            //battleSolider.ShowBattleSoliderUI(solider, Attack);
         }
         else
         {
@@ -91,18 +86,12 @@ public class BattleManager : MonoBehaviour
                 solider.icon,
                 solider.hp,
                 solider.maxHP);
-            //SoliderController battleSolider = Instantiate(defenceSoliderPrefab, field, false);
-            //battleSolider.ShowBattleSoliderUI(solider, Attack);
         }
     }
 
     void ShowSoliderList(List<SoldierController> soliderList, Transform field, bool Attack)
     {
         // 現在表示されている兵士を削除
-        //foreach (Transform child in field)
-        //{
-        //    Destroy(child.gameObject);
-        //}
         HideSoliderList(soliderList, field);
 
         // 新しい兵士リストを作成
