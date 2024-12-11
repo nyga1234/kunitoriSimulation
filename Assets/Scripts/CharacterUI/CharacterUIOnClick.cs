@@ -162,17 +162,18 @@ public class CharacterUIOnClick : MonoBehaviour
             }
             else
             {
-                battleManager.AttackBattle(character, defenceCharacter);
-                //List<CharacterController> defenceList = territoryManager.influence.characterList.FindAll(c => c.isAttackable);
-                //if (defenceList.Count > 0)
-                //{
-                //    defenceCharacter = defenceList[Random.Range(0, defenceList.Count)];
-                //    battleManager.AttackBattle(character, defenceCharacter);
-                //}
-                //else
-                //{
-                //    ShowTemporaryMessage("戦闘可能なキャラクターがいません");
-                //}
+                List<CharacterController> defenceList = territoryManager.influence.characterList.FindAll(c => c.isAttackable);
+                if (defenceList.Count > 0)
+                {
+                    //防衛側のキャラクターをランダムで取得してしまっているため修正が必要
+                    defenceCharacter = defenceList[Random.Range(0, defenceList.Count)];
+                    battleManager.AttackBattle(character, defenceCharacter);
+                }
+                else
+                {
+                    //戦闘可能なキャラクターがいない場合の処理が必要
+                    ShowTemporaryMessage("戦闘可能なキャラクターがいません");
+                }
             }
         }
     }
