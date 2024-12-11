@@ -581,6 +581,7 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
 
         //戦闘実施
+        //yield return AIBattle(attackCharacter, defenceCharacter);
         SoundManager.instance.PlayBattleSE();
         while (attackerRetreatFlag == false && defenderRetreatFlag == false)
         {
@@ -634,6 +635,7 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
 
         //戦闘実施　戦闘中画面表示
+        //yield return AIBattle(attackCharacter, defenceCharacter);
         SoundManager.instance.PlayBattleSE();
         while (attackerRetreatFlag == false && defenderRetreatFlag == false)
         {
@@ -683,18 +685,18 @@ public class BattleManager : MonoBehaviour
 
     public IEnumerator AIBattle(CharacterController attackChara, CharacterController defenceChara)
     {
-        attackerCharacter = attackChara;
-        defenderCharacter = defenceChara;
+        //attackerCharacter = attackChara;
+        //defenderCharacter = defenceChara;
 
         SoundManager.instance.PlayBattleSE();
         while (attackerRetreatFlag == false && defenderRetreatFlag == false)
         {
-            SoliderBattle(attackerCharacter, defenderCharacter);
-            SoliderBattle(defenderCharacter, attackerCharacter);
-            IsAliveCheckSolider(attackerCharacter, defenderCharacter);
-            RetreatCheck(attackerCharacter, defenderCharacter);
-            BattleEndCheck(attackerCharacter, defenderCharacter);
-            battleDetailUI.ShowBattleDetailUI(attackerCharacter, defenderCharacter);
+            SoliderBattle(attackChara, defenceChara);
+            SoliderBattle(defenceChara, attackChara);
+            IsAliveCheckSolider(attackChara, defenceChara);
+            RetreatCheck(attackChara, defenceChara);
+            BattleEndCheck(attackChara, defenceChara);
+            battleDetailUI.ShowBattleDetailUI(attackChara, defenceChara);
             vsImageUI.gameObject.SetActive(!vsImageUI.gameObject.activeSelf); // VSイメージの表示・非表示を切り替える
             yield return new WaitForSeconds(0.05f);
         }
