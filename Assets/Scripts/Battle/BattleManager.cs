@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using static GameMain;
+using Cysharp.Threading.Tasks;
+using System;
 
 public class BattleManager : MonoBehaviour
 {
@@ -541,7 +543,7 @@ public class BattleManager : MonoBehaviour
         }
 
         // リストからランダムにインデックスを選択
-        int randomIndex = Random.Range(0, soliderList.Count);
+        int randomIndex = UnityEngine.Random.Range(0, soliderList.Count);
 
         // 選択されたランダムな兵士を返す
         return soliderList[randomIndex];
@@ -677,5 +679,24 @@ public class BattleManager : MonoBehaviour
 
         //次の処理へ移行
         CheckAttackableCharacterInInfluence();
+    }
+
+    public IEnumerator AIBattle(CharacterController attackChara, CharacterController defenceChara)
+    {
+        attackerCharacter = attackChara;
+        defenderCharacter = defenceChara;
+
+        SoundManager.instance.PlayBattleSE();
+        while (attackerRetreatFlag == false && defenderRetreatFlag == false)
+        {
+            SoliderBattle(attackerCharacter, defenderCharacter);
+            SoliderBattle(defenderCharacter, attackerCharacter);
+            IsAliveCheckSolider(attackerCharacter, defenderCharacter);
+            RetreatCheck(attackerCharacter, defenderCharacter);
+            BattleEndCheck(attackerCharacter, defenderCharacter);
+            battleDetailUI.ShowBattleDetailUI(attackerCharacter, defenderCharacter);
+            vsImageUI.gameObject.SetActive(!vsImageUI.gameObject.activeSelf); // VSイメージの表示・非表示を切り替える
+            yield return new WaitForSeconds(0.05f);
+        }
     }
 }
