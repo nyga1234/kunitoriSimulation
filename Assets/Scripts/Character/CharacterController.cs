@@ -42,21 +42,6 @@ public class CharacterController : ScriptableObject
     public bool isBattle = false;
     public int soliderForceSum;
 
-    //private CharacterEntity characterEntity;
-
-    //private CharacterController CreateCharacter(CharacterEntity characterE)
-    //{
-    //    CharacterController characterC = new CharacterController();
-    //    characterC.characterId = characterE.characterId;
-    //    characterC.icon = characterE.icon;
-    //    characterC.name = characterE.name;
-    //    characterC.force = characterE.force;
-    //    characterC.inteli = characterE.inteli;
-    //    characterC.tact = characterE.tact;
-    //    characterC.ambition = characterE.ambition;
-    //    return characterC;
-    //}
-
     public void Initialize()
     {
         //rank = 0;
@@ -196,31 +181,5 @@ public class CharacterController : ScriptableObject
         {
             soliderForceSum += solider.force;
         }
-    }
-
-    // コピーコンストラクタの追加
-    public CharacterController(CharacterController original)
-    {
-        characterId = original.characterId;
-        icon = original.icon;
-        name = original.name;
-        force = original.force;
-        inteli = original.inteli;
-        tact = original.tact;
-        ambition = original.ambition;
-        isLord = original.isLord;
-        rank = original.rank;
-        influence = original.influence; // 参照をそのままコピー（必要に応じて変更）
-        fame = original.fame;
-        gold = original.gold;
-        loyalty = original.loyalty;
-        salary = original.salary;
-        isPlayerCharacter = original.isPlayerCharacter;
-        isAttackable = original.isAttackable;
-        isBattle = original.isBattle;
-        soliderForceSum = original.soliderForceSum;
-
-        // SoldierListのコピー
-        soliderList = new List<SoldierController>(original.soliderList);
     }
 }
