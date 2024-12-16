@@ -213,13 +213,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
             mapField.gameObject.SetActive(false);
             cursor.gameObject.SetActive(false);
 
-            int attackSoliderHPSum = 0;
-            foreach (SoldierController solider in GameMain.instance.playerCharacter.soliderList)
-            {
-                attackSoliderHPSum += solider.hp;
-            }
-
-            CharacterController defenceCharacter = GameMain.instance.SelectDefenceCharacter(attackSoliderHPSum);
+            CharacterController defenceCharacter = GameMain.instance.SelectDefenceCharacter(GameMain.instance.playerCharacter);
 
             battleUI.ShowBattleUI(GameMain.instance.playerCharacter, defenceCharacter, territoryManager.territory);
             battleManager.StartBattle(GameMain.instance.playerCharacter, defenceCharacter);

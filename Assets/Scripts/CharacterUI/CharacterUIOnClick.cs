@@ -155,29 +155,16 @@ public class CharacterUIOnClick : MonoBehaviour
             GameMain.instance.step = Step.Battle;
             HideAllCharacterUI();
 
+            CharacterController defenceCharacter = GameMain.instance.SelectDefenceCharacter(character);
+
             //プレイヤーを選択した場合
             if (character == GameMain.instance.playerCharacter)
             {
-                //防衛キャラクターを取得
-                int attackSoliderHPSum = 0;
-                foreach (SoldierController solider in GameMain.instance.playerCharacter.soliderList)
-                {
-                    attackSoliderHPSum += solider.hp;
-                }
-                CharacterController defenceCharacter = GameMain.instance.SelectDefenceCharacter(attackSoliderHPSum);
-
                 battleUI.ShowBattleUI(character, defenceCharacter, territoryManager.territory);
                 battleManager.StartBattle(character, defenceCharacter);
             }
             else
             {
-                //防衛キャラクターを取得
-                int attackSoliderHPSum = 0;
-                foreach (SoldierController solider in character.soliderList)
-                {
-                    attackSoliderHPSum += solider.hp;
-                }
-                CharacterController defenceCharacter = GameMain.instance.SelectDefenceCharacter(attackSoliderHPSum);
                 battleManager.AttackBattle(character, defenceCharacter);
             }
         }

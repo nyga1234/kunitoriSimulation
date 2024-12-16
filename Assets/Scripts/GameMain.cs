@@ -751,7 +751,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             CharacterController randomAttackCharacter = attackableCharacterList[random3.Next(attackableCharacterList.Count)];
             StopAllCoroutines();
             //await BattlePrepare(randomAttackCharacter, soliderHPMax);
-            StartCoroutine(BattlePrepare(randomAttackCharacter, soliderHPMax));
+            StartCoroutine(BattlePrepare(randomAttackCharacter));
         }
         //‘Šè‚æ‚è‚à‹­‚¢ƒLƒƒƒ‰‚ª‚¢‚È‚¢ê‡
         else
@@ -781,7 +781,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
             StopAllCoroutines();
             //await BattlePrepare(strongestCharacter, soliderStrongestHPSum);
-            StartCoroutine(BattlePrepare(strongestCharacter, soliderStrongestHPSum));
+            StartCoroutine(BattlePrepare(strongestCharacter));
         }
     }
 
@@ -918,7 +918,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     //    }
     //}
 
-    public IEnumerator BattlePrepare(CharacterController attackCharacter, int attackSoliderHPSum)
+    public IEnumerator BattlePrepare(CharacterController attackCharacter)
     {
         CharacterController defenderCharacter;
 
@@ -957,7 +957,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             if (canAttack)
             {
                 //NU‘¤‚æ‚è‚à‹­‚¢ƒLƒƒƒ‰‚ğ–hŒäƒLƒƒƒ‰‚É‘I‘ğ /@‹­‚¢ƒLƒƒƒ‰‚ª‚¢‚È‚¢ê‡‚Íˆê”Ô‹­‚¢ƒLƒƒƒ‰‚ğ–hŒäƒLƒƒƒ‰‚É‘I‘ğ
-                defenderCharacter = SelectDefenceCharacter(attackSoliderHPSum);
+                defenderCharacter = SelectDefenceCharacter(attackCharacter);
 
                 if (attackCharacter == playerCharacter)
                 {
@@ -1047,10 +1047,14 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         }
     }
 
-    public CharacterController SelectDefenceCharacter(int attackSoliderHPSum)
+    public CharacterController SelectDefenceCharacter(CharacterController character)
     {
-        Debug.Log("SelectDefenceCharacter");
-        Debug.Log(territoryManager.territory.influence.influenceName);
+        int attackSoliderHPSum = 0;
+        foreach (SoldierController solider in character.soliderList)
+        {
+            attackSoliderHPSum += solider.hp;
+        }
+
         CharacterController defenderCharacter;
         //–hŒäƒLƒƒƒ‰‚ğæ“¾
         //NU‘¤‚æ‚è‚à‹­‚¢ƒLƒƒƒ‰‚ğæ“¾
