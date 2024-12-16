@@ -40,7 +40,7 @@ public class CharacterController : ScriptableObject
     public bool isPlayerCharacter;
     public bool isAttackable = true;
     public bool isBattle = false;
-    public int soliderForceSum;
+    //public int soliderForceSum;
 
     public void Initialize()
     {
@@ -55,7 +55,7 @@ public class CharacterController : ScriptableObject
         isBattle = false;
         influence = null;
         soliderList.Clear();
-        soliderForceSum = 0;
+        //soliderForceSum = 0;
     }
 
     // キャラクターを勢力に所属するメソッド
@@ -175,11 +175,21 @@ public class CharacterController : ScriptableObject
         }
     }
 
-    public void CalcSoliderForceSum()
+    //public void CalcSoliderForceSum()
+    //{
+    //    foreach (SoldierController solider in soliderList)
+    //    {
+    //        soliderForceSum += solider.force;
+    //    }
+    //}
+
+    public int CalcSoldierHPSum()
     {
-        foreach (SoldierController solider in soliderList)
+        int soldierHPSum = 0;
+        foreach (SoldierController soldier in soliderList)
         {
-            soliderForceSum += solider.force;
+            soldierHPSum += soldier.hp;
         }
+        return soldierHPSum;
     }
 }
