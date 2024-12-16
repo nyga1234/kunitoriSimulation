@@ -956,9 +956,9 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             bool canAttack = territoryManager.territory.influence.characterList.Exists(c => c.isAttackable);
             if (canAttack)
             {
-                //侵攻側よりも強いキャラを防御キャラに選択 /　強いキャラがいない場合は一番強いキャラを防御キャラに選択
                 defenderCharacter = SelectDefenceCharacter(attackCharacter);
 
+                //プレイヤーが戦闘する場合
                 if (attackCharacter == playerCharacter)
                 {
                     TitleFieldUI.instance.titleFieldText.text = "      出撃命令が下りました";
@@ -983,6 +983,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                     battleUI.ShowBattleUI(attackCharacter, playerCharacter, territoryManager.territory);
                     battleManager.StartBattle(attackCharacter, playerCharacter);
                 }
+                //AI同士の戦闘
                 else
                 {
                     //戦闘前の画面表示
@@ -1010,18 +1011,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                     battleManager.attackerCharacter = attackCharacter;
                     battleManager.defenderCharacter = defenderCharacter;
                     yield return battleManager.AIBattle(attackCharacter, defenderCharacter);
-                    //SoundManager.instance.PlayBattleSE();
-                    //while (battleManager.attackerRetreatFlag == false && battleManager.defenderRetreatFlag == false)
-                    //{
-                    //    battleManager.SoliderBattle(attackCharacter, defenderCharacter);
-                    //    battleManager.SoliderBattle(defenderCharacter, attackCharacter);
-                    //    battleManager.IsAliveCheckSolider(attackCharacter, defenderCharacter);
-                    //    battleManager.RetreatCheck(attackCharacter, defenderCharacter);
-                    //    battleManager.BattleEndCheck(attackCharacter, defenderCharacter);
-                    //    battleDetailUI.ShowBattleDetailUI(attackCharacter, defenderCharacter);
-                    //    vsImageUI.gameObject.SetActive(!vsImageUI.gameObject.activeSelf); // VSイメージの表示・非表示を切り替える
-                    //    yield return new WaitForSeconds(0.05f);
-                    //}
 
                     //戦闘後の画面を表示                    
                     yield return StartCoroutine(battleManager.ShowEndBattle());
