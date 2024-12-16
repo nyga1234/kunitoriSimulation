@@ -903,69 +903,49 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         }
     }
 
-    public CharacterController SelectDefenceCharacter(CharacterController character)
+    /// <summary>
+    /// –h‰q‘¤‚ÌƒLƒƒƒ‰ƒNƒ^[‚ğŒvZ‚µ‚Äæ“¾‚·‚é
+    /// </summary>
+    /// <param name="attackCharacter"></param>
+    /// <returns></returns>
+    public CharacterController SelectDefenceCharacter(CharacterController attackCharacter)
     {
-        int attackSoliderHPSum = 0;
-        foreach (SoldierController solider in character.soliderList)
+        CharacterController defenderCharacter;
+        List<CharacterController> defendableCharacterList = territoryManager.territory.influence.characterList.FindAll(character => character.isAttackable);
+
+        //NU‘¤‚æ‚è‚àã‚¢–h‰qƒLƒƒƒ‰‚ğœŠO
+        foreach (CharacterController defenceChara in territoryManager.territory.influence.characterList)
         {
-            attackSoliderHPSum += solider.hp;
+            if (defenceChara.CalcSoldierHPSum() < attackCharacter.CalcSoldierHPSum())
+            {
+                defendableCharacterList.Remove(defenceChara);
+            }
         }
 
-        CharacterController defenderCharacter;
-        //–hŒäƒLƒƒƒ‰‚ğæ“¾
-        //NU‘¤‚æ‚è‚à‹­‚¢ƒLƒƒƒ‰‚ğæ“¾
-        List<CharacterController> attackableCharacterList = territoryManager.territory.influence.characterList.FindAll(character => character.isAttackable);
-        foreach (CharacterController chara in territoryManager.territory.influence.characterList)
+        //NU‘¤‚æ‚è‚à‹­‚¢–h‰qƒLƒƒƒ‰‚ª‚¢‚éê‡‚Íƒ‰ƒ“ƒ_ƒ€‚Éæ“¾‚µoŒ‚‚³‚¹‚é
+        if (defendableCharacterList.Count != 0)
         {
-            int soliderHPSum = 0;
-            foreach (SoldierController solider in chara.soliderList)
-            {
-                soliderHPSum += solider.hp;
-            }
-            if (soliderHPSum < attackSoliderHPSum)
-            {
-                attackableCharacterList.Remove(chara);
-            }
-        }
-        //NU‘¤‚æ‚è‚à‹­‚¢ƒLƒƒƒ‰‚ª‚¢‚éê‡‚Í‚»‚ÌƒLƒƒƒ‰‚ğoŒ‚‚³‚¹‚é
-        if (attackableCharacterList.Count != 0)
-        {
-            foreach (CharacterController chara in attackableCharacterList)
-            {
-                Debug.Log(chara.name);
-            }
-            System.Random random3 = new System.Random();
-            CharacterController randomDefenceCharacter = attackableCharacterList[random3.Next(attackableCharacterList.Count)];
-            defenderCharacter = randomDefenceCharacter;
-            Debug.Log(defenderCharacter.name);
+            defenderCharacter = GetRandomCharacter(defendableCharacterList); ;
         }
         //NU‘¤‚æ‚è‚à‹­‚¢ƒLƒƒƒ‰‚ª‚¢‚È‚¢ê‡‚Íˆê”Ô‹­‚¢ƒLƒƒƒ‰‚ğoŒ‚‚³‚¹‚é
         else
         {
-            attackableCharacterList = territoryManager.territory.influence.characterList.FindAll(character => character.isAttackable);
+            //–h‰qƒLƒƒƒ‰‚ğ‰Šú‰»
+            defendableCharacterList = territoryManager.territory.influence.characterList.FindAll(character => character.isAttackable);
             //ˆê”Ô‹­‚¢ƒLƒƒƒ‰‚ğ‰Šú‰»
-            System.Random random4 = new System.Random();
-            CharacterController randomDefenceCharacter = attackableCharacterList[random4.Next(attackableCharacterList.Count)];
-            CharacterController strongestCharacter = randomDefenceCharacter;
+            CharacterController strongestCharacter = GetRandomCharacter(defendableCharacterList);
 
             int soliderStrongestHPSum = 0;
 
-            foreach (CharacterController chara in attackableCharacterList)
+            foreach (CharacterController defenceChara in defendableCharacterList)
             {
-                int soliderHPSum = 0;
-                foreach (SoldierController solider in chara.soliderList)
+                if (defenceChara.CalcSoldierHPSum() > soliderStrongestHPSum)
                 {
-                    soliderHPSum += solider.hp;
-                    if (soliderHPSum > soliderStrongestHPSum)
-                    {
-                        strongestCharacter = chara;
-                        soliderStrongestHPSum = soliderHPSum;
-                    }
+                    strongestCharacter = defenceChara;
+                    soliderStrongestHPSum = defenceChara.CalcSoldierHPSum();
                 }
-
             }
             defenderCharacter = strongestCharacter;
-            Debug.Log(defenderCharacter.name);
         }
         return defenderCharacter;
     }
@@ -1107,6 +1087,17 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         int currentIndex = characterList.IndexOf(currentCharacter);
         int nextIndex = (currentIndex + 1) % characterList.Count;
         return characterList[nextIndex];
+    }
+
+    /// <summary>
+    /// ƒ‰ƒ“ƒ_ƒ€‚ÈƒLƒƒƒ‰ƒNƒ^[‚ğæ“¾‚·‚éƒwƒ‹ƒp[ŠÖ”
+    /// </summary>
+    /// <param name="characters"></param>
+    /// <returns></returns>
+    private CharacterController GetRandomCharacter(List<CharacterController> characters)
+    {
+        System.Random random = new System.Random();
+        return characters[random.Next(characters.Count)];
     }
 
     public void ShowFadeUI()

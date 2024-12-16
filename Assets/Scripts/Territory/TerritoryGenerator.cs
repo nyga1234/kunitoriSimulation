@@ -98,60 +98,6 @@ public class TerritoryGenerator : MonoBehaviour
         return generateTerritoryList;
     }
 
-    //public List<Territory> Generate(List<Influence> influenceList)
-    //{
-    //    List<Territory> territoryList = new List<Territory>();
-
-    //    for (int x = 0; x < WIDTH; x++)
-    //    {
-    //        for (int y = 0; y < HEIGHT; y++)
-    //        {
-    //            Vector2 pos = new Vector2(x * territorySpace, y * territorySpace) - spaceOffset;
-    //            Territory newTerritory = Instantiate(plainTerritorPrefab, parent);
-    //            newTerritory.GetComponent<RectTransform>().anchoredPosition = pos;
-    //            newTerritory.gameObject.SetActive(true);
-
-    //            if (x <= 2 && y == 2 || x == 0 && y == 1)
-    //            {
-    //                SetupTerritory(newTerritory, pos, influenceList, "ヴィクター");
-    //                territoryList.Add(newTerritory);
-    //                GameMain.instance.territoryCouont++;
-    //            }
-    //            else if (x <= 2 && y == 0 || x == 1 && y == 1)
-    //            {
-    //                SetupTerritory(newTerritory, pos, influenceList, "アリシア");
-    //                territoryList.Add(newTerritory);
-    //                GameMain.instance.territoryCouont++;
-
-    //            }
-    //            else if(x >= 4 && y == 2 || x == 5 && y == 1)
-    //            {
-    //                SetupTerritory(newTerritory, pos, influenceList, "セルギウス");
-    //                territoryList.Add(newTerritory);
-    //                GameMain.instance.territoryCouont++;
-    //            }
-    //            else if (x == 2 && y == 1 || x == 3 && y == 0 || x == 3 && y == 2 || x == 4 && y == 1)
-    //            {
-    //                SetupTerritory(newTerritory, pos, influenceList, "ローレンティウス");
-    //                territoryList.Add(newTerritory);
-    //                GameMain.instance.territoryCouont++;
-    //            }
-    //            else if (x >= 4 && y == 0 || x == 6 && y == 1)
-    //            {
-    //                SetupTerritory(newTerritory, pos, influenceList, "フェオドーラ");
-    //                territoryList.Add(newTerritory);
-    //                GameMain.instance.territoryCouont++;
-    //            }
-    //            else
-    //            {
-    //                SetupTerritory(newTerritory, pos, influenceList, "NoneInfluence");
-    //                territoryList.Add(newTerritory);
-    //            }
-    //        }
-    //    }
-    //    return territoryList;
-    //}
-
     public void SetupTerritory(Territory territory, Vector2 position, List<Influence> influenceList, string influenceName)
     {
         //領土数をカウント

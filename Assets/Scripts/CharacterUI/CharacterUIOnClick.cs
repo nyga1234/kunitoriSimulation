@@ -157,6 +157,8 @@ public class CharacterUIOnClick : MonoBehaviour
 
             CharacterController defenceCharacter = GameMain.instance.SelectDefenceCharacter(character);
 
+            //防衛キャラがいない場合の処理を各必要がある
+
             //プレイヤーを選択した場合
             if (character == GameMain.instance.playerCharacter)
             {

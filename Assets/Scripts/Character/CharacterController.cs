@@ -40,7 +40,6 @@ public class CharacterController : ScriptableObject
     public bool isPlayerCharacter;
     public bool isAttackable = true;
     public bool isBattle = false;
-    //public int soliderForceSum;
 
     public void Initialize()
     {
@@ -174,14 +173,6 @@ public class CharacterController : ScriptableObject
             loyalty = 100;
         }
     }
-
-    //public void CalcSoliderForceSum()
-    //{
-    //    foreach (SoldierController solider in soliderList)
-    //    {
-    //        soliderForceSum += solider.force;
-    //    }
-    //}
 
     public int CalcSoldierHPSum()
     {

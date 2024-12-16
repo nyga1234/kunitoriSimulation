@@ -215,6 +215,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
 
             CharacterController defenceCharacter = GameMain.instance.SelectDefenceCharacter(GameMain.instance.playerCharacter);
 
+            //防衛キャラがいない場合の処理を各必要がある
             battleUI.ShowBattleUI(GameMain.instance.playerCharacter, defenceCharacter, territoryManager.territory);
             battleManager.StartBattle(GameMain.instance.playerCharacter, defenceCharacter);
         }
