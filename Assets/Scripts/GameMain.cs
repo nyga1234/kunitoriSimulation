@@ -888,6 +888,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                     battleManager.CheckAttackableCharacterInInfluence();
                 }
             }
+            //修正が必要
             //戦闘可能なキャラクターがいない場合は無条件で勝利
             else
             {

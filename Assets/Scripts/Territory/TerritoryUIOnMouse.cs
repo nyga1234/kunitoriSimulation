@@ -199,25 +199,33 @@ public class TerritoryUIOnMouse : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 領主ではないプレイヤーを独断で侵攻させる
+    /// </summary>
     private async void AttackBattle()
     {
         await SceneController.LoadAsync("UIConfirm");
         varParam.ConfirmText = "侵攻しますか？";
-        // OKまたはCancelボタンがクリックされるのを待機
         await UniTask.WaitUntil(() => varParam.IsConfirm.HasValue);
 
         if (varParam.IsConfirm == true)
         {
-            // 勢力情報非表示
-            influenceOnMapUI.HideInfluenceOnMapUI();
-            mapField.gameObject.SetActive(false);
-            cursor.gameObject.SetActive(false);
+            //防衛可能なキャラクターがいるか
+            bool canAttack = territoryManager.territory.influence.characterList.Exists(c => c.isAttackable);
+            if (canAttack)
+            {
+                //防衛キャラを取得
+                CharacterController defenceCharacter = GameMain.instance.SelectDefenceCharacter(GameMain.instance.playerCharacter);
 
-            CharacterController defenceCharacter = GameMain.instance.SelectDefenceCharacter(GameMain.instance.playerCharacter);
+                //戦闘へ進む
+                influenceOnMapUI.HideInfluenceOnMapUI();
+                mapField.gameObject.SetActive(false);
+                cursor.gameObject.SetActive(false);
 
+                battleUI.ShowBattleUI(GameMain.instance.playerCharacter, defenceCharacter, territoryManager.territory);
+                battleManager.StartBattle(GameMain.instance.playerCharacter, defenceCharacter);
+            }
             //防衛キャラがいない場合の処理を各必要がある
-            battleUI.ShowBattleUI(GameMain.instance.playerCharacter, defenceCharacter, territoryManager.territory);
-            battleManager.StartBattle(GameMain.instance.playerCharacter, defenceCharacter);
         }
     }
 

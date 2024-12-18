@@ -148,6 +148,10 @@ public class CharacterUIOnClick : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 領主（プレイヤー）が出撃キャラを選択して侵攻を開始する
+    /// </summary>
+    /// <param name="character"></param>
     private async void StartAttackBattle(CharacterController character)
     {
         if (await ShowConfirmationDialog("よろしいですか？"))
@@ -155,20 +159,26 @@ public class CharacterUIOnClick : MonoBehaviour
             GameMain.instance.step = Step.Battle;
             HideAllCharacterUI();
 
-            CharacterController defenceCharacter = GameMain.instance.SelectDefenceCharacter(character);
+            //防衛側で戦闘可能なキャラクターがいる場合
+            bool canAttack = territoryManager.territory.influence.characterList.Exists(c => c.isAttackable);
+            if (canAttack)
+            {
+                //防衛キャラを取得
+                CharacterController defenceCharacter = GameMain.instance.SelectDefenceCharacter(character);
 
+                //侵攻させるキャラにプレイヤーを選択した場合
+                if (character == GameMain.instance.playerCharacter)
+                {
+                    battleUI.ShowBattleUI(character, defenceCharacter, territoryManager.territory);
+                    battleManager.StartBattle(character, defenceCharacter);
+                }
+                //プレイヤー以外を選択した場合
+                else
+                {
+                    battleManager.AttackBattle(character, defenceCharacter);
+                }
+            }
             //防衛キャラがいない場合の処理を各必要がある
-
-            //プレイヤーを選択した場合
-            if (character == GameMain.instance.playerCharacter)
-            {
-                battleUI.ShowBattleUI(character, defenceCharacter, territoryManager.territory);
-                battleManager.StartBattle(character, defenceCharacter);
-            }
-            else
-            {
-                battleManager.AttackBattle(character, defenceCharacter);
-            }
         }
     }
 
