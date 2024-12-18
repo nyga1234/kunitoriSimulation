@@ -995,6 +995,11 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         return characters[random.Next(characters.Count)];
     }
 
+    /// <summary>
+    /// Å‹­ƒLƒƒƒ‰‚ğæ“¾‚·‚é
+    /// </summary>
+    /// <param name="characters"></param>
+    /// <returns></returns>
     private CharacterController GetStrongestCharacter(List<CharacterController> characters)
     {
         return characters
