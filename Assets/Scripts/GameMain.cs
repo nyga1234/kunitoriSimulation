@@ -760,55 +760,12 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             {
                 defenderCharacter = SelectDefenceCharacter(attackCharacter);
 
-                //プレイヤーが戦闘する場合
-                if (attackCharacter == playerCharacter)
-                {
-                    TitleFieldUI.instance.titleFieldText.text = "      出撃命令が下りました";
+                //戦闘前の画面表示
+                yield return StartCoroutine(ShowBeforeBattle(attackCharacter, defenderCharacter));
 
-                    yield return　StartCoroutine(ShowAttackedTerritory(attackCharacter));
-
-                    dialogueUI.ShowBattleOrderUI();
-                    yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
-
-                    battleUI.ShowBattleUI(playerCharacter, defenderCharacter, territoryManager.territory);
-                    battleManager.StartBattle(playerCharacter, defenderCharacter);
-                }
-                else if (defenderCharacter == playerCharacter)
-                {
-                    TitleFieldUI.instance.titleFieldText.text = "      出撃命令が下りました";
-
-                    yield return StartCoroutine(ShowAttackedTerritory(attackCharacter));
-
-                    dialogueUI.ShowBattleOrderUI();
-                    yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
-
-                    battleUI.ShowBattleUI(attackCharacter, playerCharacter, territoryManager.territory);
-                    battleManager.StartBattle(attackCharacter, playerCharacter);
-                }
                 //AI同士の戦闘
-                else
+                if (attackCharacter != playerCharacter & defenderCharacter != playerCharacter)
                 {
-                    //戦闘前の画面表示
-                    if (attackCharacter.influence == playerCharacter.influence || defenderCharacter.influence == playerCharacter.influence)
-                    {
-                        TitleFieldUI.instance.titleFieldText.text = "      味方 VS 敵　戦闘！";
-                    }
-                    else
-                    {
-                        TitleFieldUI.instance.titleFieldText.text = "      敵 VS 敵　戦闘！";
-                    }
-                    mapField.SetActive(true);
-                    cursor.gameObject.SetActive(true);
-
-                    // カーソルの位置を設定
-                    RectTransform territoryRectTransform = territoryManager.territory.GetComponent<RectTransform>();
-                    cursor.SetPosition(territoryRectTransform);
-
-                    vsImageUI.SetPosition(territoryRectTransform);
-
-                    battleDetailUI.ShowBattleDetailUI(attackCharacter, defenderCharacter);
-                    yield return StartCoroutine(BlinkCursor(1.0f));
-
                     //戦闘実施　戦闘中画面表示
                     battleManager.attackerCharacter = attackCharacter;
                     battleManager.defenderCharacter = defenderCharacter;
@@ -836,6 +793,44 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 //次の処理へ移行
                 battleManager.CheckAttackableCharacterInInfluence();
             }
+        }
+    }
+
+    IEnumerator ShowBeforeBattle(CharacterController attackCharacter, CharacterController defenderCharacter)
+    {
+        if (attackCharacter == playerCharacter || defenderCharacter == playerCharacter)
+        {
+            TitleFieldUI.instance.titleFieldText.text = "      出撃命令が下りました";
+
+            yield return StartCoroutine(ShowAttackedTerritory(attackCharacter));
+
+            dialogueUI.ShowBattleOrderUI();
+            yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
+
+            battleUI.ShowBattleUI(attackCharacter, defenderCharacter, territoryManager.territory);
+            battleManager.StartBattle(attackCharacter, defenderCharacter);
+        }
+        else
+        {
+            //戦闘前の画面表示
+            if (attackCharacter.influence == playerCharacter.influence || defenderCharacter.influence == playerCharacter.influence)
+            {
+                TitleFieldUI.instance.titleFieldText.text = "      味方 VS 敵　戦闘！";
+            }
+            else
+            {
+                TitleFieldUI.instance.titleFieldText.text = "      敵 VS 敵　戦闘！";
+            }
+            mapField.SetActive(true);
+            cursor.gameObject.SetActive(true);
+
+            // カーソルと戦闘アイコンの位置を設定
+            RectTransform territoryRectTransform = territoryManager.territory.GetComponent<RectTransform>();
+            cursor.SetPosition(territoryRectTransform);
+            vsImageUI.SetPosition(territoryRectTransform);
+
+            battleDetailUI.ShowBattleDetailUI(attackCharacter, defenderCharacter);
+            yield return StartCoroutine(BlinkCursor(1.0f));
         }
     }
 
