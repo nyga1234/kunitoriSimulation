@@ -8,7 +8,8 @@ using UnityEngine.UI;
 public class BattleDetailUI : MonoBehaviour
 {
     //[SerializeField] InflueneceManager influenceManager;
-    [SerializeField] TerritoryManager territoryManager;
+    //[SerializeField] TerritoryManager territoryManager;
+    [SerializeField] private UtilityParamObject varParam;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
 
     [SerializeField] Image attackerCharaIcon;
@@ -91,7 +92,7 @@ public class BattleDetailUI : MonoBehaviour
     {
         this.gameObject.SetActive(true);
 
-        SetBattleFieldUI(territoryManager.territory);
+        SetBattleFieldUI(varParam.Territory);
     }
 
     void SetBattleFieldUI(Territory territory)

@@ -10,7 +10,8 @@ public class BattleManager : MonoBehaviour
 {
     [SerializeField] Cursor cursor;
     [SerializeField] VSImageUI vsImageUI;
-    [SerializeField] TerritoryManager territoryManager;
+    //[SerializeField] TerritoryManager territoryManager;
+    [SerializeField] private UtilityParamObject varParam;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] Transform AttackerSoliderField, DefenderSoliderField;
     [SerializeField] GameObject attackSoliderPrefab;
@@ -203,7 +204,7 @@ public class BattleManager : MonoBehaviour
             foreach (SoldierController attackerSolider in attackChara.soliderList)
             {
                 SoldierController defenderSolider = GetRandomSolider(defenceChara.soliderList);
-                attackerSolider.Attack(attackChara, defenceChara, defenderSolider, territoryManager.territory);
+                attackerSolider.Attack(attackChara, defenceChara, defenderSolider, varParam.Territory);
                 //defenderSolider.CounterAttack(attackChara, defenceChara, attackerSolider, influeneceManager.territory);
             }
         }
@@ -280,7 +281,7 @@ public class BattleManager : MonoBehaviour
         {
             if (defenceCharacter != GameMain.instance.playerCharacter)
             {
-                switch (territoryManager.territory.defenceTerritoryType)
+                switch (varParam.Territory.defenceTerritoryType)
                 {
                     //砂漠の場合、いずれか兵士のHPが20未満になったら退却させる
                     case Territory.DefenceTerritoryType.desert:
@@ -336,7 +337,7 @@ public class BattleManager : MonoBehaviour
         {
             if (attackCharacter != GameMain.instance.playerCharacter)
             {
-                switch (territoryManager.territory.attackTerritoryType)
+                switch (varParam.Territory.attackTerritoryType)
                 {
                     //砂漠の場合、いずれか兵士のHPが20未満になったら退却させる
                     case Territory.AttackTerritoryType.desert:
@@ -442,7 +443,7 @@ public class BattleManager : MonoBehaviour
         cursor.gameObject.SetActive(true);
 
         // カーソルの位置を設定
-        RectTransform territoryRectTransform = territoryManager.territory.GetComponent<RectTransform>();
+        RectTransform territoryRectTransform = varParam.Territory.GetComponent<RectTransform>();
         cursor.SetPosition(territoryRectTransform);
 
         //cursor.transform.position = territoryManager.territory.position;
@@ -454,7 +455,7 @@ public class BattleManager : MonoBehaviour
         else
         {
             TitleFieldUI.instance.titleFieldText.text = "      侵攻側の勝利です";
-            StartCoroutine(GameMain.instance.BlinkTerritory(0.5f, attackerCharacter, defenderCharacter, territoryManager.territory));
+            StartCoroutine(GameMain.instance.BlinkTerritory(0.5f, attackerCharacter, defenderCharacter, varParam.Territory));
         }
         yield return new WaitForSeconds(battleAfterWaitTime);
 
@@ -569,7 +570,7 @@ public class BattleManager : MonoBehaviour
         cursor.gameObject.SetActive(true);
 
         // カーソルの位置を設定
-        RectTransform territoryRectTransform = territoryManager.territory.GetComponent<RectTransform>();
+        RectTransform territoryRectTransform = varParam.Territory.GetComponent<RectTransform>();
         cursor.SetPosition(territoryRectTransform);
         //cursor.transform.position = territoryManager.territory.position;
 
@@ -611,7 +612,7 @@ public class BattleManager : MonoBehaviour
         cursor.gameObject.SetActive(true);
 
         // カーソルの位置を設定
-        RectTransform territoryRectTransform = territoryManager.territory.GetComponent<RectTransform>();
+        RectTransform territoryRectTransform = varParam.Territory.GetComponent<RectTransform>();
         cursor.SetPosition(territoryRectTransform);
         //cursor.transform.position = territoryManager.territory.position;
 
@@ -643,7 +644,7 @@ public class BattleManager : MonoBehaviour
         mapField.SetActive(true);
 
         TitleFieldUI.instance.titleFieldText.text = "戦闘を放棄しました";
-        StartCoroutine(GameMain.instance.BlinkTerritory(0.5f, attackerCharacter, GameMain.instance.playerCharacter, territoryManager.territory));
+        StartCoroutine(GameMain.instance.BlinkTerritory(0.5f, attackerCharacter, GameMain.instance.playerCharacter, varParam.Territory));
         yield return new WaitForSeconds(battleAfterWaitTime);
 
         attackerCharacter.isAttackable = false;

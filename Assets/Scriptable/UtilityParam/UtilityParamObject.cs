@@ -19,8 +19,14 @@ public class UtilityParamObject : ScriptableObject
     [SerializeField] private string confirmText;
     [SerializeField] private string dialogueText;
 
+    [SerializeField] private Territory territory;
+    [SerializeField] private Influence influence;
+
     public bool? IsConfirm { get => isConfirm; set => isConfirm = value; }
     public bool? IsDialogue { get => isDialogue; set => isDialogue = value; }
     public string ConfirmText { get => confirmText; set => confirmText = value; }
     public string DialogueText { get => dialogueText; set => dialogueText = value; }
+
+    public Territory Territory { get => territory; set => territory = value; }
+    public Influence Influence { get => influence; set => influence = value; }
 }

@@ -8,7 +8,7 @@ using Cysharp.Threading.Tasks;
 
 public class TerritoryUIOnMouse : MonoBehaviour
 {
-    [SerializeField] TerritoryManager territoryManager;
+    //[SerializeField] TerritoryManager territoryManager;
     [SerializeField] Cursor cursor;
     [SerializeField] TitleFieldUI titleFieldUI;
     [SerializeField] DialogueUI dialogueUI;
@@ -105,7 +105,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
                 SoundManager.instance.PlayClickSE();
 
                 //クリックした領土を設定
-                territoryManager.territory = onPointEnterTerritory;
+                varParam.Territory = onPointEnterTerritory;
 
                 // Mapと勢力情報を非表示
                 mapField.gameObject.SetActive(false);
@@ -129,7 +129,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
                 else
                 {
                     //クリックした領土を設定
-                    territoryManager.territory = onPointEnterTerritory;
+                    varParam.Territory = onPointEnterTerritory;
                     cursor.gameObject.SetActive(false);
 
                     await SceneController.LoadAsync("UIConfirm");
@@ -140,7 +140,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
                     if (varParam.IsConfirm == true)
                     {
                         GameMain.instance.noneInfluence.RemoveCharacter(GameMain.instance.playerCharacter);
-                        territoryManager.territory.influence.AddCharacter(GameMain.instance.playerCharacter);
+                        varParam.Territory.influence.AddCharacter(GameMain.instance.playerCharacter);
 
                         mapField.gameObject.SetActive(false);
                         cursor.gameObject.SetActive(false);
@@ -157,15 +157,15 @@ public class TerritoryUIOnMouse : MonoBehaviour
             case GameMain.Step.Attack:
                 SoundManager.instance.PlayClickSE();
 
-                territoryManager.territory = onPointEnterTerritory;//クリックした領土を設定
-                territoryManager.influence = onPointEnterTerritory.influence;//クリックした勢力を設定
+                varParam.Territory = onPointEnterTerritory;//クリックした領土を設定
+                varParam.Influence = onPointEnterTerritory.influence;//クリックした勢力を設定
 
-                if (territoryManager.influence == GameMain.instance.playerCharacter.influence)
+                if (varParam.Influence == GameMain.instance.playerCharacter.influence)
                 {
                     titleFieldUI.titleFieldText.text = "     自国領土です";
                     return;
                 }
-                else if (territoryManager.influence == GameMain.instance.noneInfluence)
+                else if (varParam.Influence == GameMain.instance.noneInfluence)
                 {
                     titleFieldUI.titleFieldText.text = "     空き領土です";
                     return;
@@ -211,7 +211,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
         if (varParam.IsConfirm == true)
         {
             //防衛可能なキャラクターがいるか
-            bool canAttack = territoryManager.territory.influence.characterList.Exists(c => c.isAttackable);
+            bool canAttack = varParam.Territory.influence.characterList.Exists(c => c.isAttackable);
             if (canAttack)
             {
                 //防衛キャラを取得
@@ -222,7 +222,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
                 mapField.gameObject.SetActive(false);
                 cursor.gameObject.SetActive(false);
 
-                battleUI.ShowBattleUI(GameMain.instance.playerCharacter, defenceCharacter, territoryManager.territory);
+                battleUI.ShowBattleUI(GameMain.instance.playerCharacter, defenceCharacter, varParam.Territory);
                 battleManager.StartBattle(GameMain.instance.playerCharacter, defenceCharacter);
             }
             //防衛キャラがいない場合の処理を各必要がある
@@ -237,11 +237,11 @@ public class TerritoryUIOnMouse : MonoBehaviour
     public void ChangeTerritoryByBattle(Influence influence)
     {
         //領土に勝利した勢力を設定
-        territoryManager.territory.influence = influence;
+        varParam.Territory.influence = influence;
         //勝利した勢力に領土を設定
-        influence.AddTerritory(territoryManager.territory);
+        influence.AddTerritory(varParam.Territory);
         //敗北した勢力から領土を除外
-        territoryManager.influence.RemoveTerritory(territoryManager.territory);
+        varParam.Influence.RemoveTerritory(varParam.Territory);
         //influenceList.Find(x => x.InfluenceType == influence.InfluenceType)?.AddTerritory(this.territory);
 
         if (influence.territoryList.Count == GameMain.instance.territoryCouont)

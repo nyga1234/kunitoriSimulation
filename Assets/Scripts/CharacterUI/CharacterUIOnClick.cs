@@ -8,7 +8,6 @@ public class CharacterUIOnClick : MonoBehaviour
     public GameMain gameManager;
     public BattleManager battleManager;
 
-    [SerializeField] TerritoryManager territoryManager;
     [SerializeField] GameObject characterIndexMenu;
     [SerializeField] CharacterIndexUI characterIndexUI;
     [SerializeField] CharacterDetailUI characterDetailUI;
@@ -137,7 +136,7 @@ public class CharacterUIOnClick : MonoBehaviour
             HideAllCharacterUI();
             if (character == GameMain.instance.playerCharacter)
             {
-                battleUI.ShowBattleUI(battleManager.attackerCharacter, character, territoryManager.territory);
+                battleUI.ShowBattleUI(battleManager.attackerCharacter, character, varParam.Territory);
                 battleManager.StartBattle(battleManager.attackerCharacter, character);
             }
             else
@@ -160,7 +159,7 @@ public class CharacterUIOnClick : MonoBehaviour
             HideAllCharacterUI();
 
             //防衛側で戦闘可能なキャラクターがいる場合
-            bool canAttack = territoryManager.territory.influence.characterList.Exists(c => c.isAttackable);
+            bool canAttack = varParam.Territory.influence.characterList.Exists(c => c.isAttackable);
             if (canAttack)
             {
                 //防衛キャラを取得
@@ -169,7 +168,7 @@ public class CharacterUIOnClick : MonoBehaviour
                 //侵攻させるキャラにプレイヤーを選択した場合
                 if (character == GameMain.instance.playerCharacter)
                 {
-                    battleUI.ShowBattleUI(character, defenceCharacter, territoryManager.territory);
+                    battleUI.ShowBattleUI(character, defenceCharacter, varParam.Territory);
                     battleManager.StartBattle(character, defenceCharacter);
                 }
                 //プレイヤー以外を選択した場合

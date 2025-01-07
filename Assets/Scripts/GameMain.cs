@@ -22,7 +22,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     [SerializeField] TitleFieldUI titleFieldUI;
     [SerializeField] DialogueUI dialogueUI;
     [SerializeField] BattleManager battleManager;
-    [SerializeField] TerritoryManager territoryManager;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] CharacterTurnUI characterTurnUI;
     [SerializeField] CharacterMenuUI characterMenuUI;
@@ -708,8 +707,8 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         Territory targetTerritory = GetRandomTerritory(adjacentTerritory);
 
         // 選択した領土を TerritoryManager に設定
-        territoryManager.territory = targetTerritory;
-        territoryManager.influence = targetTerritory.influence;
+        varParam.Territory = targetTerritory;
+        varParam.Influence = targetTerritory.influence;
 
         // 攻撃キャラクターを選択
         CharacterController attackCharacter = SelectAttackCharacter(character.influence, targetTerritory.influence);
@@ -728,7 +727,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         defenceFlag = false;
 
         //侵攻された領土がプレイヤー勢力　かつ　プレイヤーが領主の場合
-        if (territoryManager.territory.influence == playerCharacter.influence && playerCharacter.isLord == true)
+        if (varParam.Territory.influence == playerCharacter.influence && playerCharacter.isLord == true)
         {
             defenceFlag = true;
 
@@ -746,7 +745,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
             TitleFieldUI.instance.titleFieldText.text = "      防衛部隊を選択してください";
             characterIndexMenu.SetActive(true);
-            characterIndexUI.ShowCharacterIndexUI(territoryManager.territory.influence.characterList);
+            characterIndexUI.ShowCharacterIndexUI(varParam.Territory.influence.characterList);
             attackedCharacterUI.ShowAttackedCharacterUI(battleManager.attackerCharacter);
             abandonUI.ShowAbandonUI();
             landformInformationUI.ShowLandformInformationUI();
@@ -755,7 +754,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         else
         {
             //防衛側で戦闘可能なキャラクターがいる場合
-            bool canAttack = territoryManager.territory.influence.characterList.Exists(c => c.isAttackable);
+            bool canAttack = varParam.Territory.influence.characterList.Exists(c => c.isAttackable);
             if (canAttack)
             {
                 defenderCharacter = SelectDefenceCharacter(attackCharacter);
@@ -807,7 +806,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             dialogueUI.ShowBattleOrderUI();
             yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
 
-            battleUI.ShowBattleUI(attackCharacter, defenderCharacter, territoryManager.territory);
+            battleUI.ShowBattleUI(attackCharacter, defenderCharacter, varParam.Territory);
             battleManager.StartBattle(attackCharacter, defenderCharacter);
         }
         else
@@ -825,7 +824,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             cursor.gameObject.SetActive(true);
 
             // カーソルと戦闘アイコンの位置を設定
-            RectTransform territoryRectTransform = territoryManager.territory.GetComponent<RectTransform>();
+            RectTransform territoryRectTransform = varParam.Territory.GetComponent<RectTransform>();
             cursor.SetPosition(territoryRectTransform);
             vsImageUI.SetPosition(territoryRectTransform);
 
@@ -866,7 +865,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     public CharacterController SelectDefenceCharacter(CharacterController attackCharacter)
     {
         // 防衛可能なキャラクターを取得
-        List<CharacterController> defendableCharacterList = territoryManager.territory.influence.characterList
+        List<CharacterController> defendableCharacterList = varParam.Territory.influence.characterList
             .FindAll(character => character.isAttackable);
 
         // 侵攻キャラより強い防衛キャラを取得
@@ -884,7 +883,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         else
         {
             defenderCharacter = GetStrongestCharacter(
-                territoryManager.territory.influence.characterList.FindAll(character => character.isAttackable));
+                varParam.Territory.influence.characterList.FindAll(character => character.isAttackable));
         }
         return defenderCharacter;
     }
@@ -895,7 +894,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         cursor.gameObject.SetActive(true);
 
         // カーソルの位置を設定
-        RectTransform territoryRectTransform = territoryManager.territory.GetComponent<RectTransform>();
+        RectTransform territoryRectTransform = varParam.Territory.GetComponent<RectTransform>();
         cursor.SetPosition(territoryRectTransform);
 
         StartCoroutine(BlinkCursor(2));
