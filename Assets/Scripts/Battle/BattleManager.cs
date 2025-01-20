@@ -551,13 +551,13 @@ public class BattleManager : MonoBehaviour
         return soliderList[randomIndex];
     }
 
-    public async void AttackBattle(CharacterController attackCharacter, CharacterController defenceCharacter)
-    {
-        await WaitForAttackBattle(attackCharacter, defenceCharacter);
-    }
-
-    //自勢力の味方が攻撃する処理
-    public async UniTask WaitForAttackBattle(CharacterController attackCharacter, CharacterController defenceCharacter)
+    /// <summary>
+    /// 自軍の配下が戦闘する処理
+    /// </summary>
+    /// <param name="attackCharacter"></param>
+    /// <param name="defenceCharacter"></param>
+    /// <returns></returns>
+    public async UniTask MySubordinateBattle(CharacterController attackCharacter, CharacterController defenceCharacter)
     {
         attackerRetreatFlag = false;
         defenderRetreatFlag = false;
@@ -576,7 +576,7 @@ public class BattleManager : MonoBehaviour
 
         vsImageUI.SetPosition(territoryRectTransform);
 
-        battleDetailUI.ShowBattleDetailUI(attackerCharacter, defenderCharacter);
+        battleDetailUI.ShowBattleDetailUI(attackCharacter, defenceCharacter);
         await GameMain.instance.BlinkCursor(1.0f);
 
         //戦闘実施
@@ -584,47 +584,19 @@ public class BattleManager : MonoBehaviour
 
         await ShowEndBattle();
 
-        CheckExtinct(defenderCharacter.influence);
+        CheckExtinct(defenceCharacter.influence);
 
-        GameMain.instance.PlayerBattlePhase();
-    }
-
-    public async void DefenceBattle(CharacterController attackCharacter, CharacterController defenceCharacter)
-    {
-        await WaitForDefenceBattle(attackCharacter, defenceCharacter);
-    }
-
-    //自勢力の味方が防衛する処理
-    public async UniTask WaitForDefenceBattle(CharacterController attackCharacter, CharacterController defenceCharacter)
-    {
-        attackerRetreatFlag = false;
-        defenderRetreatFlag = false;
-
-        attackerCharacter = attackCharacter;
-        defenderCharacter = defenceCharacter;
-
-        //戦闘前の画面表示
-        TitleFieldUI.instance.titleFieldText.text = "      敵 VS 味方　戦闘！";
-        mapField.SetActive(true);
-        cursor.gameObject.SetActive(true);
-
-        // カーソルの位置を設定
-        RectTransform territoryRectTransform = varParam.Territory.GetComponent<RectTransform>();
-        cursor.SetPosition(territoryRectTransform);
-
-        vsImageUI.SetPosition(territoryRectTransform);
-
-        battleDetailUI.ShowBattleDetailUI(attackCharacter, defenceCharacter);
-        await GameMain.instance.BlinkCursor(1.0f);
-
-        //戦闘実施　戦闘中画面表示
-        await AIBattle(attackCharacter, defenceCharacter);
-
-        await ShowEndBattle();
-
-        CheckExtinct(defenderCharacter.influence);
-
-        CheckAttackableCharacterInInfluence();
+        //自分が防衛の場合
+        if (GameMain.instance.defenceFlag)
+        {
+            //引き続き侵攻勢力のフェーズ処理
+            CheckAttackableCharacterInInfluence();
+        }
+        else
+        {
+            //プレイヤーバトルフェーズへ移行
+            GameMain.instance.PlayerBattlePhase();
+        }
     }
 
     public void AbandonBattle()

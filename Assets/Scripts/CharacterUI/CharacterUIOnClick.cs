@@ -125,6 +125,10 @@ public class CharacterUIOnClick : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 領主（プレイヤー）が出撃キャラを選択して防衛を開始する
+    /// </summary>
+    /// <param name="character"></param>
     private async void StartDefenceBattle(CharacterController character)
     {
         if (await ShowConfirmationDialog("よろしいですか？"))
@@ -138,7 +142,7 @@ public class CharacterUIOnClick : MonoBehaviour
             }
             else
             {
-                battleManager.DefenceBattle(battleManager.attackerCharacter, character);
+                await battleManager.MySubordinateBattle(battleManager.attackerCharacter, character);
             }
                 
         }
@@ -171,7 +175,7 @@ public class CharacterUIOnClick : MonoBehaviour
                 //プレイヤー以外を選択した場合
                 else
                 {
-                    battleManager.AttackBattle(character, defenceCharacter);
+                    await battleManager.MySubordinateBattle(character, defenceCharacter);
                 }
             }
             //防衛キャラがいない場合の処理を各必要がある
