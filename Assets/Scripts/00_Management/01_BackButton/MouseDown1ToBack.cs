@@ -7,9 +7,7 @@ public class MouseDown1ToBack : MonoBehaviour
 {
     void Update()
     {
-        if (!GameMain.instance.DialogueUI.gameObject.activeSelf &&
-            !SceneController.instance.Stack.Contains("UIConfirm") &&
-            !SceneController.instance.Stack.Contains("UIDialogue"))
+        if (!SceneController.instance.Stack.Contains("UIConfirm") &&Å@!SceneController.instance.Stack.Contains("UIDialogue"))
         {
             OnMouse1Click();
         }

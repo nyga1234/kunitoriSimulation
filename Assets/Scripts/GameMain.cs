@@ -5,6 +5,7 @@ using System.Linq;
 using Random = UnityEngine.Random;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
+using System;
 
 public class GameMain : SingletonMonoBehaviour<GameMain>
 {
@@ -17,7 +18,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     [SerializeField] VSImageUI vsImageUI;
     [SerializeField] SoldierController soliderPrefab;
     [SerializeField] TitleFieldUI titleFieldUI;
-    [SerializeField] DialogueUI dialogueUI;
     [SerializeField] BattleManager battleManager;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] CharacterTurnUI characterTurnUI;
@@ -59,7 +59,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     public GameObject MapField { get => mapField; set => mapField = value; }
     public Cursor Cursor { get => cursor; set => cursor = value; }
     public InfluenceOnMapUI InfluenceOnMapUI { get => influenceOnMapUI; set => influenceOnMapUI = value; }
-    public DialogueUI DialogueUI { get => dialogueUI; set => dialogueUI = value; }
 
     //フェーズの管理
     public enum Phase
@@ -692,7 +691,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         }
     }
 
-    private void LordsOrderBattle(CharacterController character)
+    private async void LordsOrderBattle(CharacterController character)
     {
         // 隣接する侵攻可能な領土を取得
         List<Territory> adjacentTerritory = character.influence.FindAdjacentTerritory()
@@ -710,11 +709,11 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
         //バトル準備を開始
         StopAllCoroutines();
-        //await BattlePrepare(strongestCharacter, soliderStrongestHPSum);
-        StartCoroutine(BattlePrepare(attackCharacter));
+        await BattlePrepare(attackCharacter);
+        //StartCoroutine(BattlePrepare(attackCharacter));
     }
 
-    public IEnumerator BattlePrepare(CharacterController attackCharacter)
+    public async UniTask BattlePrepare(CharacterController attackCharacter)
     {
         CharacterController defenderCharacter;
 
@@ -729,11 +728,12 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             battleManager.attackerCharacter = attackCharacter;
 
             TitleFieldUI.instance.titleFieldText.text = "      敵軍の侵攻を受けました";
-            yield return　StartCoroutine(ShowAttackedTerritory(attackCharacter));
+            characterDetailUI.ShowCharacterDetailUI(attackCharacter);
+            await ShowAttackedTerritory(attackCharacter);
 
-            dialogueUI.ShowAttackedUI();
-
-            yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
+            await SceneController.LoadAsync("UIDialogue");
+            varParam.DialogueText = "防衛部隊を選択してください";
+            await UniTask.WaitUntil(() => varParam.IsDialogue.HasValue);
 
             mapField.SetActive(false);
             cursor.gameObject.SetActive(false);
@@ -754,16 +754,16 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 defenderCharacter = SelectDefenceCharacter(attackCharacter);
 
                 //戦闘前の画面表示
-                yield return StartCoroutine(ShowBeforeBattle(attackCharacter, defenderCharacter));
+                await ShowBeforeBattle(attackCharacter, defenderCharacter);
 
                 //AI同士の戦闘
                 if (attackCharacter != playerCharacter & defenderCharacter != playerCharacter)
                 {
                     //戦闘実施　戦闘中画面表示
-                    yield return battleManager.AIBattle(attackCharacter, defenderCharacter);
+                    await battleManager.AIBattle(attackCharacter, defenderCharacter);
 
                     //戦闘後の画面を表示                    
-                    yield return StartCoroutine(battleManager.ShowEndBattle());
+                    await battleManager.ShowEndBattle();
 
                     battleManager.CheckExtinct(defenderCharacter.influence);
 
@@ -787,16 +787,17 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         }
     }
 
-    IEnumerator ShowBeforeBattle(CharacterController attackCharacter, CharacterController defenderCharacter)
+    private async UniTask ShowBeforeBattle(CharacterController attackCharacter, CharacterController defenderCharacter)
     {
         if (attackCharacter == playerCharacter || defenderCharacter == playerCharacter)
         {
             TitleFieldUI.instance.titleFieldText.text = "      出撃命令が下りました";
 
-            yield return StartCoroutine(ShowAttackedTerritory(attackCharacter));
+            await ShowAttackedTerritory(attackCharacter);
 
-            dialogueUI.ShowBattleOrderUI();
-            yield return new WaitUntil(() => !dialogueUI.IsDialogueVisible());
+            await SceneController.LoadAsync("UIDialogue");
+            varParam.DialogueText = "戦闘を開始します";
+            await UniTask.WaitUntil(() => varParam.IsDialogue.HasValue);
 
             battleUI.ShowBattleUI(attackCharacter, defenderCharacter, varParam.Territory);
             battleManager.StartBattle(attackCharacter, defenderCharacter);
@@ -821,7 +822,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             vsImageUI.SetPosition(territoryRectTransform);
 
             battleDetailUI.ShowBattleDetailUI(attackCharacter, defenderCharacter);
-            yield return StartCoroutine(BlinkCursor(1.0f));
+            await BlinkCursor(1.0f);
         }
     }
 
@@ -880,7 +881,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         return defenderCharacter;
     }
 
-    IEnumerator ShowAttackedTerritory(CharacterController attackCharacter)
+    private async UniTask ShowAttackedTerritory(CharacterController attackCharacter)
     {
         mapField.SetActive(true);
         cursor.gameObject.SetActive(true);
@@ -889,19 +890,18 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         RectTransform territoryRectTransform = varParam.Territory.GetComponent<RectTransform>();
         cursor.SetPosition(territoryRectTransform);
 
-        StartCoroutine(BlinkCursor(2));
+        await BlinkCursor(2);
         characterDetailUI.ShowCharacterDetailUI(attackCharacter);
-        yield return new WaitForSeconds(2);
     }
 
     // カーソル点滅のコルーチン
-    public IEnumerator BlinkCursor(float blinkTime)
+    public async UniTask BlinkCursor(float blinkTime)
     {
         float addTime = 0f;
         while (addTime < blinkTime)
         {
             cursor.gameObject.SetActive(!cursor.gameObject.activeSelf); // カーソルの表示・非表示を切り替える
-            yield return new WaitForSeconds(0.25f);
+            await UniTask.Delay(TimeSpan.FromSeconds(0.25f));
             addTime += 0.25f;
         }
     }

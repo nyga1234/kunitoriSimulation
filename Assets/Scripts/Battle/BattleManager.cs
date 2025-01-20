@@ -10,7 +10,6 @@ public class BattleManager : MonoBehaviour
 {
     [SerializeField] Cursor cursor;
     [SerializeField] VSImageUI vsImageUI;
-    //[SerializeField] TerritoryManager territoryManager;
     [SerializeField] private UtilityParamObject varParam;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] Transform AttackerSoliderField, DefenderSoliderField;
@@ -115,6 +114,11 @@ public class BattleManager : MonoBehaviour
 
     public void BattleButton()
     {
+        _ = HandleButtonClickAsync();
+    }
+
+    private async UniTask HandleButtonClickAsync()
+    {
         if (inputEnabled)
         {
             SoundManager.instance.PlayTrainingSE();
@@ -140,12 +144,12 @@ public class BattleManager : MonoBehaviour
                     HideSoliderList(defenderCharacter.soliderList, DefenderSoliderField);
                 }
                 BattleEndCheck(attackerCharacter, defenderCharacter);
-                StartCoroutine(PlayerBattleEnd());
+                await PlayerBattleEnd();
             }
         }
     }
 
-    public void RetreatButton()
+    public async void RetreatButton()
     {
         if (inputEnabled)
         {
@@ -160,21 +164,20 @@ public class BattleManager : MonoBehaviour
                 defenderRetreatFlag = true;
             }
             BattleEndCheck(attackerCharacter, defenderCharacter);
-            StartCoroutine(PlayerBattleEnd());
+            await PlayerBattleEnd();
         }
     }
 
-    IEnumerator PlayerBattleEnd()
+    async UniTask PlayerBattleEnd()
     {
         // 入力を無効化
         inputEnabled = false;
-        yield return new WaitForSeconds(2.0f);
+        await UniTask.Delay(TimeSpan.FromSeconds(2.0f));
         battleUI.HideBattleUI();
         // 入力を有効化
         inputEnabled = true;
 
-        StartCoroutine(ShowEndBattle());
-        yield return new WaitForSeconds(battleAfterWaitTime);
+        await ShowEndBattle();
 
         CheckExtinct(defenderCharacter.influence);
 
@@ -205,7 +208,6 @@ public class BattleManager : MonoBehaviour
             {
                 SoldierController defenderSolider = GetRandomSolider(defenceChara.soliderList);
                 attackerSolider.Attack(attackChara, defenceChara, defenderSolider, varParam.Territory);
-                //defenderSolider.CounterAttack(attackChara, defenceChara, attackerSolider, influeneceManager.territory);
             }
         }
         else
@@ -435,7 +437,7 @@ public class BattleManager : MonoBehaviour
         defenderCharacter.isBattle = true;
     }
 
-    public IEnumerator ShowEndBattle()
+    public async UniTask ShowEndBattle()
     {
         TitleFieldUI.instance.titleFieldSubText.text = "戦闘フェーズ";
         mapField.SetActive(true);
@@ -446,7 +448,6 @@ public class BattleManager : MonoBehaviour
         RectTransform territoryRectTransform = varParam.Territory.GetComponent<RectTransform>();
         cursor.SetPosition(territoryRectTransform);
 
-        //cursor.transform.position = territoryManager.territory.position;
         battleDetailUI.ShowBattleDetailUI(attackerCharacter, defenderCharacter);
         if (attackerRetreatFlag == true)
         {
@@ -457,7 +458,7 @@ public class BattleManager : MonoBehaviour
             TitleFieldUI.instance.titleFieldText.text = "      侵攻側の勝利です";
             StartCoroutine(GameMain.instance.BlinkTerritory(0.5f, attackerCharacter, defenderCharacter, varParam.Territory));
         }
-        yield return new WaitForSeconds(battleAfterWaitTime);
+        await UniTask.Delay(TimeSpan.FromSeconds(battleAfterWaitTime));
 
         battleDetailUI.HideBattleDetailUI();
         mapField.SetActive(false);
@@ -550,13 +551,13 @@ public class BattleManager : MonoBehaviour
         return soliderList[randomIndex];
     }
 
-    public void AttackBattle(CharacterController attackCharacter, CharacterController defenceCharacter)
+    public async void AttackBattle(CharacterController attackCharacter, CharacterController defenceCharacter)
     {
-        StartCoroutine(WaitForAttackBattle(attackCharacter, defenceCharacter));
+        await WaitForAttackBattle(attackCharacter, defenceCharacter);
     }
 
     //自勢力の味方が攻撃する処理
-    public IEnumerator WaitForAttackBattle(CharacterController attackCharacter, CharacterController defenceCharacter)
+    public async UniTask WaitForAttackBattle(CharacterController attackCharacter, CharacterController defenceCharacter)
     {
         attackerRetreatFlag = false;
         defenderRetreatFlag = false;
@@ -572,33 +573,29 @@ public class BattleManager : MonoBehaviour
         // カーソルの位置を設定
         RectTransform territoryRectTransform = varParam.Territory.GetComponent<RectTransform>();
         cursor.SetPosition(territoryRectTransform);
-        //cursor.transform.position = territoryManager.territory.position;
 
         vsImageUI.SetPosition(territoryRectTransform);
-        //vsImageUI.transform.position = territoryManager.territory.position;
 
         battleDetailUI.ShowBattleDetailUI(attackerCharacter, defenderCharacter);
-        StartCoroutine(GameMain.instance.BlinkCursor(1.0f));
-        yield return new WaitForSeconds(1.0f);
+        await GameMain.instance.BlinkCursor(1.0f);
 
         //戦闘実施
-        yield return AIBattle(attackCharacter, defenceCharacter);
+        await AIBattle(attackCharacter, defenceCharacter);
 
-        StartCoroutine(ShowEndBattle()); 
-        yield return new WaitForSeconds(battleAfterWaitTime);
+        await ShowEndBattle();
 
         CheckExtinct(defenderCharacter.influence);
 
         GameMain.instance.PlayerBattlePhase();
     }
 
-    public void DefenceBattle(CharacterController attackCharacter, CharacterController defenceCharacter)
+    public async void DefenceBattle(CharacterController attackCharacter, CharacterController defenceCharacter)
     {
-        StartCoroutine(WaitForDefenceBattle(attackCharacter, defenceCharacter));
+        await WaitForDefenceBattle(attackCharacter, defenceCharacter);
     }
 
     //自勢力の味方が防衛する処理
-    public IEnumerator WaitForDefenceBattle(CharacterController attackCharacter, CharacterController defenceCharacter)
+    public async UniTask WaitForDefenceBattle(CharacterController attackCharacter, CharacterController defenceCharacter)
     {
         attackerRetreatFlag = false;
         defenderRetreatFlag = false;
@@ -614,20 +611,16 @@ public class BattleManager : MonoBehaviour
         // カーソルの位置を設定
         RectTransform territoryRectTransform = varParam.Territory.GetComponent<RectTransform>();
         cursor.SetPosition(territoryRectTransform);
-        //cursor.transform.position = territoryManager.territory.position;
 
         vsImageUI.SetPosition(territoryRectTransform);
-        //vsImageUI.transform.position = territoryManager.territory.position;
 
         battleDetailUI.ShowBattleDetailUI(attackCharacter, defenceCharacter);
-        StartCoroutine(GameMain.instance.BlinkCursor(1.0f));
-        yield return new WaitForSeconds(1.0f);
+        await GameMain.instance.BlinkCursor(1.0f);
 
         //戦闘実施　戦闘中画面表示
-        yield return AIBattle(attackCharacter, defenceCharacter);
+        await AIBattle(attackCharacter, defenceCharacter);
 
-        StartCoroutine(ShowEndBattle());
-        yield return new WaitForSeconds(battleAfterWaitTime);
+        await ShowEndBattle();
 
         CheckExtinct(defenderCharacter.influence);
 
@@ -660,7 +653,7 @@ public class BattleManager : MonoBehaviour
         CheckAttackableCharacterInInfluence();
     }
 
-    public IEnumerator AIBattle(CharacterController attackChara, CharacterController defenceChara)
+    public async UniTask AIBattle(CharacterController attackChara, CharacterController defenceChara)
     {
         attackerCharacter = attackChara;
         defenderCharacter = defenceChara;
@@ -675,7 +668,7 @@ public class BattleManager : MonoBehaviour
             BattleEndCheck(attackChara, defenceChara);
             battleDetailUI.ShowBattleDetailUI(attackChara, defenceChara);
             vsImageUI.gameObject.SetActive(!vsImageUI.gameObject.activeSelf); // VSイメージの表示・非表示を切り替える
-            yield return new WaitForSeconds(0.05f);
+            await UniTask.Delay(TimeSpan.FromSeconds(0.05f));
         }
     }
 }

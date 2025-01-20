@@ -10,7 +10,6 @@ public class TerritoryUIOnMouse : MonoBehaviour
 {
     [SerializeField] Cursor cursor;
     [SerializeField] TitleFieldUI titleFieldUI;
-    [SerializeField] DialogueUI dialogueUI;
     [SerializeField] InfluenceUI influenceUI;
     [SerializeField] InfluenceOnMapUI influenceOnMapUI;
     [SerializeField] TerritoryGenerator territoryGenerator;
