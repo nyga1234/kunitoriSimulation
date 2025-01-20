@@ -12,9 +12,6 @@ public class AbandonUI : MonoBehaviour
 
     private Color originalColor; // Œ³‚Ì”wŒiF‚ğ•Û‚·‚é•Ï”
 
-    [SerializeField] GameObject characterIndexMenu;
-    [SerializeField] CharacterIndexUI characterIndexUI;
-    [SerializeField] CharacterDetailUI characterDetailUI;
     [SerializeField] BattleManager battleManager;
 
     [SerializeField] private UtilityParamObject varParam;
@@ -119,9 +116,8 @@ public class AbandonUI : MonoBehaviour
 
         if (varParam.IsConfirm == true)
         {
-            characterIndexMenu.gameObject.SetActive(false);
-            characterIndexUI.HideCharacterIndexUI();
-            characterDetailUI.gameObject.SetActive(false);
+            GameMain.instance.CharacterIndexUI.HideCharacterIndexUI();
+            GameMain.instance.CharacterDetailUI.gameObject.SetActive(false);
 
             battleManager.AbandonBattle();
         }

@@ -5,9 +5,6 @@ using System.Linq;
 using Random = UnityEngine.Random;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
-using System;
-using UnityEngine.Experimental.Rendering;
-using UnityEngine.TextCore.Text;
 
 public class GameMain : SingletonMonoBehaviour<GameMain>
 {
@@ -38,7 +35,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     [SerializeField] BattleUI battleUI;
     [SerializeField] BattleDetailUI battleDetailUI;
     [SerializeField] GameObject mapField;
-    [SerializeField] GameObject characterIndexMenu;
     [SerializeField] GameObject characterSearchMenu;
     public TerritoryGenerator territoryGenerator;
     public CharacterController playerCharacter;
@@ -58,7 +54,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     [SerializeField] Transform parent;
     public List<Territory> initializeTerritoryList;
 
-    public GameObject CharacterIndexMenu { get => characterIndexMenu; set => characterIndexMenu = value; }
     public CharacterIndexUI CharacterIndexUI { get => characterIndexUI; set => characterIndexUI = value; }
     public CharacterDetailUI CharacterDetailUI { get => characterDetailUI; set => characterDetailUI = value; }
     public GameObject MapField { get => mapField; set => mapField = value; }
@@ -744,7 +739,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             cursor.gameObject.SetActive(false);
 
             TitleFieldUI.instance.titleFieldText.text = "      –h‰q•”‘à‚ğ‘I‘ğ‚µ‚Ä‚­‚¾‚³‚¢";
-            characterIndexMenu.SetActive(true);
             characterIndexUI.ShowCharacterIndexUI(varParam.Territory.influence.characterList);
             attackedCharacterUI.ShowAttackedCharacterUI(battleManager.attackerCharacter);
             abandonUI.ShowAbandonUI();
@@ -766,8 +760,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 if (attackCharacter != playerCharacter & defenderCharacter != playerCharacter)
                 {
                     //í“¬À{@í“¬’†‰æ–Ê•\¦
-                    battleManager.attackerCharacter = attackCharacter;
-                    battleManager.defenderCharacter = defenderCharacter;
                     yield return battleManager.AIBattle(attackCharacter, defenderCharacter);
 
                     //í“¬Œã‚Ì‰æ–Ê‚ğ•\¦                    

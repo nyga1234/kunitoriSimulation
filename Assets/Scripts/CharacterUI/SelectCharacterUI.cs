@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using static GameMain;
+using UnityEngine.TextCore.Text;
+using UnityEditor.VersionControl;
 
 [RequireComponent(typeof(Button))]
 [RequireComponent(typeof(EventTrigger))]
@@ -10,8 +13,6 @@ public class SelectCharacterUI : MonoBehaviour
 {
     private Button _button;
     public Button Button => _button;
-
-    [SerializeField] CharacterDetailUI characterDetailUI;
 
     private CharacterController characterController;
     private Color originalColor; // 元の背景色を保持する変数
@@ -61,7 +62,18 @@ public class SelectCharacterUI : MonoBehaviour
         Debug.Log("OnSelectEvent");
         SoundManager.instance.PlayCursorSE();
         ChangeBackgroundColor(Color.gray);
-        characterDetailUI.ShowCharacterDetailUI(characterController);
+        GameMain.instance.CharacterDetailUI.ShowCharacterDetailUI(characterController);
+
+        switch (GameMain.instance.step)
+        {
+            case Step.Appointment:
+                TitleFieldUI.instance.titleFieldText.text = "選択したキャラクターを昇格";
+                break;
+
+            //default:
+            //    Debug.LogWarning("未知のゲームステップです。");
+            //    break;
+        }
     }
 
     private void OnDeselectEvent(BaseEventData baseEvent)

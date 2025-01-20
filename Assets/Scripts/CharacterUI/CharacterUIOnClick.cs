@@ -8,9 +8,6 @@ public class CharacterUIOnClick : MonoBehaviour
     public GameMain gameManager;
     public BattleManager battleManager;
 
-    [SerializeField] GameObject characterIndexMenu;
-    [SerializeField] CharacterIndexUI characterIndexUI;
-    [SerializeField] CharacterDetailUI characterDetailUI;
     [SerializeField] BattleUI battleUI;
 
     [SerializeField] private UtilityParamObject varParam;
@@ -72,7 +69,7 @@ public class CharacterUIOnClick : MonoBehaviour
 
     private void HandleCharacterAppointment(CharacterController character)
     {
-        if (character.rank == Rank.—Ìå)
+        if (Rank.—Ìå == (Rank)(int)character.rank + 1 || character.rank == Rank.—Ìå)
         {
             ShowTemporaryMessage("—Ìå‚Í•ÏX‚Å‚«‚Ü‚¹‚ñ");
             return;
@@ -217,16 +214,15 @@ public class CharacterUIOnClick : MonoBehaviour
     private void SortAndRefreshUI(CharacterController character)
     {
         character.influence.SortCharacterByRank(character.influence.characterList);
-        characterIndexUI.HideCharacterIndexUI();
-        characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
-        characterDetailUI.ShowCharacterDetailUI(character);
+        GameMain.instance.CharacterIndexUI.HideCharacterIndexUI();
+        GameMain.instance.CharacterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
+        GameMain.instance.CharacterDetailUI.ShowCharacterDetailUI(character);
     }
 
     private void HideAllCharacterUI()
     {
-        characterIndexMenu.gameObject.SetActive(false);
-        characterIndexUI.HideCharacterIndexUI();
-        characterDetailUI.gameObject.SetActive(false);
+        GameMain.instance.CharacterIndexUI.HideCharacterIndexUI();
+        GameMain.instance.CharacterDetailUI.gameObject.SetActive(false);
     }
 
     private void ShowTemporaryMessage(string message)

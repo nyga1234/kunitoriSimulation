@@ -61,11 +61,13 @@ public class SaveLoadUI : MonoBehaviour
         // セーブ処理
         if (SaveLoadManager.IsSaving)
         {
+            //新規セーブ
             if (!SaveLoadManager.HasSaveData(slot))
             {
                 GameManager.instance.SaveGame(slot);
                 UpdateSlotUI();
             }
+            //上書きセーブ
             else
             {
                 await SceneController.LoadAsync("UIConfirm");
@@ -80,7 +82,8 @@ public class SaveLoadUI : MonoBehaviour
                 }
             }
         }
-        else // ロード処理
+        //ロード処理
+        else
         {
             if (SaveLoadManager.HasSaveData(slot))
             {

@@ -8,16 +8,12 @@ using Cysharp.Threading.Tasks;
 
 public class TerritoryUIOnMouse : MonoBehaviour
 {
-    //[SerializeField] TerritoryManager territoryManager;
     [SerializeField] Cursor cursor;
     [SerializeField] TitleFieldUI titleFieldUI;
     [SerializeField] DialogueUI dialogueUI;
     [SerializeField] InfluenceUI influenceUI;
     [SerializeField] InfluenceOnMapUI influenceOnMapUI;
-    [SerializeField] CharacterIndexUI characterIndexUI;
-    [SerializeField] CharacterDetailUI characterDetailUI;
     [SerializeField] TerritoryGenerator territoryGenerator;
-    [SerializeField] GameObject characterIndexMenu;
     [SerializeField] GameObject mapField;
     [SerializeField] BattleManager battleManager;
     [SerializeField] BattleUI battleUI;
@@ -113,8 +109,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
                 influenceOnMapUI.HideInfluenceOnMapUI();
 
                 //キャラクター情報を表示
-                characterIndexMenu.SetActive(true);
-                characterIndexUI.ShowCharacterIndexUI(onPointEnterTerritory.influence.characterList);
+                GameMain.instance.CharacterIndexUI.ShowCharacterIndexUI(onPointEnterTerritory.influence.characterList);
                 break;
 
             //仕官ステップ
@@ -187,8 +182,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
                         cursor.gameObject.SetActive(false);
 
                         //侵攻キャラクター選択画面へ
-                        characterIndexMenu.SetActive(true);
-                        characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
+                        GameMain.instance.CharacterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
                     }
                     else
                     {

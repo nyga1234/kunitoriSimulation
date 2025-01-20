@@ -19,10 +19,9 @@ public class MouseDown1ToBack : MonoBehaviour
     {
         if (GameMain.instance.phase == Phase.CharacterChoicePhase)
         {
-            if (Input.GetMouseButtonDown(1) && GameMain.instance.CharacterIndexMenu.gameObject.activeSelf)
+            if (Input.GetMouseButtonDown(1) && GameMain.instance.CharacterIndexUI.gameObject.activeSelf)
             {
                 SoundManager.instance.PlayCancelSE();
-                GameMain.instance.CharacterIndexMenu.gameObject.SetActive(false);
                 GameMain.instance.CharacterIndexUI.HideCharacterIndexUI();
                 GameMain.instance.CharacterDetailUI.gameObject.SetActive(false);
 
@@ -40,10 +39,9 @@ public class MouseDown1ToBack : MonoBehaviour
                 GameMain.instance.InfluenceOnMapUI.HideInfluenceOnMapUI();
                 GameMain.instance.ShowLordUI(GameMain.instance.playerCharacter);
             }
-            if (Input.GetMouseButtonDown(1) && GameMain.instance.CharacterIndexMenu.gameObject.activeSelf)
+            if (Input.GetMouseButtonDown(1) && GameMain.instance.CharacterIndexUI.gameObject.activeSelf)
             {
                 SoundManager.instance.PlayCancelSE();
-                GameMain.instance.CharacterIndexMenu.gameObject.SetActive(false);
                 GameMain.instance.CharacterIndexUI.HideCharacterIndexUI();
                 GameMain.instance.CharacterDetailUI.gameObject.SetActive(false);
 
@@ -68,10 +66,9 @@ public class MouseDown1ToBack : MonoBehaviour
                 GameMain.instance.InfluenceOnMapUI.HideInfluenceOnMapUI();
                 GameMain.instance.ShowPersonalUI(GameMain.instance.playerCharacter);
             }
-            if (Input.GetMouseButtonDown(1) && GameMain.instance.CharacterIndexMenu.gameObject.activeSelf)
+            if (Input.GetMouseButtonDown(1) && GameMain.instance.CharacterIndexUI.gameObject.activeSelf)
             {
                 SoundManager.instance.PlayCancelSE();
-                GameMain.instance.CharacterIndexMenu.gameObject.SetActive(false);
                 GameMain.instance.CharacterIndexUI.HideCharacterIndexUI();
                 GameMain.instance.CharacterDetailUI.gameObject.SetActive(false);
 
@@ -89,10 +86,9 @@ public class MouseDown1ToBack : MonoBehaviour
                 GameMain.instance.InfluenceOnMapUI.HideInfluenceOnMapUI();
                 GameMain.instance.ShowBattleUI(GameMain.instance.playerCharacter);
             }
-            if (Input.GetMouseButtonDown(1) && GameMain.instance.CharacterIndexMenu.gameObject.activeSelf)
+            if (Input.GetMouseButtonDown(1) && GameMain.instance.CharacterIndexUI.gameObject.activeSelf)
             {
                 SoundManager.instance.PlayCancelSE();
-                GameMain.instance.CharacterIndexMenu.gameObject.SetActive(false);
                 GameMain.instance.CharacterIndexUI.HideCharacterIndexUI();
                 GameMain.instance.CharacterDetailUI.gameObject.SetActive(false);
 

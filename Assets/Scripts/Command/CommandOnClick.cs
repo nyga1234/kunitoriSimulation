@@ -17,11 +17,7 @@ public class CommandOnClick : MonoBehaviour
     [SerializeField] CharacterMenuUI characterMenuUI;
     [SerializeField] PersonalMenuUI personalMenuUI;
     [SerializeField] BattleMenuUI battleMenuUI;
-    [SerializeField] GameObject characterIndexMenu;
     [SerializeField] GameObject characterSearchMenu;
-    [SerializeField] CharacterIndexUI characterIndexUI;
-    //[SerializeField] CharacterSearchUI characterSearchUI;
-    [SerializeField] CharacterDetailUI characterDetailUI;
     [SerializeField] InfluenceUI influenceUI;
     [SerializeField] GameObject mapField;
     [SerializeField] GameObject functionUI;
@@ -32,7 +28,7 @@ public class CommandOnClick : MonoBehaviour
         GameMain.instance.step = Step.Information;
 
         characterMenuUI.HideCharacterMenuUI();
-        characterDetailUI.HideCharacterDetailUI();
+        GameMain.instance.CharacterDetailUI.HideCharacterDetailUI();
 
         mapField.gameObject.SetActive(true);
     }
@@ -42,11 +38,11 @@ public class CommandOnClick : MonoBehaviour
         GameMain.instance.step = Step.Appointment;
 
         characterMenuUI.HideCharacterMenuUI();
-        characterDetailUI.HideCharacterDetailUI();
+        GameMain.instance.CharacterDetailUI.HideCharacterDetailUI();
 
-        TitleFieldUI.instance.titleFieldText.text = "      昇格したいキャラクターをクリック";
-        characterIndexMenu.SetActive(true);
-        characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
+        TitleFieldUI.instance.titleFieldText.text = "選択したキャラクターを昇格";
+
+        GameMain.instance.CharacterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
     }
 
     public void OnPointerClickSearch()
@@ -120,11 +116,10 @@ public class CommandOnClick : MonoBehaviour
             GameMain.instance.step = Step.Banishment;
 
             characterMenuUI.HideCharacterMenuUI();
-            characterDetailUI.HideCharacterDetailUI();
+            GameMain.instance.CharacterDetailUI.HideCharacterDetailUI();
 
             TitleFieldUI.instance.titleFieldText.text = "      クリックで追放";
-            characterIndexMenu.SetActive(true);
-            characterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
+            GameMain.instance.CharacterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
         }
         else
         {
@@ -145,7 +140,7 @@ public class CommandOnClick : MonoBehaviour
             GameMain.instance.step = Step.End;
 
             characterMenuUI.HideCharacterMenuUI();
-            characterDetailUI.HideCharacterDetailUI();
+            GameMain.instance.CharacterDetailUI.HideCharacterDetailUI();
 
             //GameMainのフェーズを進める
             GameMain.instance.phase = Phase.OtherLordPhase;
@@ -275,7 +270,7 @@ public class CommandOnClick : MonoBehaviour
         GameMain.instance.step = Step.Information;
 
         battleMenuUI.HideBattleMenuUI();
-        characterDetailUI.HideCharacterDetailUI();
+        GameMain.instance.CharacterDetailUI.HideCharacterDetailUI();
 
         mapField.gameObject.SetActive(true);
     }
@@ -302,7 +297,7 @@ public class CommandOnClick : MonoBehaviour
             GameMain.instance.step = Step.Attack;
 
             battleMenuUI.HideBattleMenuUI();
-            characterDetailUI.HideCharacterDetailUI();
+            GameMain.instance.CharacterDetailUI.HideCharacterDetailUI();
 
             mapField.gameObject.SetActive(true);
         }
@@ -325,7 +320,7 @@ public class CommandOnClick : MonoBehaviour
             GameMain.instance.step = Step.End;
 
             battleMenuUI.HideBattleMenuUI();
-            characterDetailUI.HideCharacterDetailUI();
+            GameMain.instance.CharacterDetailUI.HideCharacterDetailUI();
 
             bool isPlayerLast = GameMain.instance.characterList.LastOrDefault() == GameMain.instance.playerCharacter;
             if (isPlayerLast)
@@ -356,7 +351,7 @@ public class CommandOnClick : MonoBehaviour
 
         GameMain.instance.playerCharacter.gold -= 9;
         characterMenuUI.HideCharacterMenuUI();
-        characterDetailUI.HideCharacterDetailUI();
+        GameMain.instance.CharacterDetailUI.HideCharacterDetailUI();
 
         //Noneに所属するキャラクターリストからランダムに6名取得
         List<CharacterController> noneInfluenceCharacters = GameMain.instance.noneInfluence.characterList;
@@ -366,7 +361,6 @@ public class CommandOnClick : MonoBehaviour
         List<CharacterController> randomCharacters = shuffledList.Take(6).ToList();
 
         TitleFieldUI.instance.titleFieldText.text = "      配下に加えたいキャラをクリックで追加";
-        characterIndexMenu.SetActive(true);
-        characterIndexUI.ShowCharacterIndexUI(randomCharacters);
+        GameMain.instance.CharacterIndexUI.ShowCharacterIndexUI(randomCharacters);
     }
 }
