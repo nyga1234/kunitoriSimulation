@@ -119,7 +119,7 @@ public class AbandonUI : MonoBehaviour
             GameMain.instance.CharacterIndexUI.HideCharacterIndexUI();
             GameMain.instance.CharacterDetailUI.gameObject.SetActive(false);
 
-            battleManager.AbandonBattle();
+            await battleManager.AbandonBattle();
         }
     }
 }

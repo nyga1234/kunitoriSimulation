@@ -24,8 +24,6 @@ public class BattleManager : MonoBehaviour
 
     public Influence influence;
 
-    public bool isBattleEnd;
-
     public bool attackerRetreatFlag = false;
     public bool defenderRetreatFlag = false;
 
@@ -414,7 +412,6 @@ public class BattleManager : MonoBehaviour
             }
             attackerCharacter.isAttackable = false;
             defenderCharacter.fame += 2;
-            isBattleEnd = true;
         }
         else if (defenderRetreatFlag == true)
         {
@@ -430,13 +427,16 @@ public class BattleManager : MonoBehaviour
             attackerCharacter.isAttackable = false;
             attackerCharacter.fame += 2;
             territoryUIOnMouse.ChangeTerritoryByBattle(attackerCharacter.influence);
-            isBattleEnd = true;
         }
 
         attackerCharacter.isBattle = true;
         defenderCharacter.isBattle = true;
     }
 
+    /// <summary>
+    /// 戦闘後の処理
+    /// </summary>
+    /// <returns></returns>
     public async UniTask ShowEndBattle()
     {
         TitleFieldUI.instance.titleFieldSubText.text = "戦闘フェーズ";
@@ -599,23 +599,20 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void AbandonBattle()
-    {
-        StartCoroutine(WaitForAbandonBattle());
-    }
-
-    public IEnumerator WaitForAbandonBattle()
+    /// <summary>
+    /// 戦闘を放棄する
+    /// </summary>
+    /// <returns></returns>
+    public async UniTask AbandonBattle()
     {
         mapField.SetActive(true);
 
         TitleFieldUI.instance.titleFieldText.text = "戦闘を放棄しました";
-        StartCoroutine(GameMain.instance.BlinkTerritory(0.5f, attackerCharacter, GameMain.instance.playerCharacter, varParam.Territory));
-        yield return new WaitForSeconds(battleAfterWaitTime);
+        await GameMain.instance.BlinkTerritory(0.5f, attackerCharacter, GameMain.instance.playerCharacter, varParam.Territory);
 
         attackerCharacter.isAttackable = false;
         attackerCharacter.isBattle = true;
         territoryUIOnMouse.ChangeTerritoryByBattle(attackerCharacter.influence);
-        isBattleEnd = true;
 
         CheckExtinct(GameMain.instance.playerCharacter.influence);
 
@@ -625,6 +622,12 @@ public class BattleManager : MonoBehaviour
         CheckAttackableCharacterInInfluence();
     }
 
+    /// <summary>
+    /// プレイヤー以外が戦闘する処理
+    /// </summary>
+    /// <param name="attackChara"></param>
+    /// <param name="defenceChara"></param>
+    /// <returns></returns>
     public async UniTask AIBattle(CharacterController attackChara, CharacterController defenceChara)
     {
         attackerCharacter = attackChara;

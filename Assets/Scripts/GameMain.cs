@@ -655,7 +655,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             {
                 case 1:
                 case 2:
-                    battleManager.isBattleEnd = true;
                     NextCharacterBattlePhase(character);
                     break;
                 case 3:
@@ -666,7 +665,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                     }
                     else
                     {
-                        battleManager.isBattleEnd = true;
                         NextCharacterBattlePhase(character);
                     }
                     break;
@@ -678,7 +676,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                     }
                     else
                     {
-                        battleManager.isBattleEnd = true;
                         NextCharacterBattlePhase(character);
                     }
                     break;
@@ -686,7 +683,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         }
         else
         {
-            battleManager.isBattleEnd = true;
             NextCharacterBattlePhase(character);
         }
     }
@@ -710,14 +706,12 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         //バトル準備を開始
         StopAllCoroutines();
         await BattlePrepare(attackCharacter);
-        //StartCoroutine(BattlePrepare(attackCharacter));
     }
 
     public async UniTask BattlePrepare(CharacterController attackCharacter)
     {
         CharacterController defenderCharacter;
 
-        battleManager.isBattleEnd = false;
         defenceFlag = false;
 
         //侵攻された領土がプレイヤー勢力　かつ　プレイヤーが領主の場合
@@ -779,7 +773,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 attackCharacter.isAttackable = false;
 
                 territoryUIOnMouse.ChangeTerritoryByBattle(attackCharacter.influence);
-                battleManager.isBattleEnd = true;
 
                 //次の処理へ移行
                 battleManager.CheckAttackableCharacterInInfluence();
@@ -993,6 +986,11 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             .FirstOrDefault();
     }
 
+    /// <summary>
+    /// リストからランダムな領土を取得する
+    /// </summary>
+    /// <param name="territoryList"></param>
+    /// <returns></returns>
     private Territory GetRandomTerritory(List<Territory> territoryList)
     {
         if (territoryList.Count == 0)
