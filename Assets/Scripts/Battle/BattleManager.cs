@@ -252,13 +252,18 @@ public class BattleManager : MonoBehaviour
     /// <param name="defenceCharacter"></param>
     public void RetreatCheck(CharacterController attackCharacter, CharacterController defenceCharacter)
     {
-        if (attackCharacter.soliderList.Count == 0)
+        //ƒvƒŒƒCƒ„[‚ªí“¬‚·‚éê‡
+        if (attackCharacter == GameMain.instance.playerCharacter || defenceCharacter == GameMain.instance.playerCharacter)
         {
-            attackerRetreatFlag = true;
-        }
-        else if (defenceCharacter.soliderList.Count == 0)
-        {
-            defenderRetreatFlag = true;
+            if (attackCharacter.soliderList.Count == 0)
+            {
+                attackerRetreatFlag = true;
+            }
+
+            if (defenceCharacter.soliderList.Count == 0)
+            {
+                defenderRetreatFlag = true;
+            }
         }
         else
         {

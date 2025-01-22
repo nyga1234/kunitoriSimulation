@@ -879,13 +879,14 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     {
         mapField.SetActive(true);
         cursor.gameObject.SetActive(true);
+        characterDetailUI.ShowCharacterDetailUI(attackCharacter);
 
         // カーソルの位置を設定
         RectTransform territoryRectTransform = varParam.Territory.GetComponent<RectTransform>();
         cursor.SetPosition(territoryRectTransform);
 
         await BlinkCursor(2);
-        characterDetailUI.ShowCharacterDetailUI(attackCharacter);
+        //characterDetailUI.ShowCharacterDetailUI(attackCharacter);
     }
 
     // カーソル点滅のコルーチン
