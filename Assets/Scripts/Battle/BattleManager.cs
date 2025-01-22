@@ -9,7 +9,6 @@ using System;
 public class BattleManager : MonoBehaviour
 {
     [SerializeField] Cursor cursor;
-    [SerializeField] VSImageUI vsImageUI;
     [SerializeField] private UtilityParamObject varParam;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] Transform AttackerSoliderField, DefenderSoliderField;
@@ -370,7 +369,7 @@ public class BattleManager : MonoBehaviour
     {
         TitleFieldUI.instance.titleFieldSubText.text = "戦闘フェーズ";
         mapField.SetActive(true);
-        vsImageUI.gameObject.SetActive(false);
+        GameMain.instance.VSImageUI.gameObject.SetActive(false);
         cursor.gameObject.SetActive(true);
 
         // カーソルの位置を設定
@@ -503,7 +502,7 @@ public class BattleManager : MonoBehaviour
         RectTransform territoryRectTransform = varParam.Territory.GetComponent<RectTransform>();
         cursor.SetPosition(territoryRectTransform);
 
-        vsImageUI.SetPosition(territoryRectTransform);
+        GameMain.instance.VSImageUI.SetPosition(territoryRectTransform);
 
         battleDetailUI.ShowBattleDetailUI(attackCharacter, defenceCharacter);
         await GameMain.instance.BlinkCursor(1.0f);
@@ -571,7 +570,7 @@ public class BattleManager : MonoBehaviour
             RetreatCheck(attackChara, defenceChara);
             BattleEndCheck(attackChara, defenceChara);
             battleDetailUI.ShowBattleDetailUI(attackChara, defenceChara);
-            vsImageUI.gameObject.SetActive(!vsImageUI.gameObject.activeSelf); // VSイメージの表示・非表示を切り替える
+            GameMain.instance.VSImageUI.gameObject.SetActive(!GameMain.instance.VSImageUI.gameObject.activeSelf); // VSイメージの表示・非表示を切り替える
             await UniTask.Delay(TimeSpan.FromSeconds(0.05f));
         }
     }
