@@ -246,155 +246,84 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// ‘Ş‹p‚·‚é‚©ƒ`ƒFƒbƒN‚·‚é
+    /// </summary>
+    /// <param name="attackCharacter"></param>
+    /// <param name="defenceCharacter"></param>
     public void RetreatCheck(CharacterController attackCharacter, CharacterController defenceCharacter)
     {
-        if (attackCharacter == GameMain.instance.playerCharacter)
+        if (attackCharacter.soliderList.Count == 0)
         {
-            if (attackCharacter.soliderList.Count == 0)
-            {
-                attackerRetreatFlag = true;
-            }
+            attackerRetreatFlag = true;
         }
-
-        if (defenceCharacter == GameMain.instance.playerCharacter)
+        else if (defenceCharacter.soliderList.Count == 0)
         {
-            if (defenceCharacter.soliderList.Count == 0)
-            {
-                defenderRetreatFlag = true;
-            }
-        }
-
-        int attackerSoliderHpSum = 0;
-        foreach (SoldierController solider in attackCharacter.soliderList)
-        {
-            attackerSoliderHpSum += solider.hp;
-        }
-
-        int defenderSoliderHpSum = 0;
-        foreach (SoldierController solider in defenceCharacter.soliderList)
-        {
-            defenderSoliderHpSum += solider.hp;
-        }
-
-        //–h‰q‘¤‚ª•‰‚¯‚Ä‚¢‚éê‡
-        if (attackerSoliderHpSum > defenderSoliderHpSum)
-        {
-            if (defenceCharacter != GameMain.instance.playerCharacter)
-            {
-                switch (varParam.Territory.defenceTerritoryType)
-                {
-                    //»”™‚Ìê‡A‚¢‚¸‚ê‚©•ºm‚ÌHP‚ª20–¢–‚É‚È‚Á‚½‚ç‘Ş‹p‚³‚¹‚é
-                    case Territory.DefenceTerritoryType.desert:
-                        foreach (SoldierController solider in defenceCharacter.soliderList)
-                        {
-                            if (solider.hp < 20)
-                            {
-                                defenderRetreatFlag = true;
-                                Debug.Log("–h‰q‘¤‚ª•‰‚¯‚Ü‚µ‚½");
-                            }
-                        }
-                        break;
-                    //r–ì‚Ìê‡A‚¢‚¸‚ê‚©•ºm‚ÌHP‚ª10–¢–‚É‚È‚Á‚½‚ç‘Ş‹p‚³‚¹‚é
-                    case Territory.DefenceTerritoryType.wilderness:
-                        foreach (SoldierController solider in defenceCharacter.soliderList)
-                        {
-                            if (solider.hp < 10)
-                            {
-                                defenderRetreatFlag = true;
-                                Debug.Log("–h‰q‘¤‚ª•‰‚¯‚Ü‚µ‚½");
-                            }
-                        }
-                        break;
-                    //•½Œ´‚Ìê‡A•ºm‚ª1‘Ì€–S‚µ‚½‚ç‘Ş‹p‚³‚¹‚é
-                    case Territory.DefenceTerritoryType.plain:
-                        if (defenceCharacter.soliderList.Count < 10)
-                        {
-                            defenderRetreatFlag = true;
-                            Debug.Log("–h‰q‘¤‚ª•‰‚¯‚Ü‚µ‚½");
-                        }
-                        break;
-                    //X—Ñ‚Ìê‡A”¼‰ó(•ºm”¼•ª€–S)‚µ‚½‚ç‘Ş‹p‚³‚¹‚é
-                    case Territory.DefenceTerritoryType.forest:
-                        if (defenceCharacter.soliderList.Count < 5)
-                        {
-                            defenderRetreatFlag = true;
-                            Debug.Log("–h‰q‘¤‚ª•‰‚¯‚Ü‚µ‚½");
-                        }
-                        break;
-                    //Ô‚Ìê‡A‘S–Å(•ºm‘Sˆõ€–S)‚µ‚½‚ç‘Ş‹p‚³‚¹‚é
-                    case Territory.DefenceTerritoryType.fort:
-                        if (defenceCharacter.soliderList.Count == 0)
-                        {
-                            defenderRetreatFlag = true;
-                            Debug.Log("–h‰q‘¤‚ª•‰‚¯‚Ü‚µ‚½");
-                        }
-                        break;
-                }
-            }
-        }
-        //NU‘¤‚ª•‰‚¯‚Ä‚¢‚éê‡
-        else if (attackerSoliderHpSum < defenderSoliderHpSum)
-        {
-            if (attackCharacter != GameMain.instance.playerCharacter)
-            {
-                switch (varParam.Territory.attackTerritoryType)
-                {
-                    //»”™‚Ìê‡A‚¢‚¸‚ê‚©•ºm‚ÌHP‚ª20–¢–‚É‚È‚Á‚½‚ç‘Ş‹p‚³‚¹‚é
-                    case Territory.AttackTerritoryType.desert:
-                        foreach (SoldierController solider in attackCharacter.soliderList)
-                        {
-                            if (solider.hp < 20)
-                            {
-                                attackerRetreatFlag = true;
-                                Debug.Log("NU‘¤‚ª•‰‚¯‚Ü‚µ‚½");
-                            }
-                        }
-                        break;
-                    //r–ì‚Ìê‡A‚¢‚¸‚ê‚©•ºm‚ÌHP‚ª10–¢–‚É‚È‚Á‚½‚ç‘Ş‹p‚³‚¹‚é
-                    case Territory.AttackTerritoryType.wilderness:
-                        foreach (SoldierController solider in attackCharacter.soliderList)
-                        {
-                            if (solider.hp < 10)
-                            {
-                                attackerRetreatFlag = true;
-                                Debug.Log("NU‘¤‚ª•‰‚¯‚Ü‚µ‚½");
-                            }
-                        }
-                        break;
-                    //•½Œ´‚Ìê‡A•ºm‚ª1‘Ì€–S‚µ‚½‚ç‘Ş‹p‚³‚¹‚é
-                    case Territory.AttackTerritoryType.plain:
-                        if (attackCharacter.soliderList.Count < 10)
-                        {
-                            attackerRetreatFlag = true;
-                            Debug.Log("NU‘¤‚ª•‰‚¯‚Ü‚µ‚½");
-                        }
-                        break;
-                    //X—Ñ‚Ìê‡A”¼‰ó(•ºm”¼•ª€–S)‚µ‚½‚ç‘Ş‹p‚³‚¹‚é
-                    case Territory.AttackTerritoryType.forest:
-                        if (attackCharacter.soliderList.Count < 5)
-                        {
-                            attackerRetreatFlag = true;
-                            Debug.Log("NU‘¤‚ª•‰‚¯‚Ü‚µ‚½");
-                        }
-                        break;
-                    //Ô‚Ìê‡A‘S–Å(•ºm‘Sˆõ€–S)‚µ‚½‚ç‘Ş‹p‚³‚¹‚é
-                    case Territory.AttackTerritoryType.fort:
-                        if (attackCharacter.soliderList.Count == 0)
-                        {
-                            attackerRetreatFlag = true;
-                            Debug.Log("NU‘¤‚ª•‰‚¯‚Ü‚µ‚½");
-                        }
-                        break;
-                }
-            }
+            defenderRetreatFlag = true;
         }
         else
         {
-            if (attackerSoliderHpSum == 0)
+            int attackerSoliderHpSum = attackCharacter.CalcSoldierHPSum();
+            int defenderSoliderHpSum = defenceCharacter.CalcSoldierHPSum();
+
+            //–h‰q‘¤‚ª•‰‚¯‚Ä‚¢‚éê‡
+            if (attackerSoliderHpSum > defenderSoliderHpSum)
             {
-                attackerRetreatFlag = true;
-                Debug.Log("ˆø‚«•ª‚¯‚Å‚·iNU‘¤‚Ì•‰‚¯‚Å‚·j");
+                RetreatFlagCheck(defenceCharacter, ref defenderRetreatFlag);
             }
+            //NU‘¤‚ª•‰‚¯‚Ä‚¢‚éê‡
+            else if (attackerSoliderHpSum < defenderSoliderHpSum)
+            {
+                RetreatFlagCheck(attackCharacter, ref attackerRetreatFlag);
+            }
+            else
+            {
+                if (attackerSoliderHpSum == 0)
+                {
+                    attackerRetreatFlag = true;
+                    Debug.Log("ˆø‚«•ª‚¯‚Å‚·iNU‘¤‚Ì•‰‚¯‚Å‚·j");
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// ‘Ş‹pƒtƒ‰ƒO‚Ìƒ`ƒFƒbƒN
+    /// </summary>
+    /// <param name="character"></param>
+    /// <param name="retreatFlag"></param>
+    private void RetreatFlagCheck(CharacterController character, ref bool retreatFlag)
+    {
+        // ŠeğŒ‚ÉŠî‚Ã‚¢‚Ä‘Ş‹pƒtƒ‰ƒO‚ğİ’è‚·‚é
+        bool ShouldRetreat(int threshold)
+        {
+            return character.soliderList.Any(soldier => soldier.hp < threshold);
+        }
+
+        int soldierCount = character.soliderList.Count;
+
+        switch (varParam.Territory.defenceTerritoryType)
+        {
+            case Territory.DefenceTerritoryType.desert:
+
+                retreatFlag = ShouldRetreat(20);
+                break;
+
+            case Territory.DefenceTerritoryType.wilderness:
+                retreatFlag = ShouldRetreat(10);
+                break;
+
+            case Territory.DefenceTerritoryType.plain:
+                retreatFlag = soldierCount < 10;
+                break;
+
+            case Territory.DefenceTerritoryType.forest:
+                retreatFlag = soldierCount < 5;
+                break;
+
+            case Territory.DefenceTerritoryType.fort:
+                retreatFlag = soldierCount == 0;
+                break;
         }
     }
 
