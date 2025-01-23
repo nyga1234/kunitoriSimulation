@@ -9,7 +9,6 @@ using DG.Tweening.Core.Easing;
 
 public class CharacterMenuUI : MonoBehaviour
 {
-    [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] private CommandOnClick commandClick;
 
     [System.Serializable]
@@ -88,7 +87,7 @@ public class CharacterMenuUI : MonoBehaviour
             }
         }
 
-        territoryUIOnMouse.InfluenceCalcSum(influence);
+        GameMain.instance.TerritoryUIOnMouse.InfluenceCalcSum(influence);
         texts.charaNameText.text = character.name;
         texts.territorySumText.text = "[óÃínêî] " + influence.territorySum.ToString();
         texts.goldSumText.text = "[éëã‡åv]" + influence.goldSum.ToString();

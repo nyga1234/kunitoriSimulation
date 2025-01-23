@@ -7,10 +7,7 @@ using UnityEngine.UI;
 
 public class BattleDetailUI : MonoBehaviour
 {
-    //[SerializeField] InflueneceManager influenceManager;
-    //[SerializeField] TerritoryManager territoryManager;
     [SerializeField] private UtilityParamObject varParam;
-    [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
 
     [SerializeField] Image attackerCharaIcon;
     [SerializeField] Image defenderCharaIcon;
@@ -25,7 +22,6 @@ public class BattleDetailUI : MonoBehaviour
     [SerializeField] Transform AttackerSoliderListField;
     [SerializeField] Transform DefenderSoliderListField;
     [SerializeField] GameObject battleSolidefPrefab;
-    //[SerializeField] SoliderController battleSolidefPrefab;
 
     int attackerSoliderHPSum;
     int defenderSoliderHPSum;

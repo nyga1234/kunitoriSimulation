@@ -10,7 +10,6 @@ public class BattleManager : MonoBehaviour
 {
     [SerializeField] Cursor cursor;
     [SerializeField] private UtilityParamObject varParam;
-    [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] Transform AttackerSoliderField, DefenderSoliderField;
     [SerializeField] GameObject attackSoliderPrefab;
     [SerializeField] GameObject defenceSoliderPrefab;
@@ -252,18 +251,11 @@ public class BattleManager : MonoBehaviour
     /// <param name="defenceCharacter"></param>
     public void RetreatCheck(CharacterController attackCharacter, CharacterController defenceCharacter)
     {
-        //ƒvƒŒƒCƒ„[‚ªí“¬‚·‚éê‡
+        // ƒvƒŒƒCƒ„[‚ªí“¬‚·‚éê‡
         if (attackCharacter == GameMain.instance.playerCharacter || defenceCharacter == GameMain.instance.playerCharacter)
         {
-            if (attackCharacter.soliderList.Count == 0)
-            {
-                attackerRetreatFlag = true;
-            }
-
-            if (defenceCharacter.soliderList.Count == 0)
-            {
-                defenderRetreatFlag = true;
-            }
+            attackerRetreatFlag = attackCharacter.soliderList.Count == 0;
+            defenderRetreatFlag = defenceCharacter.soliderList.Count == 0;
         }
         else
         {
@@ -273,12 +265,12 @@ public class BattleManager : MonoBehaviour
             //–h‰q‘¤‚ª•‰‚¯‚Ä‚¢‚éê‡
             if (attackerSoliderHpSum > defenderSoliderHpSum)
             {
-                RetreatFlagCheck(defenceCharacter, ref defenderRetreatFlag);
+                CheckRetreatFlag(defenceCharacter, ref defenderRetreatFlag, varParam.Territory.defenceTerritoryType);
             }
             //NU‘¤‚ª•‰‚¯‚Ä‚¢‚éê‡
             else if (attackerSoliderHpSum < defenderSoliderHpSum)
             {
-                RetreatFlagCheck(attackCharacter, ref attackerRetreatFlag);
+                CheckRetreatFlag(attackCharacter, ref attackerRetreatFlag, varParam.Territory.attackTerritoryType);
             }
             else
             {
@@ -296,36 +288,38 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     /// <param name="character"></param>
     /// <param name="retreatFlag"></param>
-    private void RetreatFlagCheck(CharacterController character, ref bool retreatFlag)
+    /// <param name="territoryType"></param>
+    private void CheckRetreatFlag(CharacterController character, ref bool retreatFlag, Enum territoryType)
     {
-        // ŠeğŒ‚ÉŠî‚Ã‚¢‚Ä‘Ş‹pƒtƒ‰ƒO‚ğİ’è‚·‚é
-        bool ShouldRetreat(int threshold)
-        {
-            return character.soliderList.Any(soldier => soldier.hp < threshold);
-        }
-
         int soldierCount = character.soliderList.Count;
 
-        switch (varParam.Territory.defenceTerritoryType)
+        // ‘Ş‹pğŒ‚Ì”»’è
+        bool ShouldRetreat(int threshold) => character.soliderList.Any(soldier => soldier.hp < threshold);
+
+        switch (territoryType)
         {
             case Territory.DefenceTerritoryType.desert:
-
+            case Territory.AttackTerritoryType.desert:
                 retreatFlag = ShouldRetreat(20);
                 break;
 
             case Territory.DefenceTerritoryType.wilderness:
+            case Territory.AttackTerritoryType.wilderness:
                 retreatFlag = ShouldRetreat(10);
                 break;
 
             case Territory.DefenceTerritoryType.plain:
+            case Territory.AttackTerritoryType.plain:
                 retreatFlag = soldierCount < 10;
                 break;
 
             case Territory.DefenceTerritoryType.forest:
+            case Territory.AttackTerritoryType.forest:
                 retreatFlag = soldierCount < 5;
                 break;
 
             case Territory.DefenceTerritoryType.fort:
+            case Territory.AttackTerritoryType.fort:
                 retreatFlag = soldierCount == 0;
                 break;
         }
@@ -333,7 +327,8 @@ public class BattleManager : MonoBehaviour
 
     public void BattleEndCheck(CharacterController attackerCharacter, CharacterController defenderCharacter)
     {
-        if (attackerRetreatFlag == true)
+        //ˆø‚«•ª‚¯
+        if (attackerRetreatFlag == true && defenderRetreatFlag == true)
         {
             if (attackerCharacter == GameMain.instance.playerCharacter)
             {
@@ -343,9 +338,22 @@ public class BattleManager : MonoBehaviour
             {
                 TitleFieldUI.instance.titleFieldText.text = "      “GŒR‚Í‘Ş‹p‚µ‚Ü‚µ‚½";
             }
-            attackerCharacter.isAttackable = false;
             defenderCharacter.fame += 2;
         }
+        //–h‰q‘¤Ÿ—˜
+        else if (attackerRetreatFlag == true)
+        {
+            if (attackerCharacter == GameMain.instance.playerCharacter)
+            {
+                TitleFieldUI.instance.titleFieldText.text = "      ƒvƒŒƒCƒ„[‚Í‘Ş‹p‚µ‚Ü‚µ‚½";
+            }
+            else
+            {
+                TitleFieldUI.instance.titleFieldText.text = "      “GŒR‚Í‘Ş‹p‚µ‚Ü‚µ‚½";
+            }
+            defenderCharacter.fame += 2;
+        }
+        //NU‘¤Ÿ—˜
         else if (defenderRetreatFlag == true)
         {
             if (defenderCharacter == GameMain.instance.playerCharacter)
@@ -356,12 +364,11 @@ public class BattleManager : MonoBehaviour
             {
                 TitleFieldUI.instance.titleFieldText.text = "      “GŒR‚Í‘Ş‹p‚µ‚Ü‚µ‚½";
             }
-            Debug.Log(attackerCharacter.name + "‚ÌŸ—˜‚Å‚·B");
-            attackerCharacter.isAttackable = false;
             attackerCharacter.fame += 2;
-            territoryUIOnMouse.ChangeTerritoryByBattle(attackerCharacter.influence);
+            GameMain.instance.TerritoryUIOnMouse.ChangeTerritoryByBattle(attackerCharacter.influence);
         }
 
+        attackerCharacter.isAttackable = false;
         attackerCharacter.isBattle = true;
         defenderCharacter.isBattle = true;
     }
@@ -545,7 +552,7 @@ public class BattleManager : MonoBehaviour
 
         attackerCharacter.isAttackable = false;
         attackerCharacter.isBattle = true;
-        territoryUIOnMouse.ChangeTerritoryByBattle(attackerCharacter.influence);
+        GameMain.instance.TerritoryUIOnMouse.ChangeTerritoryByBattle(attackerCharacter.influence);
 
         CheckExtinct(GameMain.instance.playerCharacter.influence);
 

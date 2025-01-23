@@ -11,8 +11,6 @@ public class BattleMenuUI : MonoBehaviour
     [Header("Command Settings")]
     [SerializeField] private CommandOnClick commandClick;
 
-    [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
-
     [SerializeField] TextMeshProUGUI moneyText;
 
     [SerializeField] Image lordImage;
@@ -105,7 +103,7 @@ public class BattleMenuUI : MonoBehaviour
         charaNameText.text = character.name;
         rankText.text = character.rank.ToString();
 
-        territoryUIOnMouse.InfluenceCalcSum(influence);
+        GameMain.instance.TerritoryUIOnMouse.InfluenceCalcSum(influence);
         territorySumText.text = "[óÃínêî] " + influence.territorySum.ToString();
         goldSumText.text = "[éëã‡åv]" + influence.goldSum.ToString();
         forceSumText.text = "[ëçêÌóÕ] " + influence.forceSum.ToString();

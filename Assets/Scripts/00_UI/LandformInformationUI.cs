@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class LandformInformationUI : MonoBehaviour
 {
     [SerializeField] private UtilityParamObject varParam;
-    [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] Image attackTerritoryTypeImage;
     [SerializeField] Image defenceTerritoryTypeImage;
 

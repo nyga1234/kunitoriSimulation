@@ -54,6 +54,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     [SerializeField] Transform parent;
     public List<Territory> initializeTerritoryList;
 
+    public TerritoryUIOnMouse TerritoryUIOnMouse { get => territoryUIOnMouse; set => territoryUIOnMouse = value; }
     public VSImageUI VSImageUI { get => vsImageUI; set => vsImageUI = value; }
     public CharacterIndexUI CharacterIndexUI { get => characterIndexUI; set => characterIndexUI = value; }
     public CharacterDetailUI CharacterDetailUI { get => characterDetailUI; set => characterDetailUI = value; }
