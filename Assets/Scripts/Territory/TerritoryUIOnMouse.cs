@@ -8,7 +8,6 @@ using Cysharp.Threading.Tasks;
 
 public class TerritoryUIOnMouse : MonoBehaviour
 {
-    [SerializeField] Cursor cursor;
     [SerializeField] TitleFieldUI titleFieldUI;
     [SerializeField] InfluenceUI influenceUI;
     [SerializeField] InfluenceOnMapUI influenceOnMapUI;
@@ -77,8 +76,8 @@ public class TerritoryUIOnMouse : MonoBehaviour
             case GameMain.Step.Attack:
             case GameMain.Step.Choice:
             case GameMain.Step.Enter:
-                cursor.gameObject.SetActive(true);
-                cursor.SetPosition(transform as RectTransform); // カーソルをアンカーポジションに移動
+                GameMain.instance.Cursor.gameObject.SetActive(true);
+                GameMain.instance.Cursor.SetPosition(transform as RectTransform); // カーソルをアンカーポジションに移動
 
                 SoundManager.instance.PlayMapOnCursorSE();
                 
@@ -104,7 +103,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
 
                 // Mapと勢力情報を非表示
                 mapField.gameObject.SetActive(false);
-                cursor.gameObject.SetActive(false);
+                GameMain.instance.Cursor.gameObject.SetActive(false);
                 influenceOnMapUI.HideInfluenceOnMapUI();
 
                 //キャラクター情報を表示
@@ -124,7 +123,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
                 {
                     //クリックした領土を設定
                     varParam.Territory = onPointEnterTerritory;
-                    cursor.gameObject.SetActive(false);
+                    GameMain.instance.Cursor.gameObject.SetActive(false);
 
                     await SceneController.LoadAsync("UIConfirm");
                     varParam.ConfirmText = "仕官しますか？";
@@ -137,7 +136,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
                         varParam.Territory.influence.AddCharacter(GameMain.instance.playerCharacter);
 
                         mapField.gameObject.SetActive(false);
-                        cursor.gameObject.SetActive(false);
+                        GameMain.instance.Cursor.gameObject.SetActive(false);
                         influenceOnMapUI.HideInfluenceOnMapUI();
 
                         GameMain.instance.ShowPersonalUI(GameMain.instance.playerCharacter);
@@ -178,7 +177,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
                         // 勢力情報を非表示にする
                         influenceOnMapUI.HideInfluenceOnMapUI();
                         mapField.gameObject.SetActive(false);
-                        cursor.gameObject.SetActive(false);
+                        GameMain.instance.Cursor.gameObject.SetActive(false);
 
                         //侵攻キャラクター選択画面へ
                         GameMain.instance.CharacterIndexUI.ShowCharacterIndexUI(GameMain.instance.playerCharacter.influence.characterList);
@@ -213,7 +212,7 @@ public class TerritoryUIOnMouse : MonoBehaviour
                 //戦闘へ進む
                 influenceOnMapUI.HideInfluenceOnMapUI();
                 mapField.gameObject.SetActive(false);
-                cursor.gameObject.SetActive(false);
+                GameMain.instance.Cursor.gameObject.SetActive(false);
 
                 battleUI.ShowBattleUI(GameMain.instance.playerCharacter, defenceCharacter, varParam.Territory);
                 battleManager.StartBattle(GameMain.instance.playerCharacter, defenceCharacter);

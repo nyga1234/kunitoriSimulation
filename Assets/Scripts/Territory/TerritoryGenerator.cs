@@ -14,13 +14,6 @@ public class TerritoryGenerator : MonoBehaviour
 
     private Vector2 spaceOffset = new Vector2(WIDTH / 2 * territorySpace, HEIGHT / 2 * territorySpace);
 
-    public Territory greenTerritory;
-    public Territory redTerritory;
-    public Territory blueTerritory;
-    public Territory yellowTerritory;
-    public Territory blackTerritory;
-    public Territory noneTerritory;
-
     public List<Territory> InitializeTerritory()
     {
         List<Territory> initialTerritoriese = new List<Territory>();
@@ -60,31 +53,26 @@ public class TerritoryGenerator : MonoBehaviour
                 {
                     SetupTerritory(territory, pos, influenceList, "ヴィクター");
                     generateTerritoryList.Add(territory);
-                    //GameMain.instance.territoryCouont++;
                 }
                 else if (x <= 2 && y == 0 || x == 1 && y == 1)
                 {
                     SetupTerritory(territory, pos, influenceList, "アリシア");
                     generateTerritoryList.Add(territory);
-                    //GameMain.instance.territoryCouont++;
                 }
                 else if (x >= 4 && y == 2 || x == 5 && y == 1)
                 {
                     SetupTerritory(territory, pos, influenceList, "セルギウス");
                     generateTerritoryList.Add(territory);
-                    //GameMain.instance.territoryCouont++;
                 }
                 else if (x == 2 && y == 1 || x == 3 && y == 0 || x == 3 && y == 2 || x == 4 && y == 1)
                 {
                     SetupTerritory(territory, pos, influenceList, "ローレンティウス");
                     generateTerritoryList.Add(territory);
-                    //GameMain.instance.territoryCouont++;
                 }
                 else if (x >= 4 && y == 0 || x == 6 && y == 1)
                 {
                     SetupTerritory(territory, pos, influenceList, "フェオドーラ");
                     generateTerritoryList.Add(territory);
-                    //GameMain.instance.territoryCouont++;
                 }
                 else
                 {

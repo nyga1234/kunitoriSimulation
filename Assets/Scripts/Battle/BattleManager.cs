@@ -8,7 +8,6 @@ using System;
 
 public class BattleManager : MonoBehaviour
 {
-    [SerializeField] Cursor cursor;
     [SerializeField] private UtilityParamObject varParam;
     [SerializeField] Transform AttackerSoliderField, DefenderSoliderField;
     [SerializeField] GameObject attackSoliderPrefab;
@@ -382,11 +381,11 @@ public class BattleManager : MonoBehaviour
         TitleFieldUI.instance.titleFieldSubText.text = "戦闘フェーズ";
         mapField.SetActive(true);
         GameMain.instance.VSImageUI.gameObject.SetActive(false);
-        cursor.gameObject.SetActive(true);
+        GameMain.instance.Cursor.gameObject.SetActive(true);
 
         // カーソルの位置を設定
         RectTransform territoryRectTransform = varParam.Territory.GetComponent<RectTransform>();
-        cursor.SetPosition(territoryRectTransform);
+        GameMain.instance.Cursor.SetPosition(territoryRectTransform);
 
         battleDetailUI.ShowBattleDetailUI(attackerCharacter, defenderCharacter);
         if (attackerRetreatFlag == true)
@@ -402,7 +401,7 @@ public class BattleManager : MonoBehaviour
 
         battleDetailUI.HideBattleDetailUI();
         mapField.SetActive(false);
-        cursor.gameObject.SetActive(false);
+        GameMain.instance.Cursor.gameObject.SetActive(false);
 
         GameMain.instance.step = Step.Attack;
     }
@@ -508,11 +507,11 @@ public class BattleManager : MonoBehaviour
         //初期戦闘画面表示
         TitleFieldUI.instance.titleFieldText.text = "      味方 VS 敵　戦闘！";
         mapField.SetActive(true);
-        cursor.gameObject.SetActive(true);
+        GameMain.instance.Cursor.gameObject.SetActive(true);
 
         // カーソルの位置を設定
         RectTransform territoryRectTransform = varParam.Territory.GetComponent<RectTransform>();
-        cursor.SetPosition(territoryRectTransform);
+        GameMain.instance.Cursor.SetPosition(territoryRectTransform);
 
         GameMain.instance.VSImageUI.SetPosition(territoryRectTransform);
 

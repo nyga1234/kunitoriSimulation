@@ -115,10 +115,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         SceneController.instance.Stack.Remove("GameMain");
     }
 
-    private void Update()
-    {
-    }
-
     private void Initialize()
     {
         Debug.Log("Initialize");
@@ -274,6 +270,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
             }
         }
 
+        //領地の生成
         allTerritoryList = territoryGenerator.GenerateTerritory(initializeTerritoryList, influenceList);
 
         phase = Phase.CharacterChoicePhase;
@@ -333,21 +330,13 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     {
         turnCount++;
 
-        //全てのキャラクターを攻撃可能に設定
+        //キャラクター初期化
         foreach (CharacterController character in characterList)
         {
-            character.isAttackable = true;
-        }
+            character.isAttackable = true;//全てのキャラクターを攻撃可能に設定
+            character.isBattle = false;//全てのキャラクターのバトルフラグをfalseに設定
 
-        //全てのキャラクターのバトルフラグをfalseに設定
-        foreach (CharacterController character in characterList)
-        {
-            character.isBattle = false;
-        }
-
-        //全ての兵士のHPを回復
-        foreach (CharacterController character in characterList)
-        {
+            //全ての兵士のHPを回復
             foreach (SoldierController solider in character.soliderList)
             {
                 solider.hp = solider.maxHP;
@@ -361,9 +350,8 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         {
             if (influence != noneInfluence)
             {
-                int territoryIncome = 15;
-                int influenceIncome = 0;//値を初期化
-                influenceIncome = influence.territoryList.Count * territoryIncome;
+                const int TerritoryIncome = 15;
+                int influenceIncome = influence.territoryList.Count * TerritoryIncome;
                 foreach (CharacterController character in influence.characterList)
                 {
                     character.gold += Mathf.RoundToInt(influenceIncome * character.salary / 100.0f);
@@ -565,6 +553,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
                 otherCharacter.soliderList.Add(Instantiate(constParam.soldierList.Find(c => c.soliderID == 1)));
                 otherCharacter.gold -= 2;
             }
+
             //兵士訓練
             //領主の場合
             if (otherCharacter.isLord == true)
