@@ -8,7 +8,6 @@ using Cysharp.Threading.Tasks;
 
 public class TerritoryUIOnMouse : MonoBehaviour
 {
-    [SerializeField] TitleFieldUI titleFieldUI;
     [SerializeField] InfluenceUI influenceUI;
     [SerializeField] InfluenceOnMapUI influenceOnMapUI;
     [SerializeField] TerritoryGenerator territoryGenerator;
@@ -155,24 +154,24 @@ public class TerritoryUIOnMouse : MonoBehaviour
 
                 if (varParam.Influence == GameMain.instance.playerCharacter.influence)
                 {
-                    titleFieldUI.titleFieldText.text = "     自国領土です";
+                    TitleFieldUI.instance.titleFieldText.text = "     自国領土です";
                     return;
                 }
                 else if (varParam.Influence == GameMain.instance.noneInfluence)
                 {
-                    titleFieldUI.titleFieldText.text = "     空き領土です";
+                    TitleFieldUI.instance.titleFieldText.text = "     空き領土です";
                     return;
                 }
                 else if (GameMain.instance.playerCharacter.influence.IsAttackableTerritory(this.onPointEnterTerritory) == false)
                 {
-                    titleFieldUI.titleFieldText.text = "     隣接していません";
+                    TitleFieldUI.instance.titleFieldText.text = "     隣接していません";
                     return;
                 }
                 else
                 {
                     if (GameMain.instance.playerCharacter.isLord == true)
                     {
-                        titleFieldUI.titleFieldText.text = "     侵攻させる部隊を選択してください";
+                        TitleFieldUI.instance.titleFieldText.text = "     侵攻させる部隊を選択してください";
 
                         // 勢力情報を非表示にする
                         influenceOnMapUI.HideInfluenceOnMapUI();

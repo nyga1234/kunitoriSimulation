@@ -9,7 +9,6 @@ public class SelectButtonView : MonoBehaviour
     private Button _button;
     public Button Button => _button;
 
-    [SerializeField] TitleFieldUI titleFieldUI;
     [SerializeField] ConsumptionMoneyUI consumptionMoneyUI;
 
     private Color originalColor; // å≥ÇÃîwåiêFÇï€éùÇ∑ÇÈïœêî
@@ -55,35 +54,35 @@ public class SelectButtonView : MonoBehaviour
         switch (gameObject.name)
         {
             case "Information":
-                titleFieldUI.ShowInformationText();
+                TitleFieldUI.instance.ShowInformationText();
                 consumptionMoneyUI.ShowConsumptionText(0);
                 break;
             case "Appointment":
-                titleFieldUI.ShowAppointmentText();
+                TitleFieldUI.instance.ShowAppointmentText();
                 consumptionMoneyUI.ShowConsumptionText(0);
                 break;
             case "Search":
-                titleFieldUI.ShowSearchText();
+                TitleFieldUI.instance.ShowSearchText();
                 consumptionMoneyUI.ShowConsumptionText(9);
                 break;
             case "Banishment":
-                titleFieldUI.ShowBanishmentText();
+                TitleFieldUI.instance.ShowBanishmentText();
                 consumptionMoneyUI.ShowConsumptionText(0);
                 break;
             case "Alliance":
-                titleFieldUI.ShowAllianceText();
+                TitleFieldUI.instance.ShowAllianceText();
                 consumptionMoneyUI.ShowConsumptionText(5);
                 break;
             case "Laureate":
-                titleFieldUI.ShowLaureateText();
+                TitleFieldUI.instance.ShowLaureateText();
                 consumptionMoneyUI.ShowConsumptionText(0);
                 break;
             case "Recruit":
-                titleFieldUI.ShowRecruitText();
+                TitleFieldUI.instance.ShowRecruitText();
                 consumptionMoneyUI.ShowConsumptionText(2);
                 break;
             case "Training":
-                titleFieldUI.ShowTrainingText();
+                TitleFieldUI.instance.ShowTrainingText();
                 consumptionMoneyUI.ShowConsumptionText(2);
                 break;
             case "Enter":
@@ -91,7 +90,7 @@ public class SelectButtonView : MonoBehaviour
                 {
                     return;
                 }
-                titleFieldUI.ShowEnterText();
+                TitleFieldUI.instance.ShowEnterText();
                 consumptionMoneyUI.ShowConsumptionText(0);
                 break;
             case "Vagabond":
@@ -99,7 +98,7 @@ public class SelectButtonView : MonoBehaviour
                 {
                     return;
                 }
-                titleFieldUI.ShowVagabondText();
+                TitleFieldUI.instance.ShowVagabondText();
                 consumptionMoneyUI.ShowConsumptionText(0);
                 break;
             case "Rebellion":
@@ -107,13 +106,13 @@ public class SelectButtonView : MonoBehaviour
                 {
                     return;
                 }
-                titleFieldUI.ShowRebellionText();
+                TitleFieldUI.instance.ShowRebellionText();
                 consumptionMoneyUI.ShowConsumptionText(0);
                 break;
             case "Attack":
                 if (GameMain.instance.playerCharacter.isLord)
                 {
-                    titleFieldUI.ShowAttackText();
+                    TitleFieldUI.instance.ShowAttackText();
                 }
                 else
                 {
@@ -122,19 +121,19 @@ public class SelectButtonView : MonoBehaviour
                 consumptionMoneyUI.ShowConsumptionText(3);
                 break;
             case "Provoke":
-                titleFieldUI.ShowProvokeText();
+                TitleFieldUI.instance.ShowProvokeText();
                 consumptionMoneyUI.ShowConsumptionText(9);
                 break;
             case "Subdue":
-                titleFieldUI.ShowSubdueText();
+                TitleFieldUI.instance.ShowSubdueText();
                 consumptionMoneyUI.ShowConsumptionText(3);
                 break;
             case "Function":
-                titleFieldUI.ShowFunctionText();
+                TitleFieldUI.instance.ShowFunctionText();
                 consumptionMoneyUI.ShowConsumptionText(0);
                 break;
             case "End":
-                titleFieldUI.ShowEndText();
+                TitleFieldUI.instance.ShowEndText();
                 consumptionMoneyUI.ShowConsumptionText(0);
                 break;
             default:

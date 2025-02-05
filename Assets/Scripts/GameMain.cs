@@ -17,7 +17,6 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     [SerializeField] Cursor cursor;
     [SerializeField] VSImageUI vsImageUI;
     [SerializeField] SoldierController soliderPrefab;
-    [SerializeField] TitleFieldUI titleFieldUI;
     [SerializeField] BattleManager battleManager;
     [SerializeField] TerritoryUIOnMouse territoryUIOnMouse;
     [SerializeField] CharacterTurnUI characterTurnUI;
@@ -320,7 +319,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
     void CharacterChoicePhase()
     {
-        titleFieldUI.ShowCharacterChoiceText();
+        TitleFieldUI.instance.ShowCharacterChoiceText();
         mapField.SetActive(true);
 
         step = Step.Choice;
@@ -376,7 +375,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
         {
             Debug.Log("プレイヤー領主フェーズです。");
 
-            titleFieldUI.ShowChangeLordTurnText();
+            TitleFieldUI.instance.ShowChangeLordTurnText();
             ShowLordUI(playerCharacter);
         }
         else
@@ -392,7 +391,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     {
         Debug.Log("他キャラクターの領主フェーズです。");
 
-        titleFieldUI.ShowChangeLordTurnText();
+        TitleFieldUI.instance.ShowChangeLordTurnText();
 
         mapField.SetActive(true);
         //他キャラクターの領主リストの取得
@@ -507,7 +506,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     void PlayerPersonalPhase()
     {
         Debug.Log("プレイヤー個人フェーズです。");
-        titleFieldUI.ShowChangePersonalTurnText();
+        TitleFieldUI.instance.ShowChangePersonalTurnText();
         ShowPersonalUI(playerCharacter);
     }
 
@@ -515,7 +514,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     {
         Debug.Log("他キャラクターの個人フェーズです。");
 
-        titleFieldUI.ShowChangePersonalTurnText();
+        TitleFieldUI.instance.ShowChangePersonalTurnText();
 
         mapField.SetActive(true);
         List<CharacterController> otherCharacterList = characterList.FindAll(x => !x.isPlayerCharacter);
@@ -593,7 +592,7 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
     void BattlePhase()
     {
         Debug.Log("バトルフェーズです。");
-        titleFieldUI.ShowChangeBattleTurnText();
+        TitleFieldUI.instance.ShowChangeBattleTurnText();
         //キャラクターリストをシャッフル
         ShuffleCharacterList();
 
@@ -1047,21 +1046,21 @@ public class GameMain : SingletonMonoBehaviour<GameMain>
 
     public void ShowLordUI(CharacterController playerCharacter)
     {
-        titleFieldUI.ShowPlayerLordPhase();
+        TitleFieldUI.instance.ShowPlayerLordPhase();
         characterMenuUI.ShowCharacterMenuUI(playerCharacter, playerCharacter.influence);
         characterDetailUI.ShowCharacterDetailUI(playerCharacter);
     }
 
     public void ShowPersonalUI(CharacterController playerCharacter)
     {
-        titleFieldUI.ShowPlayerPersonalPhase();
+        TitleFieldUI.instance.ShowPlayerPersonalPhase();
         personalMenuUI.ShowPersonalMenuUI(playerCharacter);
         influenceUI.ShowInfluenceUI(playerCharacter.influence);
     }
 
     public void ShowBattleUI(CharacterController playerCharacter)
     {
-        titleFieldUI.ShowPlayerBattlePhase();
+        TitleFieldUI.instance.ShowPlayerBattlePhase();
         battleMenuUI.ShowBattleMenuUI(playerCharacter, playerCharacter.influence);
         characterDetailUI.ShowCharacterDetailUI(playerCharacter);
     }
